@@ -1,8 +1,17 @@
-# iFact
-##### "Invoicing made simple" 
-<p align="right"><em>for simple people!</em></p>
 
-![Logo](https://github.com/iqcouch/ifact/Logo.png)
+<table border="0">
+  <tr>
+    <td>
+    <img src="https://github.com/iqcouch/ifact/blob/master/Logo.png" alt="Logo"></img>
+    </td>
+    <td>
+    <small>"Invoicing made simple"</small>  <br/><p align="right"><em>for simple people!</em></p>
+    </td>
+  </tr>
+</table>
+
+
+# iFact
 
 **iFact** is an invoicing web application that I wrote in a spare moment between projects as a personal tool to help me create my invoices having a minimal invoices management.
 The name comes as an acronym **i** - letter that was imposed by Apple&trade;&reg; and **Fact**ură - which means _invoice_ in Romanian ... and also sounds interesting if you pronounce it in a certain way, and this was on purpose.
