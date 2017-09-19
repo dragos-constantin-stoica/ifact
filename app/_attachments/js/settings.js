@@ -20,12 +20,16 @@ var settings = {
         view: "form",
         elements:[
             {view:"text", name:"nume", label:"Nume", placeholder:"Numele societatii", labelWidth:180},
-            {view:"text", name:"NORG", label:"Nr. Ord. Reg. Com.", placeholder:"Numar de ordine in Registrul Comertului", labelWidth:180},
+            {view:"text", name:"NORG", label:"Nr. Ord. Reg. Com.", placeholder:"Numar de Ordine in Registrul Comertului", labelWidth:180},
+            {view:"text", name:"EUNORG", label:"NORC European", placeholder:"Numar de ordine European in Registrul Comertului", labelWidth:180},
             {view:"text", name:"CUI" ,label:"C.U.I", placeholder:"Cod Unic de Identificare", labelWidth:180},
-            {view:"textarea", name:"adresa" , label:"Adresa", height:110, labelPosition:"top", placeholder: "Strada , Nr. , Apt. \nLocalitatea, Judetul, Cod Postal" },
+            {view:"text", name:"TVA" ,label:"TVA EU", placeholder:"TVA European", labelWidth:180},            
+            {view:"textarea", name:"adresa" , label:"Adresa", height:110, labelPosition:"top", placeholder: "Str. , Nr. , Bl., Sc., Apt., Cod Postal, Localitatea, Comuna, Judetul/Sector, Tara" },
             {view:"text", name:"banca", label:"Banca", placeholder:"Banca", labelWidth:180},
             {view:"text", name:"sucursala", label:"Sucursala", placeholder:"Sucursala bancii", labelWidth:180},
             {view:"text", name:"IBAN", label:"IBAN", placeholder:"IBAN", labelWidth:180},
+            {view:"text", name:"SWIFT", label:"SWIFT", placeholder:"SWIFT code", labelWidth:180},   
+            {view:"text", name:"BIC", label:"BIC", placeholder:"BIC code", labelWidth:180},                        
             {view:"button", name:"submit", value:"SAVE", click: "settings.save()"}
         ]
     }
