@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>iFact</title>
+		<!--
+        <link rel="icon" type="image/png" href="assets/R2D2_16.png"/>
+        -->
+		<link rel="stylesheet" href="webix/codebase/webix.css" type="text/css" media="screen" charset="utf-8">
+		<!-- CouchDB JavaScript libraries -->
+	    <script src="/_utils/script/json2.js"></script>
+	    <script src="/_utils/script/sha1.js"></script>
+	    <script src="/_utils/script/couch.js"></script>
+	    <script src="/_utils/script/jquery.js"></script>
+	    <script src="/_utils/script/jquery.couch.js"></script>
+	    <script src="/_utils/script/jquery.dialog.js"></script>
+        <!-- PDFMake -->
+        <script src='pdfmake/pdfmake.min.js'></script>
+ 	    <script src='pdfmake/vfs_fonts.js'></script>
+		<!-- Webix framework -->
+		<script src="webix/codebase/webix.js" type="text/javascript" charset="utf-8"></script>    
+		<!-- iFact Application -->
+        <script src="js/globals.js" type="text/javascript" charset="utf-8"></script>
+        <script src="js/payments.js" type="text/javascript" charset="utf-8"></script>
+        <script src="js/contracts.js" type="text/javascript" charset="utf-8"></script>
+        <script src="js/customers.js" type="text/javascript" charset="utf-8"></script>
+        <script src="js/invoice.js" type="text/javascript" charset="utf-8"></script>
+        <script src="js/settings.js" type="text/javascript" charset="utf-8"></script>
+        <script src="js/config.js" type="text/javascript" charset="utf-8"></script>
+        <script src="js/logic.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/app.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body>
+	<script type="text/javascript">
+		/*
+		 This is a Single Page Application
+		 it is designed for Desktop browsers
+		*/	
+        webix.i18n.parseFormat = "%d.%m.%Y";
+        webix.i18n.setLocale();
+		webix.ready(function(){
+            myApp.init();
+		});	
+	</script>
+	</body>
+</html>
