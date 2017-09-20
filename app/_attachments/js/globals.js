@@ -16,6 +16,13 @@ var USERNAME = {
     }
 };
 
+
+/*Create new view that extends List and webix.ActiveContent*/
+webix.protoUI({
+    name:"activeList"
+},webix.ui.list,webix.ActiveContent);
+
+
 /**
 CouchDB configuration
 - database name
@@ -29,8 +36,8 @@ var SERVER_URL = CouchDB.protocol + CouchDB.host + "/";
 URL for loading JSON arrays for each view
 */
 var LOAD_URL = {
-    1: "/_design/supplier/_list/toja/getsupplier",
-    2: "/_design/customer/_list/toja/getcustomer",
+    1: "/_design/globallists/_list/toja/supplier/getsupplier",
+    2: "/_design/globallists/_list/toja/customer/getcustomer",
     3: "",
     4: "/_local/INVOICE_CFG",
     5: "",
@@ -56,10 +63,14 @@ function loadData(id){
     switch (id) {
         case "1":
             //Settings form
-            var promise = webix.ajax(SERVER_URL + DBNAME + LOAD_URL[id]);
-            promise.then(function(realdata){
+            var promise_pg1 = webix.ajax(SERVER_URL + DBNAME + LOAD_URL[id]);
+            promise_pg1.then(function(realdata){
                 //success
+                //We expect one single supplier
                 $$("page-" + id).setValues((realdata.json())[0]);
+                $$("conturi").clearAll();
+                $$("conturi").parse($$("page-"+id).getValues().conturi);
+                $$("conturi").refresh();
             }).fail(function(err){
                 //error
             });
@@ -76,8 +87,8 @@ function loadData(id){
             break;
         case "4":
             //Invoice form
-            var promise = webix.ajax(SERVER_URL + DBNAME + LOAD_URL[id]);
-            promise.then(function(realdata){
+            var promise_pg4 = webix.ajax(SERVER_URL + DBNAME + LOAD_URL[id]);
+            promise_pg4.then(function(realdata){
                 //success
                 $$("invoiceForm").setValues({"serial_number":realdata.json().SERIA + " " + realdata.json().NUMARUL}, true);
                 invoice.localData.SERIA = realdata.json().SERIA;
@@ -91,8 +102,8 @@ function loadData(id){
             break;
         case "6":
             //Configuration form
-            var promise = webix.ajax(SERVER_URL + DBNAME + LOAD_URL[id]);
-            promise.then(function(realdata){
+            var promise_pg6 = webix.ajax(SERVER_URL + DBNAME + LOAD_URL[id]);
+            promise_pg6.then(function(realdata){
                 //success
                 $$("page-" + id).setValues(realdata.json());
             }).fail(function(err){
@@ -117,6 +128,8 @@ webix.proxy.CouchDB = {
         //GET JSON Array from database/design_document/_list/[list_name]/[view_name]  
         webix.ajax(this.source, callback, view);
     },
+
+
     save:function(view, update, dp, callback){
 
         //your saving pattern

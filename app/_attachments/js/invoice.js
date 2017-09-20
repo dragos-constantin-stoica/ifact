@@ -350,7 +350,7 @@ var invoice = {
                 elements:[
                     {view:"counter", step:1, value:1, min:1, max:5, name:"copies", label:"Numarul de copii:", labelWidth:180},
                     {view:"text", name:"serial_number", label:"Seria-Nr.:", placeholder:"get the current serial number", readonly:true, labelWidth:180},
-                    {view:"combo", name:"supplier", label:"Furnizor:", labelWidth:180, options:"CouchDB->../../_design/supplier/_list/toja/getsuppliername"},
+                    {view:"combo", name:"supplier", label:"Furnizor:", labelWidth:180, options:"CouchDB->../../_design/globallists/_list/toja/supplier/getsuppliername"},
                     {view:"unitlist", id:"customer_contract", name:"customer_contract", label:"Beneficiar:", labelWidth:180,
                         sort:{
                             by:"#nume#",
@@ -366,7 +366,7 @@ var invoice = {
                         height:'auto',
                         template:"#contract# din data de #start_date# (exp.: #end_date#)<br/>#detalii#",
                         select: true,
-                        url: "CouchDB->../../_design/contract/_list/toja/getcontract"
+                        url: "CouchDB->../../_design/globallists/_list/toja/contract/getcontract"
                     },
                     {view:"datepicker", stringResult:true, format:webix.Date.dateToStr("%d.%m.%Y"), date: new Date(), name:"invoice_date",label:"Data emiterii:", placeholder:"select date of issue", labelWidth:180},
                     {view:"datepicker", stringResult:true, format:webix.Date.dateToStr("%d.%m.%Y"), date: new Date(), name:"due_date", label:"Data scadentei:", placeholder:"select payment due date", labelWidth:180},

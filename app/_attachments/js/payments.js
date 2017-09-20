@@ -96,7 +96,7 @@ var payments = {
                 },
                 //autoheight:true,
                 autowidth: true,
-                url: "CouchDB->../../_design/invoice/_list/toja/getinvoicestatement"
+                url: "CouchDB->../../_design/globallists/_list/toja/invoice/getinvoicestatement"
             },
             {view: 'resizer'},
             {
@@ -126,7 +126,7 @@ var payments = {
                               $$('paymentsTable').sort(payments.dateSort);
                           }
                         },
-                        url: "CouchDB->../../_design/invoice/_list/toja/getinvoicestatement",
+                        url: "CouchDB->../../_design/globallists/_list/toja/invoice/getinvoicestatement",
                         save: "CouchDB->../../_design/invoice/_update/payment"
                     },
                     {view: 'toolbar', cols:[

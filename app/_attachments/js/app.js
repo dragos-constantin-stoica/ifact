@@ -15,6 +15,10 @@ var myApp = {
         webix.ui(myApp.ui);
         webix.ui(myApp.sidemenu);
 
+        if(! $$("menu").config.hidden) $$("menu").hide();
+        $$('page-1').show();
+        loadData("1");
+
     },
     
     ui: {

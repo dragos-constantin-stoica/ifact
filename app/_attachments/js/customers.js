@@ -13,7 +13,7 @@ var customers = {
                         select:true,
                         //autowidth:true,
                         minWidth:100,
-                        url: "CouchDB->../../_design/customer/_list/toja/getcustomer",
+                        url: "CouchDB->../../_design/globallists/_list/toja/customer/getcustomer",
                         save: "CouchDB->../../_design/customer/_update/rest"
                     },
                     { 
