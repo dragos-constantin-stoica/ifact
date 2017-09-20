@@ -1,4 +1,4 @@
-var settings = {
+var supplier = {
 
     save: function(){
         var doc = $$("page-1").getValues();
@@ -27,7 +27,7 @@ var settings = {
             width:400,
             position:"top",
             head:"Administrare Conturi Bancare",
-            body: webix.copy(settings.conturiForm)
+            body: webix.copy(supplier.conturiForm)
         }).show();
         $$('conturiform').clear();
         $$('conturiform').setValues($$('conturi').getItem(item_id));
@@ -47,7 +47,7 @@ var settings = {
             width:400,
             position:"top",
             head:"Administrare Conturi Bancare",
-            body: webix.copy(settings.conturiForm)
+            body: webix.copy(supplier.conturiForm)
         }).show();
         $$('conturiform').clear();
         $$('conturiform').setValues({"id":"new"});
@@ -101,7 +101,7 @@ var settings = {
             {view:"text", name:"EUNORG", label:"NORC European", placeholder:"Numar de ordine European in Registrul Comertului"},
             {view:"text", name:"CUI" ,label:"C.U.I", placeholder:"Cod Unic de Identificare"},
             {view:"text", name:"TVA" ,label:"TVA EU", placeholder:"TVA European"},            
-            {view:"textarea", name:"adresa" , label:"Adresa", height:110, labelPosition:"left", 
+            {view:"textarea", name:"adresa" , label:"Adresa", height:110,  
                 placeholder: "Str. , Nr. , Bl., Sc., Apt., Cod Postal, Localitatea, Comuna, Judetul/Sector, Tara" 
             },
 
@@ -120,7 +120,7 @@ var settings = {
                                     type:"icon",
                                     icon:"trash-o",
                                     width: 32,
-                                    click:"settings.delete"
+                                    click:"supplier.delete"
                                 },
                                 editButton:{
                                     id:"editButtonId",
@@ -128,7 +128,7 @@ var settings = {
                                     type: "icon",
                                     icon:"pencil-square-o",
                                     width: 32,
-                                    click:"settings.edit"
+                                    click:"supplier.edit"
                                 }
                             },
                             template: "<div style='overflow: hidden;float:left;'>Banca: #banca#, Sucursala: #sucursala#" +
@@ -136,11 +136,11 @@ var settings = {
                                 "<div style='height: 50px; padding-left: 10px;padding-top:10px;float:right;'>{common.deleteButton()}</div>" +
                                 "<div style='height: 50px; padding-left: 10px;padding-top:10px;float:right;'>{common.editButton()}</div>"
                         },
-                        {view:"button", type:"icon", icon:"plus-square", label: "Add", width: 80, click: "settings.add"}
+                        {view:"button", type:"icon", icon:"plus-square", label: "Add", width: 80, click: "supplier.add"}
                     ]
                 }
             },
-            {view:"button", type:"form", value:"SAVE", width: 100, click: "settings.save()"}
+            {view:"button", type:"form", value:"SAVE", align:"center", width: 100, click: "supplier.save()"}
         ]
     }
 };

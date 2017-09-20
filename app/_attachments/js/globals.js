@@ -62,7 +62,7 @@ from LOAD_URL
 function loadData(id){
     switch (id) {
         case "1":
-            //Settings form
+            //supplier form
             var promise_pg1 = webix.ajax(SERVER_URL + DBNAME + LOAD_URL[id]);
             promise_pg1.then(function(realdata){
                 //success
@@ -73,6 +73,8 @@ function loadData(id){
                 $$("conturi").refresh();
             }).fail(function(err){
                 //error
+                webix.message({type:"error", text: err});
+                console.log(err);
             });
             break;
         case "2":
@@ -93,8 +95,11 @@ function loadData(id){
                 $$("invoiceForm").setValues({"serial_number":realdata.json().SERIA + " " + realdata.json().NUMARUL}, true);
                 invoice.localData.SERIA = realdata.json().SERIA;
                 invoice.localData.NUMARUL = realdata.json().NUMARUL;
+                $$('invoiceForm').elements.supplier.setValue($$('invoiceForm').elements.supplier.getList().getFirstId());
             }).fail(function(err){
                 //error
+                webix.message({type:"error", text: err});
+                console.log(err);
             });
             break;
         case "5":
@@ -108,6 +113,8 @@ function loadData(id){
                 $$("page-" + id).setValues(realdata.json());
             }).fail(function(err){
                 //error
+                webix.message({type:"error", text: err});
+                console.log(err);
             });
             break;
         default:
@@ -136,18 +143,18 @@ webix.proxy.CouchDB = {
         if(update.operation == "update"){
 			webix.ajax().header({
 			    "Content-type":"application/json"
-			}).post(dp.config.url.source+ "\/" + update.data["_id"], 
+			}).post(dp.config.url.source+ "\/" + update.data._id, 
 				JSON.stringify(update.data), 
 				[function(text, data, xhr){
 			    //response
 			    //console.log(text);
 				//console.log(data.json());
 				//console.log(xhr);
-				var msg = data.json()
+				var msg = data.json();
 				if('action' in msg){
-					var item = view.getItem(update.data["id"]);
+					var item = view.getItem(update.data.id);
 					item._rev = xhr.getResponseHeader('X-Couch-Update-NewRev'); //setting _rev property and value for it
-					view.updateItem(update.data["id"],item);
+					view.updateItem(update.data.id,item);
 					view.refresh();							
 				}
 				},callback]
@@ -166,10 +173,10 @@ webix.proxy.CouchDB = {
 				//console.log(xhr);
 				var msg = data.json()
 				if('action' in msg){
-					var item = view.getItem(update.data["id"]);
+					var item = view.getItem(update.data.id);
 					item._id = xhr.getResponseHeader('X-Couch-Id');
 					item._rev = xhr.getResponseHeader('X-Couch-Update-NewRev'); //setting _rev property and value for it
-					view.updateItem(update.data["id"],item);
+					view.updateItem(update.data.id,item);
 					view.refresh();
 				}
 				}, callback]

@@ -12,12 +12,12 @@ var customers = {
                         template:"#nume#",
                         select:true,
                         //autowidth:true,
-                        minWidth:100,
+                        width: 400,
                         url: "CouchDB->../../_design/globallists/_list/toja/customer/getcustomer",
                         save: "CouchDB->../../_design/customer/_update/rest"
                     },
                     { 
-                        view:"button", label:"New", click: function(){
+                        view:"button", label:"New", width:100, align:"center", click: function(){
                             var itemID = $$('customersList').add({nume:"Client nou"},0);
                             $$('customersList').select(itemID);
                         }
@@ -28,15 +28,18 @@ var customers = {
             {
                 id: "customersForm",
                 view: "form",
+                //width: 600,
+                elementsConfig:{ labelWidth: 180, minWidth:300 },
                 elements:[
-                    {view:"text", name:"nume", label:"Nume", placeholder:"Numele societatii", labelWidth:180},
-                    {view:"text", name:"NORG", label:"Nr. Ord. Reg. Com.", placeholder:"Numar de ordine in Registrul Comertului", labelWidth:180},
-                    {view:"text", name:"CUI" ,label:"C.U.I", placeholder:"Cod Unic de Identificare", labelWidth:180},
-                    {view:"textarea", name:"adresa" , label:"Adresa", height:110, labelPosition:"top", placeholder: "Strada , Nr. , Apt. \nLocalitatea, Judetul, Cod Postal" },
-                    {view:"text", name:"banca", label:"Banca", placeholder:"Banca", labelWidth:180},
-                    {view:"text", name:"sucursala", label:"Sucursala", placeholder:"Sucursala bancii", labelWidth:180},
-                    {view:"text", name:"IBAN", label:"IBAN", placeholder:"IBAN", labelWidth:180},
-                    {view:"button", name:"submit", value:"SAVE", click: '$$("customersForm").save()'}
+                    {view:"text", name:"nume", label:"Nume", placeholder:"Numele societatii"},
+                    {view:"text", name:"NORG", label:"Nr. Ord. Reg. Com.", placeholder:"Numar de Ordine in Registrul Comertului"},
+                    {view:"text", name:"CUI" ,label:"C.U.I", placeholder:"Cod Unic de Identificare"},
+                    {view:"textarea", name:"adresa" , label:"Adresa", height:110, 
+                        placeholder: "Str. , Nr. , Bl., Sc., Apt., Cod Postal, Localitatea, Comuna, Judetul/Sector, Tara" },
+                    {view:"text", name:"banca", label:"Banca", placeholder:"Banca"},
+                    {view:"text", name:"sucursala", label:"Sucursala", placeholder:"Sucursala bancii"},
+                    {view:"text", name:"IBAN", label:"IBAN", placeholder:"IBAN"},
+                    {view:"button", type:"form", value:"SAVE", align:"center", click: '$$("customersForm").save()'}
                 ]
             }
         ]

@@ -220,7 +220,7 @@ var invoice = {
                 '\n',
                 {
                     table: {
-                            widths: [15, '*', 15, 20, 50, 50, 50],
+                            widths: [15, '*', 20, 25, 50, 50, 50],
                             body: [
                                 [ 
                                     {text:'Nr. crt.', style:'tableHeader'}, 
@@ -267,8 +267,9 @@ var invoice = {
 				},
                 '\n\n',
                 {
-                    widths: ['*'],
+                    
                     table: {
+                        widths: ['*'],
                         body: [
                             [
                                 {
@@ -324,21 +325,7 @@ var invoice = {
             $$("frame-body").load(outDoc);
         });  
     },
-
-    confirmNew: function(){
-        
-        webix.confirm({
-            title:"Create new INVOICE",
-            ok:"Create", 
-            cancel:"PREVIEW",
-            type:"confirm-error",
-            text:"Please confirm that<br/>you want to create<br/>NEW invoice!",
-            callback:function(result){ //setting callback
-                invoice.setlocalData(result);
-           }
-        });
-    },
-    
+   
     ui: {
         id: "page-4",
         cols:[
@@ -346,12 +333,14 @@ var invoice = {
                 id:"invoiceForm",
                 view: "form",
                 scroll:'y',
-                minWidth:300,
+                minWidth:500,
+                elementsConfig:{ labelWidth: 180 },
                 elements:[
-                    {view:"counter", step:1, value:1, min:1, max:5, name:"copies", label:"Numarul de copii:", labelWidth:180},
-                    {view:"text", name:"serial_number", label:"Seria-Nr.:", placeholder:"get the current serial number", readonly:true, labelWidth:180},
-                    {view:"combo", name:"supplier", label:"Furnizor:", labelWidth:180, options:"CouchDB->../../_design/globallists/_list/toja/supplier/getsuppliername"},
-                    {view:"unitlist", id:"customer_contract", name:"customer_contract", label:"Beneficiar:", labelWidth:180,
+                    {view:"counter", step:1, value:1, min:1, max:5, name:"copies", label:"Numarul de copii:"},
+                    {view:"text", name:"serial_number", label:"Seria-Nr.:", placeholder:"get the current serial number", readonly:true},
+                    {view:"combo", name:"supplier", label:"Furnizor:", 
+                        options:"CouchDB->../../_design/globallists/_list/toja/supplier/getsuppliername"},
+                    {view:"unitlist", id:"customer_contract", name:"customer_contract", label:"Beneficiar:",
                         sort:{
                             by:"#nume#",
                             dir:"asc"
@@ -368,15 +357,22 @@ var invoice = {
                         select: true,
                         url: "CouchDB->../../_design/globallists/_list/toja/contract/getcontract"
                     },
-                    {view:"datepicker", stringResult:true, format:webix.Date.dateToStr("%d.%m.%Y"), date: new Date(), name:"invoice_date",label:"Data emiterii:", placeholder:"select date of issue", labelWidth:180},
-                    {view:"datepicker", stringResult:true, format:webix.Date.dateToStr("%d.%m.%Y"), date: new Date(), name:"due_date", label:"Data scadentei:", placeholder:"select payment due date", labelWidth:180},
-                    {view:"text", name:"TVA", label:"TVA:", placeholder:"input VAT value", labelWidth:180},
-                    {view:"text", name:"exchange_rate", label:"Curs BNR:", placeholder:"BNR exchage rate EUR->RON at invoice date", labelWidth:180},
-                    {view:"textarea", name:"invoice_details", label:"Detalii factura:", placeholder:"input the description of services or goods invoiced", labelWidth:180, height:110, labelPosition:"top",},
-                    {view:"text", name:"invoice_mu", label:"UM:", placeholder:"measuring unit", labelWidth:180},
-                    {view:"text", name:"invoice_qty", label:"Cantitatea:", placeholder:"quantity", labelWidth:180},
-                    {view:"textarea", name:"invoice_formula", label:"Formula de calcul:", placeholder:"ammount calculation - formula", labelWidth:180, height:110, labelPosition:"top",},
-                    {view:"button", value:"CREATE INVOICE", click:"invoice.confirmNew();"}
+                    {view:"datepicker", stringResult:true, format:webix.Date.dateToStr("%d.%m.%Y"), date: new Date(), name:"invoice_date",label:"Data emiterii:", 
+                    placeholder:"data emiterii facturii"},
+                    {view:"datepicker", stringResult:true, format:webix.Date.dateToStr("%d.%m.%Y"), date: new Date(), name:"due_date", label:"Data scadentei:", 
+                    placeholder:"data scadenta"},
+                    {view:"text", name:"TVA", label:"TVA:", placeholder:"TVA in procente"},
+                    {view:"text", name:"exchange_rate", label:"Curs BNR:", placeholder:"Cursul BNR pentru €$£->RON la data emiterii facturii"},
+                    {view:"textarea", name:"invoice_details", label:"Detalii factura:", 
+                    placeholder:"descrierea bunurilor si a serviciilor", height:110},
+                    {view:"text", name:"invoice_mu", label:"UM:", placeholder:"unitatea de masura"},
+                    {view:"text", name:"invoice_qty", label:"Cantitatea:", placeholder:"cantiatea"},
+                    {view:"textarea", name:"invoice_formula", label:"Formula de calcul:", placeholder:"formula de calcul a sumei toatale", height:110},
+                    { margin: 10, cols:[
+                        {view:"button",type:"danger",  value:"CREATE INVOICE", click:"invoice.setlocalData(true);"},
+                        {view:"button", type:"form",  value:"Preview", click:"invoice.setlocalData(false);"}
+                    ]}
+                    
                 ]
             },
             {view:"resizer"},
