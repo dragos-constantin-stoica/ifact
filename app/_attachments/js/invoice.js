@@ -54,6 +54,16 @@ var invoice = {
             var result = realdata[2].json();
             invoice.localData.FURNIZOR = realdata[0].json();
             invoice.localData.BENEFICIAR = realdata[1].json();
+            //Search for the bank account accroding to the currency
+            //Supose there is only one account per currency
+            invoice.localData.FURNIZOR.conturi.forEach(function(element) {
+                if ($$("invoiceForm").elements.supplier.getText().indexOf(element.valuta) != -1){
+                    invoice.localData.FURNIZOR.banca = element.banca;
+                    invoice.localData.FURNIZOR.IBAN = element.IBAN;
+                    invoice.localData.FURNIZOR.sucursala = element.sucursala;
+            
+                }
+            }, this);
             if(createNewInvoice){
                 invoice.localData.SERIA = result.doc.SERIA;
                 invoice.localData.NUMARUL = result.doc.NUMARUL;
@@ -108,7 +118,8 @@ var invoice = {
             
         }).fail(function(err){
             //error
-        })
+            console.log(err);
+        });
     },
     
     generatePDF: function(){
@@ -336,26 +347,28 @@ var invoice = {
                 minWidth:500,
                 elementsConfig:{ labelWidth: 180 },
                 elements:[
-                    {view:"counter", step:1, value:1, min:1, max:5, name:"copies", label:"Numarul de copii:"},
+                    //{view:"counter", step:1, value:1, min:1, max:5, name:"copies", label:"Numarul de copii:"},
                     {view:"text", name:"serial_number", label:"Seria-Nr.:", placeholder:"get the current serial number", readonly:true},
                     {view:"combo", name:"supplier", label:"Furnizor:", 
-                        options:"CouchDB->../../_design/globallists/_list/toja/supplier/getsuppliername"},
-                    {view:"unitlist", id:"customer_contract", name:"customer_contract", label:"Beneficiar:",
-                        sort:{
-                            by:"#nume#",
-                            dir:"asc"
-                        },
-                        uniteBy:function(obj){
-                            return obj.nume; 
-                        },
-                        type:{//setting item properties, optional
-                            height:60,
-                            headerHeight:30,
-                        },
-                        height:'auto',
-                        template:"#contract# din data de #start_date# (exp.: #end_date#)<br/>#detalii#",
-                        select: true,
-                        url: "CouchDB->../../_design/globallists/_list/toja/contract/getcontract"
+                        options:"CouchDB->../../_design/globallists/_list/toja/supplier/getsupplierbank"},
+                    {view:"forminput", label:"Beneficiar:", height: 180,
+                        body:{ view:"unitlist", id:"customer_contract", name:"customer_contract", 
+                            sort:{
+                                by:"#nume#",
+                                dir:"asc"
+                            },
+                            uniteBy:function(obj){
+                                return obj.nume; 
+                            },
+                            type:{//setting item properties, optional
+                                height:60,
+                                headerHeight:30,
+                            },
+                            height:'auto',
+                            template:"#contract# din data de #start_date# (exp.: #end_date#)<br/>#detalii#",
+                            select: true,
+                            url: "CouchDB->../../_design/globallists/_list/toja/contract/getcontract"
+                        }
                     },
                     {view:"datepicker", stringResult:true, format:webix.Date.dateToStr("%d.%m.%Y"), date: new Date(), name:"invoice_date",label:"Data emiterii:", 
                     placeholder:"data emiterii facturii"},
