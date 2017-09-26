@@ -34,6 +34,7 @@ var customers = {
                     {view:"text", name:"nume", label:"Nume", placeholder:"Numele societatii"},
                     {view:"text", name:"NORG", label:"Nr. Ord. Reg. Com.", placeholder:"Numar de Ordine in Registrul Comertului"},
                     {view:"text", name:"CUI" ,label:"C.U.I", placeholder:"Cod Unic de Identificare"},
+                    {view:"text", name:"TVA" ,label:"TVA EU", placeholder:"TVA European"},                                
                     {view:"textarea", name:"adresa" , label:"Adresa", height:110, 
                         placeholder: "Str. , Nr. , Bl., Sc., Apt., Cod Postal, Localitatea, Comuna, Judetul/Sector, Tara" },
                     {view:"text", name:"banca", label:"Banca", placeholder:"Banca"},

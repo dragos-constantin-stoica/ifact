@@ -9,11 +9,10 @@ var contracts = {
                 view:"combo", name:"newnume", label:"Customer",
                 options:"CouchDB->../../_design/globallists/_list/toja/customer/getcustomername"
             },
-            {view:"text", name:"newcontract", label:"Contract", value:""}
-            ,                                      
+            {view:"text", name:"newcontract", label:"Contract", value:""},                                      
             {view:"button", label:"CREATE", type:"form", click: function(){
-                    var name = $$('newnume').getInputNode().value;
-                    var supplier_id = $$('newnume').getValue();
+                    var name = $$('newContractForm').elements.newnume.getInputNode().value;
+                    var supplier_id = $$('newContractForm').elements.newnume.getValue();
                     var contract = $$('newContractForm').getValues().newcontract;
                     var itemID = $$('contractList').add({
                         nume: name, 
