@@ -1,6 +1,7 @@
 var invoice = {
     
     localData:{
+        TEMPLATE: "",
         SERIA:"",
         NUMARUL:"",
         FURNIZOR:{},
@@ -21,6 +22,7 @@ var invoice = {
     setlocalData: function(createNewInvoice){
         //clean-up existing data
         invoice.localData = {
+            TEMPLATE:"",
             SERIA:"",
             NUMARUL:"",
             FURNIZOR:{},
@@ -70,10 +72,10 @@ var invoice = {
                 $$("invoiceForm").setValues({"serial_number":result.SERIA + " " + result.NUMARUL}, true);
                 invoice.localData.SERIA = result.SERIA;
                 invoice.localData.NUMARUL = result.NUMARUL;
-            };
+            }
             
             var form_data = $$('invoiceForm').getValues();
-            
+            invoice.localData.TEMPLATE = form_data.template;
             invoice.localData.TVA = (typeof form_data.TVA === 'string')?parseFloat(form_data.TVA):form_data.TVA;
             invoice.localData.CURS_BNR.data = form_data.invoice_date;
             invoice.localData.CURS_BNR.eur_ron = (typeof form_data.exchange_rate === 'string')?parseFloat(form_data.exchange_rate):form_data.exchange_rate;
@@ -499,7 +501,7 @@ var invoice = {
                             {text:index+1, alignment:'center'}, 
                             {text:element.details},
                             {text:''+element.um, alignment:'center'},
-                            {text:''+element.qty, alignment:'center'},
+                            {text:''+element.qty, alignment:'right'},
                             {text:''+element.up, alignment:'right'},
                             {text:''+element.line_value.toFixed(2), alignment:'right'}
                         ]
@@ -509,9 +511,9 @@ var invoice = {
                 PDF_DETAILS.push([
                     {colSpan:2, text:' '},
                     '',
-                    {colSpan:3 ,text: 'INVOICE TOTAL', bold:true, fontSize:13, alignment:'center'},
+                    {colSpan:3 ,text: 'INVOICE\nTOTAL', bold:true, fontSize:13, alignment:'center'},
                     '','',
-                    {text: invoice.localData.INVOICE_TOTAL.toFixed(2) + "€" , bold:true, fontSize:13, alignment:'center'}
+                    {text: invoice.localData.INVOICE_TOTAL.toFixed(2) + " EUR" , bold:true, fontSize:13, alignment:'center'}
                 ]);
                 break;
 

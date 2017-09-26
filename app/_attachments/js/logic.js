@@ -13,7 +13,15 @@ var logic = {
                 view:"toolbar", //margin:-4, 
                     cols:[
                         {view:"label", label: "Login - iFact" },
-                        { view:"button", type:"image", image:"img/Logo.png", width:40}
+                        {   type:"header",
+                            width: 48,
+                            data: {title: "iFact", src: "img/Logo.png" },
+                            template: function (obj) {
+                            // obj is a data record object
+                            return '<img src="'+obj.src+'"/>';
+                            } 
+                        }
+                        //{ view:"button", type:"image", image:"img/Logo.png", width:40}
                     ]
             },
             body: webix.copy(logic.loginForm)

@@ -3,12 +3,15 @@ var payments = {
     dateSort: function (a,b){
         if (typeof a.INVOICE_DATE !== 'undefined') return -1;
         if (typeof b.INVOICE_DATE !== 'undefined') return 1;
-        if (typeof a.INVOICE_DATE === 'unefined' && typeof b.INVOICE_DATE === 'undefined' &&
+        
+        if (typeof a.INVOICE_DATE === 'undefined' && typeof b.INVOICE_DATE === 'undefined' &&
             typeof a.PAYMENT_DATE !== 'undefined' && typeof b.PAYMENT_DATE !== 'undefined'){
                     var aa = a.PAYMENT_DATE.toString();
+                    aa = aa.substr(6)+aa.substr(3,2)+aa.substr(0,2);
                     var bb = b.PAYMENT_DATE.toString();    
+                    bb = bb.substr(6)+bb.substr(3,2)+bb.substr(0,2);
                     return aa>bb?1:(aa<bb?-1:0);        
-         };
+         }
          return 0;
     },
         
