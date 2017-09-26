@@ -7,13 +7,12 @@ var contracts = {
         elements:[
             {
                 view:"combo", name:"newnume", label:"Customer",
-                options:"CouchDB->../../_design/customer/_list/toja/getcustomername"
+                options:"CouchDB->../../_design/globallists/_list/toja/customer/getcustomername"
             },
-            {view:"text", name:"newcontract", label:"Contract", value:""}
-            ,                                      
+            {view:"text", name:"newcontract", label:"Contract", value:""},                                      
             {view:"button", label:"CREATE", type:"form", click: function(){
-                    var name = $$('newnume').getInputNode().value;
-                    var supplier_id = $$('newnume').getValue();
+                    var name = $$('newContractForm').elements.newnume.getInputNode().value;
+                    var supplier_id = $$('newContractForm').elements.newnume.getValue();
                     var contract = $$('newContractForm').getValues().newcontract;
                     var itemID = $$('contractList').add({
                         nume: name, 
@@ -66,7 +65,7 @@ var contracts = {
                         },
                         template:"#contract#</br>#start_date# - #end_date#",
                         select: true,
-                        url: "CouchDB->../../_design/contract/_list/toja/getcontract",
+                        url: "CouchDB->../../_design/globallists/_list/toja/contract/getcontract",
                         save: "CouchDB->../../_design/contract/_update/rest"
                     },
                     {

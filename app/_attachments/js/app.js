@@ -15,6 +15,11 @@ var myApp = {
         webix.ui(myApp.ui);
         webix.ui(myApp.sidemenu);
 
+        if(! $$("menu").config.hidden) $$("menu").hide();
+        $$('page-1').show();
+        loadData("1");
+        $$('breadcrumb').setValue('iFact - Supplier');
+
     },
     
     ui: {
@@ -34,10 +39,7 @@ var myApp = {
                                 $$("menu").hide();
                         }
                     },
-                    {
-                        view: "label",
-                        label: "iFact"
-                    },
+                    { view: "label",id:"breadcrumb", label: "iFact"},
                     {},
                     {   
                         view:"button", 
@@ -45,7 +47,7 @@ var myApp = {
                         icon:"sign-out", 
                         label:"Logout", 
                         autowidth:true, 
-                        click: logic.logout 
+                        click: "logic.logout" 
                     }
                 ]
             },
@@ -53,7 +55,7 @@ var myApp = {
                 id: "mainPage",
                 view: "multiview",
                 cells: [
-                    settings.ui,
+                    supplier.ui,
                     customers.ui,
                     contracts.ui,
                     invoice.ui,
@@ -81,11 +83,11 @@ var myApp = {
             scroll: false,
             template: "<span class='webix_icon fa-#icon#'></span> #value#",
             data:[
-                {id: 1, value: "You", icon: "university"},
-                {id: 2, value: "Customers", icon: "user"},
-                {id: 3, value: "Contracts", icon: "file"},
-                {id: 4, value: "Invoice", icon: "cube"},
-                {id: 5, value: "Payments", icon: "archive"},
+                {id: 1, value: "Supplier", icon: "anchor"},
+                {id: 2, value: "Clients", icon: "user-circle-o"},
+                {id: 3, value: "Contracts", icon: "briefcase"},
+                {id: 4, value: "Invoice", icon: "calculator"},
+                {id: 5, value: "Payments", icon: "bitcoin"},
                 {id: 6, value: "Config", icon: "cog"}
             ],
             select:true,
@@ -99,6 +101,7 @@ var myApp = {
                     //... some code here ... 
                     if(! $$("menu").config.hidden) $$("menu").hide();
                     $$('page-' + id).show();
+                    $$('breadcrumb').setValue('iFact - ' + node.textContent);
                     loadData(id);
                 }
             }

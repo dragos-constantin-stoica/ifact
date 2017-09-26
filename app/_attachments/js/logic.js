@@ -10,10 +10,19 @@ var logic = {
             width:400,
             position:"top",
             head:{
-            view:"toolbar", margin:-4, cols:[
-                {view:"label", label: "Login - iFact" },
-                { view:"button", type:"image", image:"img/Logo.png", width:40}
-                ]
+                view:"toolbar", //margin:-4, 
+                    cols:[
+                        {view:"label", label: "Login - iFact" },
+                        {   type:"header",
+                            width: 48,
+                            data: {title: "iFact", src: "img/Logo.png" },
+                            template: function (obj) {
+                            // obj is a data record object
+                            return '<img src="'+obj.src+'"/>';
+                            } 
+                        }
+                        //{ view:"button", type:"image", image:"img/Logo.png", width:40}
+                    ]
             },
             body: webix.copy(logic.loginForm)
         }).show();
@@ -45,14 +54,14 @@ var logic = {
                     webix.message({ type:"error", text:"User name and password are mandatory!" });
                     
                     //TODO - remove from here
-                    $$("loginform").hide();
-                    myApp.showUI();
+                    //$$("loginform").hide();
+                    //myApp.showUI();
                     //until here
 
                 }else{						
                     $.couch.login({
-                        name: $$('username').getValue(),
-                        password: $$('password').getValue(),
+                        name: $$('loginform').elements.username.getValue(),
+                        password: $$('loginform').elements.password.getValue(),
                         success: function(data) {
                             //console.log(data);
                             $$("loginform").hide();

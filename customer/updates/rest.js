@@ -23,7 +23,7 @@ function(doc, req){
     if(req.method == "PUT"){
       //update document
     	var payload = JSON.parse(req.body);
-        var fields = [ 'nume', 'NORG', 'CUI', 'adresa', 'banca', 'sucursala', 'IBAN'];
+        var fields = [ 'nume', 'NORG', 'CUI', 'TVA', 'adresa', 'banca', 'sucursala', 'IBAN'];
         fields.forEach(function(elm, idx){
             doc[elm] = payload[elm];
         });
@@ -37,7 +37,7 @@ function(doc, req){
             newdoc = {};
             newdoc['_id'] = req['uuid'];
             newdoc['doctype'] = "CUSTOMER";
-            var fields = [ 'nume', 'NORG', 'CUI', 'adresa', 'banca', 'sucursala', 'IBAN', 'id'];
+            var fields = [ 'nume', 'NORG', 'CUI', 'TVA', 'adresa', 'banca', 'sucursala', 'IBAN', 'id'];
             fields.forEach(function(elm, idx){
                 newdoc[elm] = payload[elm];
             });
@@ -45,7 +45,7 @@ function(doc, req){
             return [newdoc, JSON.stringify({"action":"created", "sid":req.id, "tid":req['uuid'], "doc":newdoc})];
         }else{
           //Update existing document
-            var fields = [ 'nume', 'NORG', 'CUI', 'adresa', 'banca', 'sucursala', 'IBAN', 'id'];
+            var fields = [ 'nume', 'NORG', 'CUI', 'TVA', 'adresa', 'banca', 'sucursala', 'IBAN', 'id'];
             fields.forEach(function(elm, idx){
                 doc[elm] = payload[elm];
             });
