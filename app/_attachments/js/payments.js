@@ -72,9 +72,9 @@ var payments = {
                 },
                 select: true,
                 sort: {
-                    by: "#INVOICE_DATE#",
+                    by: "#NUMARUL#",
                     dir: "desc",
-                    as: "string"
+                    as: "int"
                 },
                 type:{//setting item properties, optional
                     height:60

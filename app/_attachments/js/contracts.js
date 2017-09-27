@@ -83,7 +83,7 @@ var contracts = {
                     {view:"datepicker", stringResult:true, format:webix.Date.dateToStr("%d.%m.%Y"), date: new Date(), name:"start_date", label:"Data inceput", placeholder:"Data inceput", labelWidth:180},
                     {view:"datepicker", stringResult:true, format:webix.Date.dateToStr("%d.%m.%Y"), date: new Date(), name:"end_date", label:"Data incheiere", placeholder:"Data sfarsit", labelWidth:180},
                     {view:"textarea", name:"detalii", label:"Detalii", height:110, labelPosition:"top", placeholder:"Detalii despre contract: facturare, rate etc"},
-                    {view:"button", name:"submit", value:"SAVE", click:'$$("contractForm").save();'}
+                    {view:"button", value:"SAVE", click:'$$("contractForm").save();'}
                 ]
             }
         ]

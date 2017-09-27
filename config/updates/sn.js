@@ -11,7 +11,7 @@ function(doc, req) {
         if (doc === null) {
             //Create new document
             newdoc = {};
-            newdoc['_id'] = '_local/INVOICE_CFG';
+            newdoc['_id'] = 'INVOICE_CFG';
             newdoc['doctype'] = "INVOICE_CFG";
             var fields = ['SERIA', 'NUMARUL'];
             fields.forEach(function(elm, idx) {

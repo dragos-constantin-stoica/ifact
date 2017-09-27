@@ -53,7 +53,7 @@ var config = {
                  ]
                  }
             },
-            {view:"button", value:"SAVE", name:"submit", click:'config.save()'}
+            {view:"button", value:"SAVE", click:'config.save()'}
         ]
     }
     

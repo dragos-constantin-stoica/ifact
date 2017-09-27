@@ -39,9 +39,9 @@ var LOAD_URL = {
     1: "/_design/globallists/_list/toja/supplier/getsupplier",
     2: "/_design/globallists/_list/toja/customer/getcustomer",
     3: "",
-    4: "/_local/INVOICE_CFG",
+    4: "/INVOICE_CFG",
     5: "",
-    6: "/_local/INVOICE_CFG"
+    6: "/INVOICE_CFG"
 }
 
 /**
@@ -104,6 +104,7 @@ function loadData(id){
             break;
         case "5":
             //Payments
+            $$('invoiceList').sort('#NUMARUL#','desc',"int");
             break;
         case "6":
             //Configuration form

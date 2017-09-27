@@ -140,7 +140,7 @@ var supplier = {
                     ]
                 }
             },
-            {view:"button", type:"form", value:"SAVE", align:"center", width: 100, click: "supplier.save()"}
+            {view:"button", type:"form", label:"SAVE", align:"center", width: 100, click: "supplier.save"}
         ]
     }
 };
