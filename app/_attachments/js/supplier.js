@@ -109,7 +109,7 @@ var supplier = {
                 body:{
                     rows:[
                         {
-                            view:"activeList",autoheight:true, autowidth:true, select:true, id:"conturi",
+                            view:"activeList",autoheight:true, autowidth:true, id:"conturi",
                             type:{
                                 height:58
                             },

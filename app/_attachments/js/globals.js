@@ -183,5 +183,20 @@ webix.proxy.CouchDB = {
 				}, callback]
 			);
 		}
-	}
-};
+    },
+    
+    result:function(state, view, dp, text, data, loader){
+        //your logic of server-side response processing
+
+        console.log(state);
+        console.log(view);
+        console.log(dp);
+        console.log(text);
+        console.log(data);
+        console.log(loader);
+
+        //dp.processResult(state, data, details);
+    }
+    
+
+}
