@@ -1,20 +1,5 @@
 var payments = {
-
-    dateSort: function (a,b){
-        if (typeof a.INVOICE_DATE !== 'undefined') return -1;
-        if (typeof b.INVOICE_DATE !== 'undefined') return 1;
-        
-        if (typeof a.INVOICE_DATE === 'undefined' && typeof b.INVOICE_DATE === 'undefined' &&
-            typeof a.PAYMENT_DATE !== 'undefined' && typeof b.PAYMENT_DATE !== 'undefined'){
-                    var aa = a.PAYMENT_DATE.toString();
-                    aa = aa.substr(6)+aa.substr(3,2)+aa.substr(0,2);
-                    var bb = b.PAYMENT_DATE.toString();    
-                    bb = bb.substr(6)+bb.substr(3,2)+bb.substr(0,2);
-                    return aa>bb?1:(aa<bb?-1:0);        
-         }
-         return 0;
-    },
-        
+     
     paymentForm: {
         id: 'newPaymentForm',
         view: 'form',
@@ -38,8 +23,18 @@ var payments = {
             }}
         ]
     },
+
+    //TODO: to be implemented
+    edit: function (id, e) {
+        console.log(id);
+    },
+
+    //TODO: to be implemented
+    view: function(id, e){
+        console.log(id);
+    },
     
-    paymentWindow: function(){
+    pay: function(id, e){
        webix.ui(
             {
                 view: "window",
@@ -50,11 +45,13 @@ var payments = {
                 body: webix.copy(payments.paymentForm)
             }
         ).show(); 
-        
+        console.log(id);
+        var control = (id == "payNewButtonId")?"invoiceList":"dueList";
+        var item_id = $$(control).locate(e);
         
         $$('newPaymentForm').setValues({
-            SERIA: $$('invoiceList').getSelectedItem().SERIA,
-            NUMARUL: $$('invoiceList').getSelectedItem().NUMARUL,
+            SERIA: $$(control).getItem(item_id).SERIA,
+            NUMARUL: $$(control).getItem(item_id).NUMARUL,
             doctype: 'PAYMENT'
         }, true);
     },
@@ -65,21 +62,44 @@ var payments = {
             { 
                 header:"New", 
                 body:{
-                    view: "list",
+                    view:"activeList",
+                    activeContent:{
+                        viewButton:{
+                            id:"viewNewButtonId",
+                            view:"button",
+                            type:"icon",
+                            icon:"eye",
+                            width: 32,
+                            click:"payments.view"
+                        },
+                        editButton:{
+                            id:"editNewButtonId",
+                            view:"button",
+                            type: "icon",
+                            icon:"pencil-square-o",
+                            width: 32,
+                            click:"payments.edit"
+                        },
+                        payButton:{
+                            id:"payNewButtonId",
+                            view:"button",
+                            type: "icon",
+                            icon:"money",
+                            width: 32,
+                            click:"payments.pay" 
+                        }
+                    },
+
                     id: 'invoiceList',
-                    template: function (obj) {
-                        return "Fact.: " + obj.SERIA + " " + obj.NUMARUL + 
+                    template: function (obj, common) {
+                        return "<div style='display: flex;justify-content: space-between;'><div>Fact.: " + obj.SERIA + " " + obj.NUMARUL + 
                             " din: " + obj.INVOICE_DATE + ", [scadenta: <em>" + obj.DUE_DATE + "</em>]. SUMA: <b>" +
-                            obj.INVOICE_TOTAL.toFixed(2) + "</b> " + obj.currency + "</br>" + obj.description;
+                            obj.INVOICE_TOTAL.toFixed(2) + "</b> " + obj.currency + "</br>" + obj.description + "</div>" +
+                            "<div style='height: 50px; padding-left: 2px;padding-top:1px;'>" +
+                            common.viewButton(obj, common) + common.editButton(obj, common) + common.payButton(obj, common)+"</div></div>";
                     },
-                    sort: {
-                        by: "#NUMARUL#",
-                        dir: "desc",
-                        as: "int"
-                    },
-                    type:{//setting item properties, optional
-                        height:120
-                    },
+                    sort: {by: "#NUMARUL#", dir: "desc",as: "int"},
+                    type:{height:130},
                     on:{
                     'onAfterLoad':function(){
                         $$('invoiceList').sort('#NUMARUL#','desc',"int");
@@ -93,21 +113,44 @@ var payments = {
             { 
                 header:"Due", 
                 body:{
-                    view: "list",
+                    view:"activeList",
+                    activeContent:{
+                        viewButton:{
+                            id:"viewDueButtonId",
+                            view:"button",
+                            type:"icon",
+                            icon:"eye",
+                            width: 32,
+                            click:"payments.view"
+                        },
+                        editButton:{
+                            id:"editDueButtonId",
+                            view:"button",
+                            type: "icon",
+                            icon:"pencil-square-o",
+                            width: 32,
+                            click:"payments.edit"
+                        },
+                        payButton:{
+                            id:"payDueButtonId",
+                            view:"button",
+                            type: "icon",
+                            icon:"money",
+                            width: 32,
+                            click:"payments.pay" 
+                        }
+                    },
+
                     id: 'dueList',
-                    template: function (obj) {
-                        return "Fact.: " + obj.SERIA + " " + obj.NUMARUL + 
+                    template: function (obj, common) {
+                        return "<div style='display: flex;justify-content: space-between;'><div>Fact.: " + obj.SERIA + " " + obj.NUMARUL + 
                             " din: " + obj.INVOICE_DATE + ", [scadenta: <em>" + obj.DUE_DATE + "</em>]. SUMA: <b>" +
-                            obj.INVOICE_TOTAL.toFixed(2) + "</b> " + obj.currency +" </br>" + obj.description;
+                            obj.INVOICE_TOTAL.toFixed(2) + "</b> " + obj.currency + "</br>" + obj.description + "</div>" +
+                            "<div style='height: 50px; padding-left: 2px;padding-top:1px;'>" +
+                            common.viewButton(obj, common) + common.editButton(obj, common) + common.payButton(obj, common)+"</div></div>";
                     },
-                    sort: {
-                        by: "#NUMARUL#",
-                        dir: "desc",
-                        as: "int"
-                    },
-                    type:{//setting item properties, optional
-                        height:120
-                    },
+                    sort: {by: "#NUMARUL#", dir: "desc", as: "int"},
+                    type:{height:130},
                     on:{
                         'onAfterLoad':function(){
                             $$('dueList').sort('#NUMARUL#','desc',"int");
@@ -121,24 +164,34 @@ var payments = {
             { 
                 header:"Payed", 
                 body:{
-                    view: "list",
+                    view:"activeList",
+                    activeContent:{
+                        viewButton:{
+                            id:"viewPayedButtonId",
+                            view:"button",
+                            type:"icon",
+                            icon:"eye",
+                            width: 32,
+                            click:"payments.view"
+                        }
+                    },
                     id: 'payedList',
-                    template: function (obj) {
-                        return "Fact.: " + obj.SERIA + " " + obj.NUMARUL + 
+                    template: function (obj, common) {
+                        return "<div style='display: flex;justify-content: space-between;'><div>Fact.: " + obj.SERIA + " " + obj.NUMARUL + 
                             " din: " + obj.INVOICE_DATE + ", [scadenta: <em>" + obj.DUE_DATE + "</em>]. SUMA: <b>" +
-                            obj.INVOICE_TOTAL.toFixed(2) + "</b> " + obj.currency + "<br/>" +
+                            obj.INVOICE_TOTAL.toFixed(2) + "</b> " + obj.currency + "</br>" + 
                             "Payed: <b>" + obj.PAYMENT_SUM.toFixed(2) + "</b> " +obj.currency + " on " + obj.PAYMENT_DATE + "<br/>" +
-                            "Detalii plata: " + obj.PAYMENT_DETAILS;
+                            "Detalii plata: " + obj.PAYMENT_DETAILS + "</div>" +
+                            "<div style='height: 50px; padding-left: 2px;padding-top:1px;'>" +
+                            common.viewButton(obj, common) +"</div></div>";
                     },
-                    sort: {
-                        by: "#NUMARUL#",
-                        dir: "desc",
-                        as: "int"
+                    sort: { by: "#NUMARUL#", dir: "desc",  as: "int" },
+                    type:{ height:130 },
+                    on:{
+                        'onAfterLoad':function(){
+                            $$('payedList').sort('#NUMARUL#','desc',"int");
+                        }
                     },
-                    type:{//setting item properties, optional
-                        height:120
-                    },
-                    //autoheight:true,
                     autowidth: true
                 }
             },
