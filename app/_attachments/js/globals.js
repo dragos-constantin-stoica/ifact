@@ -42,7 +42,7 @@ var LOAD_URL = {
     4: "/INVOICE_CFG",
     5: "",
     6: "/INVOICE_CFG"
-}
+};
 
 /**
 PDF Document Definition
@@ -96,6 +96,9 @@ function loadData(id){
                 invoice.localData.SERIA = realdata.json().SERIA;
                 invoice.localData.NUMARUL = realdata.json().NUMARUL;
                 $$('invoiceForm').elements.supplier.setValue($$('invoiceForm').elements.supplier.getList().getFirstId());
+                $$('invoiceForm').elements.invoice_date.setValue(new Date());
+                $$('invoiceForm').elements.due_date.setValue(new Date((new Date()).setDate((new Date()).getDate()+30)));
+                $$('invoiceForm').elements.TVA.setValue(0);
             }).fail(function(err){
                 //error
                 webix.message({type:"error", text: err});
@@ -172,7 +175,7 @@ webix.proxy.CouchDB = {
 			    //console.log(text);
 				//console.log(data.json());
 				//console.log(xhr);
-				var msg = data.json()
+				var msg = data.json();
 				if('action' in msg){
 					var item = view.getItem(update.data.id);
 					item._id = xhr.getResponseHeader('X-Couch-Id');
@@ -199,4 +202,4 @@ webix.proxy.CouchDB = {
     }
     
 
-}
+};

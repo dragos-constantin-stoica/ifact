@@ -83,7 +83,7 @@ var invoice = {
             invoice.localData.INVOICE_DATE = form_data.invoice_date;
             invoice.localData.DUE_DATE = form_data.due_date;
             
-            //TODO - Add iterator for multiple invoice lines. Change the form control in a grid
+            //TODO: Add iterator for multiple invoice lines. Change the form control in a grid
             var invoice_line_item = {};
             
             invoice_line_item.details = form_data.invoice_details;
@@ -100,7 +100,6 @@ var invoice = {
             invoice.localData.INVOICE_TOTAL += (invoice.localData.INVOICE_SUM + invoice.localData.INVOICE_TVA_SUM);
             
             if (createNewInvoice){
-                //TODO - Save the document, it has new invoice number
                 var doc = webix.copy(invoice.localData);
                 doc.doctype = "INVOICE";
                 $.couch.db(DBNAME).saveDoc(doc, {
@@ -580,11 +579,41 @@ var invoice = {
                     {view:"text", name:"invoice_up", label:"Pret unitar:", placeholder:"pret unitar"},
                     {view:"textarea", name:"invoice_formula", label:"Formula de calcul:", placeholder:"formula de calcul a sumei toatale", height:110},
                     { margin: 10, cols:[
-                        {view:"button",type:"danger",  value:"CREATE INVOICE", click:"invoice.setlocalData(true);"},
-                        {view:"button", type:"form",  value:"Preview", click:"invoice.setlocalData(false);"}
+                        {view:"button",type:"danger",  value:"CREATE INVOICE", click:function(){
+                                //check that all mandatory fields in the form were filled in
+                                if (!$$('invoiceForm').validate()){
+                                    webix.message({ type:"error", text:"Creatation date, due date, exchange rate and VAT are mandatory!" });
+                                    return;
+                                }
+                                if (webix.isUndefined($$("customer_contract").getSelectedItem())){
+                                    webix.message({type:"error", text: "Please select a customer"});
+                                    return;
+                                }
+                                invoice.setlocalData(true);
+                            }
+                        },
+                        {view:"button", type:"form",  value:"Preview", click:function(){
+                                //check that all mandatory fields in the form were filled in
+                                if (!$$('invoiceForm').validate()){
+                                    webix.message({ type:"error", text:"Creatation date, due date, exchange rate and VAT are mandatory!" });
+                                    return;
+                                }
+                                if (webix.isUndefined($$("customer_contract").getSelectedItem())){
+                                    webix.message({type:"error", text: "Please select a customer"});
+                                    return;
+                                }
+                                invoice.setlocalData(false);
+                            }
+                        }
                     ]}
                     
-                ]
+                ],
+                rules:{
+                    TVA: webix.rules.isNotEmpty,
+                    invoice_date: webix.rules.isNotEmpty,
+                    due_date: webix.rules.isNotEmpty,
+                    exchange_rate: webix.rules.isNotEmpty
+                }
             },
             {view:"resizer"},
             {
