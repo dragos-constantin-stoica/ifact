@@ -30,7 +30,7 @@ CouchDB configuration
   that is exposed to the web
 */
 var DBNAME = "ifact";
-var SERVER_URL = CouchDB.protocol + CouchDB.host + "/";
+var SERVER_URL = window.location.origin + "/";
 
 /**
 URL for loading JSON arrays for each view
