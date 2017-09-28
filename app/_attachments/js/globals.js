@@ -40,7 +40,7 @@ var LOAD_URL = {
     2: "/_design/globallists/_list/toja/customer/getcustomer",
     3: "",
     4: "/INVOICE_CFG",
-    5: "",
+    5: "/_design/globallists/_list/payments/invoice/getinvoicestatement?include_docs=true",
     6: "/INVOICE_CFG"
 };
 
@@ -107,7 +107,21 @@ function loadData(id){
             break;
         case "5":
             //Payments
-            $$('invoiceList').sort('#NUMARUL#','desc',"int");
+            var promise_pg5 = webix.ajax(SERVER_URL+DBNAME+LOAD_URL[id]);
+            promise_pg5.then(function(realdata){
+                $$('invoiceList').parse(realdata.json().filter(function(obj){ 
+                    return (obj.doctype=="INVOICE") && (obj.PAYMENT_TOTAL < obj.INVOICE_TOTAL) && 
+                    (new Date(obj.DUE_DATE.substr(6) + "-" + obj.DUE_DATE.substr(3,2) + "-" + obj.DUE_DATE.substr(0,2)) >= new Date());
+                }));
+                $$('dueList').parse(realdata.json().filter(function(obj){ 
+                    return (obj.doctype=="INVOICE") && (obj.PAYMENT_TOTAL < obj.INVOICE_TOTAL) && 
+                    (new Date(obj.DUE_DATE.substr(6) + "-" + obj.DUE_DATE.substr(3,2) + "-" + obj.DUE_DATE.substr(0,2)) < new Date());
+                }));
+                $$('payedList').parse(realdata.json().filter(function(obj){ return obj.doctype=="PAYMENT";}));
+            }).fail(function(err) {
+                webix.message({type:"error", text: err});
+                console.log(err);
+            });
             break;
         case "6":
             //Configuration form

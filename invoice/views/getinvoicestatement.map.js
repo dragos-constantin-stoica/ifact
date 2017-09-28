@@ -10,6 +10,7 @@ function(doc){
                     description: doc.INVOICE_LINE[0].details, 
                     DUE_DATE: doc.DUE_DATE,
                     INVOICE_TOTAL: doc.INVOICE_TOTAL,
+                    currency: (typeof doc.FURNIZOR.valuta !== 'undefined')?doc.FURNIZOR.valuta:"RON",
                     doctype: doc.doctype
                 }
             );
@@ -17,7 +18,7 @@ function(doc){
         if (doc.doctype == "PAYMENT"){
             emit([doc.PAYMENT_DATE, doc.invoice_id],
                 {
-                    invoice_id: doc.invoice_id,
+                    _id: doc.invoice_id,
                     SERIA: doc.SERIA,
                     NUMARUL: doc.NUMARUL,
                     PAYMENT_DATE: doc.PAYMENT_DATE,

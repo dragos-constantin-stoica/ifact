@@ -61,47 +61,89 @@ var payments = {
     
     ui: {
         id: "page-5",
-        rows: [
-            {
-                view: "list",
-                id: 'invoiceList',
-                template: function (obj) {
-                    return "Fact.: " + obj.SERIA + " " + obj.NUMARUL + 
-                           " din: " + obj.INVOICE_DATE + ", [scadenta: <em>" + obj.DUE_DATE + "</em>]. SUMA: <b>" +
-                           obj.INVOICE_TOTAL.toFixed(2) + "</b> RON</br>" + obj.description;
-                },
-                select: true,
-                sort: {
-                    by: "#NUMARUL#",
-                    dir: "desc",
-                    as: "int"
-                },
-                type:{//setting item properties, optional
-                    height:60
-                },
-                on:{
-                  'onItemClick':function(id){
-                        $$('paymentsTable').filter(function(obj){
-                            return (obj.id == id && obj.doctype == 'INVOICE') || 
-                                   (obj.invoice_id == id && obj.doctype == 'PAYMENT');
-                        });
-                        $$('paymentsTable').sort(payments.dateSort);
-                  },
-                  'onAfterLoad':function(){
-                      $$('invoiceList').filter("#doctype#","INVOICE");
-                      $$('invoiceList').select($$('invoiceList').getFirstId());
-                       $$('paymentsTable').filter(function(obj){
-                          return (obj.id == $$('invoiceList').getFirstId() && obj.doctype == 'INVOICE' ) ||
-                                  (obj.invoice_id == $$('invoiceList').getFirstId() && obj.doctype == 'PAYMENT');
-                      });
-                      $$('paymentsTable').sort(payments.dateSort);
-                  }
-                },
-                //autoheight:true,
-                autowidth: true,
-                url: "CouchDB->../../_design/globallists/_list/toja/invoice/getinvoicestatement"
+        cols: [
+            { 
+                header:"New", 
+                body:{
+                    view: "list",
+                    id: 'invoiceList',
+                    template: function (obj) {
+                        return "Fact.: " + obj.SERIA + " " + obj.NUMARUL + 
+                            " din: " + obj.INVOICE_DATE + ", [scadenta: <em>" + obj.DUE_DATE + "</em>]. SUMA: <b>" +
+                            obj.INVOICE_TOTAL.toFixed(2) + "</b> " + obj.currency + "</br>" + obj.description;
+                    },
+                    sort: {
+                        by: "#NUMARUL#",
+                        dir: "desc",
+                        as: "int"
+                    },
+                    type:{//setting item properties, optional
+                        height:120
+                    },
+                    on:{
+                    'onAfterLoad':function(){
+                        $$('invoiceList').sort('#NUMARUL#','desc',"int");
+                    }
+                    },
+                    //autoheight:true,
+                    autowidth: true
+                }
             },
             {view: 'resizer'},
+            { 
+                header:"Due", 
+                body:{
+                    view: "list",
+                    id: 'dueList',
+                    template: function (obj) {
+                        return "Fact.: " + obj.SERIA + " " + obj.NUMARUL + 
+                            " din: " + obj.INVOICE_DATE + ", [scadenta: <em>" + obj.DUE_DATE + "</em>]. SUMA: <b>" +
+                            obj.INVOICE_TOTAL.toFixed(2) + "</b> " + obj.currency +" </br>" + obj.description;
+                    },
+                    sort: {
+                        by: "#NUMARUL#",
+                        dir: "desc",
+                        as: "int"
+                    },
+                    type:{//setting item properties, optional
+                        height:120
+                    },
+                    on:{
+                        'onAfterLoad':function(){
+                            $$('dueList').sort('#NUMARUL#','desc',"int");
+                        }
+                    },
+                    //autoheight:true,
+                    autowidth: true
+                }
+            },
+            {view: 'resizer'},
+            { 
+                header:"Payed", 
+                body:{
+                    view: "list",
+                    id: 'payedList',
+                    template: function (obj) {
+                        return "Fact.: " + obj.SERIA + " " + obj.NUMARUL + 
+                            " din: " + obj.INVOICE_DATE + ", [scadenta: <em>" + obj.DUE_DATE + "</em>]. SUMA: <b>" +
+                            obj.INVOICE_TOTAL.toFixed(2) + "</b> " + obj.currency + "<br/>" +
+                            "Payed: <b>" + obj.PAYMENT_SUM.toFixed(2) + "</b> " +obj.currency + " on " + obj.PAYMENT_DATE + "<br/>" +
+                            "Detalii plata: " + obj.PAYMENT_DETAILS;
+                    },
+                    sort: {
+                        by: "#NUMARUL#",
+                        dir: "desc",
+                        as: "int"
+                    },
+                    type:{//setting item properties, optional
+                        height:120
+                    },
+                    //autoheight:true,
+                    autowidth: true
+                }
+            },
+            {view: 'resizer'},
+            /*
             {
                 rows:[
                     {
@@ -125,7 +167,6 @@ var payments = {
                         ],
                         on: {
                           'onAfterLoad':  function(){
-                              
                               $$('paymentsTable').sort(payments.dateSort);
                           }
                         },
@@ -136,7 +177,8 @@ var payments = {
                         { view:"button", label:"NEW PAYMENT", click:"payments.paymentWindow();"}
                     ]}
                 ]
-            }    
+            } 
+            */   
      ]
     }
     
