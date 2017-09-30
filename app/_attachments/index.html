@@ -1,50 +1,54 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-		<title>iFact</title>
-		
-        <link rel="icon" type="image/png" href="img/Icon.png"/>
-		
-		<link rel="stylesheet" href="http://cdn.webix.com/edge/webix.css" type="text/css" media="screen" charset="utf-8">
-		
-		<!-- CouchDB JavaScript libraries -->
-	    <script src="couchdb/json2.js"></script>
-	    <script src="couchdb/sha1.js"></script>
-	    <script src="couchdb/couch.js"></script>
-	    <script src="couchdb/jquery.js"></script>
-		<script src="couchdb/jquery.couch.js"></script>
-		
-		<!-- PDFMake -->
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/pdfmake.min.js" 
-		integrity="sha256-cLwZ62pbCLbZELPJz9RGHsawij25HU1z7qYCaBK1ZnU=" crossorigin="anonymous"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/vfs_fonts.js" 
-		integrity="sha256-HM47olZz1oQ8keYmS4UQy/EypVZ8gpFenpuNeYQib+g=" crossorigin="anonymous"></script>		<!-- Webix framework -->
-		<!-- Webix framework -->
-		<script src="http://cdn.webix.com/edge/webix.js" type="text/javascript" charset="utf-8"></script>
-		
-		<!-- iFact Application -->
-        <script src="js/globals.js" type="text/javascript" charset="utf-8"></script>
-        <script src="js/payments.js" type="text/javascript" charset="utf-8"></script>
-        <script src="js/contracts.js" type="text/javascript" charset="utf-8"></script>
-        <script src="js/customers.js" type="text/javascript" charset="utf-8"></script>
-        <script src="js/invoice.js" type="text/javascript" charset="utf-8"></script>
-        <script src="js/supplier.js" type="text/javascript" charset="utf-8"></script>
-        <script src="js/config.js" type="text/javascript" charset="utf-8"></script>
-        <script src="js/logic.js" type="text/javascript" charset="utf-8"></script>
-		<script src="js/app.js" type="text/javascript" charset="utf-8"></script>
-	</head>
-	<body>
-	<script type="text/javascript">
-		/*
-		 This is a Single Page Application
-		 it is designed for Desktop browsers
-		*/	
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>iFact</title>
+
+    <link rel="icon" type="image/png" href="img/Icon.png" />
+
+    <link rel="stylesheet" href="https://cdn.webix.com/edge/webix.css" type="text/css" media="screen" charset="utf-8">
+
+    <!-- CouchDB JavaScript libraries -->
+    <script src="couchdb/json2.js"></script>
+    <script src="couchdb/sha1.js"></script>
+    <script src="couchdb/couch.js"></script>
+    <script src="couchdb/jquery.js"></script>
+    <script src="couchdb/jquery.couch.js"></script>
+
+    <!-- PDFMake -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/pdfmake.min.js" integrity="sha256-cLwZ62pbCLbZELPJz9RGHsawij25HU1z7qYCaBK1ZnU=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/vfs_fonts.js" integrity="sha256-HM47olZz1oQ8keYmS4UQy/EypVZ8gpFenpuNeYQib+g=" crossorigin="anonymous"></script>
+    <!-- Webix framework -->
+    <script src="https://cdn.webix.com/edge/webix.js" type="text/javascript" charset="utf-8"></script>
+    <!-- Handlebar framework -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.10/handlebars.min.js" integrity="sha256-0JaDbGZRXlzkFbV8Xi8ZhH/zZ6QQM0Y3dCkYZ7JYq34=" crossorigin="anonymous"></script>
+
+    <!-- iFact Application -->
+    <script src="js/globals.js" type="text/javascript" charset="utf-8"></script>
+    <script src="js/templates.js" type="text/javascript" charset="utf-8"></script>
+    <script src="js/payments.js" type="text/javascript" charset="utf-8"></script>
+    <script src="js/contracts.js" type="text/javascript" charset="utf-8"></script>
+    <script src="js/customers.js" type="text/javascript" charset="utf-8"></script>
+    <script src="js/invoice.js" type="text/javascript" charset="utf-8"></script>
+    <script src="js/supplier.js" type="text/javascript" charset="utf-8"></script>
+    <script src="js/config.js" type="text/javascript" charset="utf-8"></script>
+    <script src="js/logic.js" type="text/javascript" charset="utf-8"></script>
+    <script src="js/app.js" type="text/javascript" charset="utf-8"></script>
+</head>
+
+<body>
+    <script type="text/javascript" charset="utf-8">
+        /*
+                This is a Single Page Application
+                it is designed for Desktop browsers
+                */
         webix.i18n.parseFormat = "%d.%m.%Y";
         webix.i18n.setLocale();
-		webix.ready(function(){
+        webix.ready(function() {
             myApp.init();
-		});	
-	</script>
-	</body>
+        });
+    </script>
+</body>
+
 </html>
