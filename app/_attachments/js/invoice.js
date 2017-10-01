@@ -2,7 +2,7 @@ var invoice = {
 
     localData: {
         COPIES: 1,
-        TEMPLATE: "",
+        TEMPLATE: 1,
         SERIA: "",
         NUMARUL: "",
         FURNIZOR: {},
@@ -24,7 +24,7 @@ var invoice = {
         //clean-up existing data
         invoice.localData = {
             COPIES: 1,
-            TEMPLATE: "",
+            TEMPLATE: 1,
             SERIA: "",
             NUMARUL: "",
             FURNIZOR: {},
@@ -128,9 +128,7 @@ var invoice = {
     },
 
     generatePDF: function() {
-
         tmpTemplate = Handlebars.compile(templates[invoice.localData.TEMPLATE - 1]);
-        //TODO: create proper JSON
         PDF_DOC = JSON.parse(tmpTemplate(invoice.localData));
         pdfMake.createPdf(PDF_DOC).getDataUrl(function(outDoc) {
             $$("frame-body").load(outDoc);
