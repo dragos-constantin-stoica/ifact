@@ -2,16 +2,16 @@
 Store user session at global level in browser session storage
 */
 var USERNAME = {
-    
-    getUSERNAME: function(){
+
+    getUSERNAME: function() {
         return webix.storage.session.get('USERNAME');
     },
-    
-    setUSERNAME: function(username){
+
+    setUSERNAME: function(username) {
         webix.storage.session.put('USERNAME', username);
     },
-    
-    delUSERNAME: function(){
+
+    delUSERNAME: function() {
         webix.storage.session.remove('USERNAME');
     }
 };
@@ -19,8 +19,8 @@ var USERNAME = {
 
 /*Create new view that extends List and webix.ActiveContent*/
 webix.protoUI({
-    name:"activeList"
-},webix.ui.list,webix.ActiveContent);
+    name: "activeList"
+}, webix.ui.list, webix.ActiveContent);
 
 
 /**
@@ -45,11 +45,6 @@ var LOAD_URL = {
 };
 
 /**
-PDF Document Definition
-*/
-var PDF_DOC = {};
-
-/**
 Date formatting function
 */
 var myDateFormat = webix.Date.dateToStr("%d.%m.%Y");
@@ -59,21 +54,21 @@ Main controller function
 loads programmatically the views and intializes with data
 from LOAD_URL
 */
-function loadData(id){
+function loadData(id) {
     switch (id) {
         case "1":
             //supplier form
             var promise_pg1 = webix.ajax(SERVER_URL + DBNAME + LOAD_URL[id]);
-            promise_pg1.then(function(realdata){
+            promise_pg1.then(function(realdata) {
                 //success
                 //We expect one single supplier
                 $$("page-" + id).setValues((realdata.json())[0]);
                 $$("conturi").clearAll();
-                $$("conturi").parse($$("page-"+id).getValues().conturi);
+                $$("conturi").parse($$("page-" + id).getValues().conturi);
                 $$("conturi").refresh();
-            }).fail(function(err){
+            }).fail(function(err) {
                 //error
-                webix.message({type:"error", text: err});
+                webix.message({ type: "error", text: err });
                 console.log(err);
             });
             break;
@@ -90,48 +85,48 @@ function loadData(id){
         case "4":
             //Invoice form
             var promise_pg4 = webix.ajax(SERVER_URL + DBNAME + LOAD_URL[id]);
-            promise_pg4.then(function(realdata){
+            promise_pg4.then(function(realdata) {
                 //success
-                $$("invoiceForm").setValues({"serial_number":realdata.json().SERIA + " " + realdata.json().NUMARUL}, true);
+                $$("invoiceForm").setValues({ "serial_number": realdata.json().SERIA + " " + realdata.json().NUMARUL }, true);
                 invoice.localData.SERIA = realdata.json().SERIA;
                 invoice.localData.NUMARUL = realdata.json().NUMARUL;
                 $$('invoiceForm').elements.supplier.setValue($$('invoiceForm').elements.supplier.getList().getFirstId());
                 $$('invoiceForm').elements.invoice_date.setValue(new Date());
-                $$('invoiceForm').elements.due_date.setValue(new Date((new Date()).setDate((new Date()).getDate()+30)));
+                $$('invoiceForm').elements.due_date.setValue(new Date((new Date()).setDate((new Date()).getDate() + 30)));
                 $$('invoiceForm').elements.TVA.setValue(0);
-            }).fail(function(err){
+            }).fail(function(err) {
                 //error
-                webix.message({type:"error", text: err});
+                webix.message({ type: "error", text: err });
                 console.log(err);
             });
             break;
         case "5":
             //Payments
-            var promise_pg5 = webix.ajax(SERVER_URL+DBNAME+LOAD_URL[id]);
-            promise_pg5.then(function(realdata){
-                $$('invoiceList').parse(realdata.json().filter(function(obj){ 
-                    return (obj.doctype=="INVOICE") && (obj.PAYMENT_TOTAL < obj.INVOICE_TOTAL) && 
-                    (new Date(obj.DUE_DATE.substr(6) + "-" + obj.DUE_DATE.substr(3,2) + "-" + obj.DUE_DATE.substr(0,2)) >= new Date());
+            var promise_pg5 = webix.ajax(SERVER_URL + DBNAME + LOAD_URL[id]);
+            promise_pg5.then(function(realdata) {
+                $$('invoiceList').parse(realdata.json().filter(function(obj) {
+                    return (obj.doctype == "INVOICE") && (obj.PAYMENT_TOTAL < obj.INVOICE_TOTAL) &&
+                        (new Date(obj.DUE_DATE.substr(6) + "-" + obj.DUE_DATE.substr(3, 2) + "-" + obj.DUE_DATE.substr(0, 2)) >= new Date());
                 }));
-                $$('dueList').parse(realdata.json().filter(function(obj){ 
-                    return (obj.doctype=="INVOICE") && (obj.PAYMENT_TOTAL < obj.INVOICE_TOTAL) && 
-                    (new Date(obj.DUE_DATE.substr(6) + "-" + obj.DUE_DATE.substr(3,2) + "-" + obj.DUE_DATE.substr(0,2)) < new Date());
+                $$('dueList').parse(realdata.json().filter(function(obj) {
+                    return (obj.doctype == "INVOICE") && (obj.PAYMENT_TOTAL < obj.INVOICE_TOTAL) &&
+                        (new Date(obj.DUE_DATE.substr(6) + "-" + obj.DUE_DATE.substr(3, 2) + "-" + obj.DUE_DATE.substr(0, 2)) < new Date());
                 }));
-                $$('payedList').parse(realdata.json().filter(function(obj){ return obj.doctype=="PAYMENT";}));
+                $$('payedList').parse(realdata.json().filter(function(obj) { return obj.doctype == "PAYMENT"; }));
             }).fail(function(err) {
-                webix.message({type:"error", text: err});
+                webix.message({ type: "error", text: err });
                 console.log(err);
             });
             break;
         case "6":
             //Configuration form
             var promise_pg6 = webix.ajax(SERVER_URL + DBNAME + LOAD_URL[id]);
-            promise_pg6.then(function(realdata){
+            promise_pg6.then(function(realdata) {
                 //success
                 $$("page-" + id).setValues(realdata.json());
-            }).fail(function(err){
+            }).fail(function(err) {
                 //error
-                webix.message({type:"error", text: err});
+                webix.message({ type: "error", text: err });
                 console.log(err);
             });
             break;
@@ -147,62 +142,60 @@ The response from CouchDB may be used for DHTMLX components also
 It was tested with DHTMLX Scheduler
 */
 webix.proxy.CouchDB = {
-    $proxy:true,
+    $proxy: true,
 
-    load:function(view, callback){
+    load: function(view, callback) {
         //GET JSON Array from database/design_document/_list/[list_name]/[view_name]  
         webix.ajax(this.source, callback, view);
     },
 
 
-    save:function(view, update, dp, callback){
+    save: function(view, update, dp, callback) {
 
         //your saving pattern
-        if(update.operation == "update"){
-			webix.ajax().header({
-			    "Content-type":"application/json"
-			}).post(dp.config.url.source+ "\/" + update.data._id, 
-				JSON.stringify(update.data), 
-				[function(text, data, xhr){
-			    //response
-			    //console.log(text);
-				//console.log(data.json());
-				//console.log(xhr);
-				var msg = data.json();
-				if('action' in msg){
-					var item = view.getItem(update.data.id);
-					item._rev = xhr.getResponseHeader('X-Couch-Update-NewRev'); //setting _rev property and value for it
-					view.updateItem(update.data.id,item);
-					view.refresh();							
-				}
-				},callback]
-			);
-		}
+        if (update.operation == "update") {
+            webix.ajax().header({
+                "Content-type": "application/json"
+            }).post(dp.config.url.source + "\/" + update.data._id,
+                JSON.stringify(update.data), [function(text, data, xhr) {
+                    //response
+                    //console.log(text);
+                    //console.log(data.json());
+                    //console.log(xhr);
+                    var msg = data.json();
+                    if ('action' in msg) {
+                        var item = view.getItem(update.data.id);
+                        item._rev = xhr.getResponseHeader('X-Couch-Update-NewRev'); //setting _rev property and value for it
+                        view.updateItem(update.data.id, item);
+                        view.refresh();
+                    }
+                }, callback]
+            );
+        }
 
-		if(update.operation == "insert"){
-			webix.ajax().header({
-			    "Content-type":"application/json"
-			}).post(dp.config.url.source, 
-				JSON.stringify(update.data), 
-				[function(text, data, xhr){
-			    //response
-			    //console.log(text);
-				//console.log(data.json());
-				//console.log(xhr);
-				var msg = data.json();
-				if('action' in msg){
-					var item = view.getItem(update.data.id);
-					item._id = xhr.getResponseHeader('X-Couch-Id');
-					item._rev = xhr.getResponseHeader('X-Couch-Update-NewRev'); //setting _rev property and value for it
-					view.updateItem(update.data.id,item);
-					view.refresh();
-				}
-				}, callback]
-			);
-		}
+        if (update.operation == "insert") {
+            webix.ajax().header({
+                "Content-type": "application/json"
+            }).post(dp.config.url.source,
+                JSON.stringify(update.data), [function(text, data, xhr) {
+                    //response
+                    //console.log(text);
+                    //console.log(data.json());
+                    //console.log(xhr);
+                    var msg = data.json();
+                    if ('action' in msg) {
+                        var item = view.getItem(update.data.id);
+                        item._id = xhr.getResponseHeader('X-Couch-Id');
+                        item._rev = xhr.getResponseHeader('X-Couch-Update-NewRev'); //setting _rev property and value for it
+                        view.updateItem(update.data.id, item);
+                        view.refresh();
+                    }
+                }, callback]
+            );
+        }
     },
-    
-    result:function(state, view, dp, text, data, loader){
+
+    result: function(state, view, dp, text, data, loader) {
         //your logic of server-side response processing
 
         console.log(state);
@@ -214,6 +207,6 @@ webix.proxy.CouchDB = {
 
         //dp.processResult(state, data, details);
     }
-    
+
 
 };

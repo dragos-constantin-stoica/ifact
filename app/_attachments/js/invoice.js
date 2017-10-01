@@ -149,10 +149,7 @@ var invoice = {
                         view: "combo",
                         name: "template",
                         label: "Template:",
-                        options: [
-                            { id: 1, value: "RO" },
-                            { id: 2, value: "EN" }
-                        ],
+                        options: [{ id: 1, value: "RO" }, { id: 2, value: "EN" }],
                         value: 1
                     },
                     { view: "text", name: "serial_number", label: "Seria-Nr.:", placeholder: "get the current serial number", readonly: true },
@@ -207,13 +204,7 @@ var invoice = {
                     },
                     { view: "text", name: "TVA", label: "TVA:", placeholder: "TVA in procente" },
                     { view: "text", name: "exchange_rate", label: "Curs BNR:", placeholder: "Cursul BNR pentru €$£->RON la data emiterii facturii" },
-                    {
-                        view: "textarea",
-                        name: "invoice_details",
-                        label: "Detalii factura:",
-                        placeholder: "descrierea bunurilor si a serviciilor",
-                        height: 110
-                    },
+                    { view: "textarea", name: "invoice_details", label: "Detalii factura:", placeholder: "descrierea bunurilor si a serviciilor", height: 110 },
                     { view: "text", name: "invoice_mu", label: "UM:", placeholder: "unitatea de masura" },
                     { view: "text", name: "invoice_qty", label: "Cantitatea:", placeholder: "cantiatea" },
                     { view: "text", name: "invoice_up", label: "Pret unitar:", placeholder: "pret unitar" },
@@ -266,11 +257,7 @@ var invoice = {
                 }
             },
             { view: "resizer" },
-            {
-                view: "iframe",
-                id: "frame-body",
-                src: ""
-            }
+            { view: "iframe", id: "frame-body", src: "" }
         ]
     }
 

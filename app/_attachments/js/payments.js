@@ -12,7 +12,7 @@ var payments = {
             { view: 'text', name: 'PAYMENT_SUM', label: 'Ammount:', format: webix.i18n.numberFormat },
             {
                 view: 'button',
-                label: 'CREATE',
+                label: 'NEW PAYMENT',
                 type: 'form',
                 click: function() {
                     var newpayment = $$('newPaymentForm').getValues();
@@ -20,21 +20,142 @@ var payments = {
                     newpayment.invoice_id = $$('invoiceList').getSelectedId();
                     if (typeof newpayment.NUMARUL === 'string') newpayment.NUMARUL = parseInt(newpayment.NUMARUL, 10);
                     if (typeof newpayment.PAYMENT_SUM === 'string') newpayment.PAYMENT_SUM = parseFloat(newpayment.PAYMENT_SUM);
-                    $$('paymentsTable').add(newpayment);
-                    //Save payment to database
-
+                    console.log(newpayment);
+                    $.couch.db(DBNAME).saveDoc(newpayment, {
+                        success: function(data) {
+                            console.log(data);
+                            webix.message("Plata pentru factura" + newpayment.SERIA + " - " + newpayment.NUMARUL +
+                                " a fost salvata cu succes în baza de date!");
+                        },
+                        error: function(status) {
+                            webix.message({ type: "error", text: status });
+                            console.log(status);
+                        }
+                    });
                     $$('newPaymentWindow').hide();
                 }
             }
         ]
     },
 
-    //TODO: to be implemented
-    edit: function(id, e) {
-        console.log(id);
+    editForm: {
+        cols: [{
+                id: "editForm",
+                view: "form",
+                width: 400,
+                scroll: 'y',
+                minWidth: 400,
+                elementsConfig: { labelWidth: 180 },
+                elements: [
+                    { view: "counter", step: 1, value: 1, min: 1, max: 5, name: "copies", label: "Numarul de copii:" },
+                    {
+                        view: "combo",
+                        name: "template",
+                        label: "Template:",
+                        value: 1,
+                        options: [
+                            { id: 1, value: "RO" },
+                            { id: 2, value: "EN" }
+                        ]
+                    },
+                    { view: "text", name: "serial_number", label: "Seria-Nr.:", placeholder: "get the current serial number", readonly: true },
+                    { view: "text", name: "supplier", label: "Furnizor:" },
+                    { view: "text", name: "customer_contract", label: "Beneficiar:" },
+                    {
+                        view: "datepicker",
+                        stringResult: true,
+                        format: webix.Date.dateToStr("%d.%m.%Y"),
+                        date: new Date(),
+                        name: "invoice_date",
+                        label: "Data emiterii:",
+                        placeholder: "data emiterii facturii"
+                    },
+                    {
+                        view: "datepicker",
+                        stringResult: true,
+                        format: webix.Date.dateToStr("%d.%m.%Y"),
+                        date: new Date(),
+                        name: "due_date",
+                        label: "Data scadentei:",
+                        placeholder: "data scadenta"
+                    },
+                    { view: "text", name: "TVA", label: "TVA:", placeholder: "TVA in procente" },
+                    { view: "text", name: "exchange_rate", label: "Curs BNR:", placeholder: "Cursul BNR pentru €$£->RON la data emiterii facturii" },
+                    { view: "textarea", name: "invoice_details", label: "Detalii factura:", placeholder: "descrierea bunurilor si a serviciilor", height: 110 },
+                    { view: "text", name: "invoice_mu", label: "UM:", placeholder: "unitatea de masura" },
+                    { view: "text", name: "invoice_qty", label: "Cantitatea:", placeholder: "cantiatea" },
+                    { view: "text", name: "invoice_up", label: "Pret unitar:", placeholder: "pret unitar" },
+                    { view: "textarea", name: "invoice_formula", label: "Formula de calcul:", placeholder: "formula de calcul a sumei toatale", height: 110 },
+                    {
+                        margin: 10,
+                        cols: [{
+                                view: "button",
+                                type: "danger",
+                                value: "MODIFY INVOICE",
+                                click: function() {
+                                    //check that all mandatory fields in the form were filled in
+                                    if (!$$('editForm').validate()) {
+                                        webix.message({ type: "error", text: "Creatation date, due date, exchange rate and VAT are mandatory!" });
+                                        return;
+                                    }
+                                    //TODO: display PDF and save the data
+                                }
+                            },
+                            {
+                                view: "button",
+                                type: "form",
+                                value: "Preview",
+                                click: function() {
+                                    //check that all mandatory fields in the form were filled in
+                                    if (!$$('editForm').validate()) {
+                                        webix.message({ type: "error", text: "Creatation date, due date, exchange rate and VAT are mandatory!" });
+                                        return;
+                                    }
+                                    //TODO: display PDF
+                                }
+                            }
+                        ]
+                    }
+                ],
+                rules: {
+                    TVA: webix.rules.isNotEmpty,
+                    invoice_date: webix.rules.isNotEmpty,
+                    due_date: webix.rules.isNotEmpty,
+                    exchange_rate: webix.rules.isNotEmpty
+                }
+            },
+            { view: "resizer" },
+            { view: "iframe", id: "frame-edit", src: "" }
+        ]
     },
 
     //TODO: to be implemented
+    edit: function(id, e) {
+        console.log(id);
+        webix.ui({
+            view: "window",
+            id: "editWindow",
+            width: 800,
+            height: 600,
+            resize: true,
+            position: "top",
+            head: "Modifică factura",
+            body: webix.copy(payments.editForm)
+        }).show();
+        var control = (id == "editNewButtonId") ? "invoiceList" : "dueList";
+        var item_id = $$(control).locate(e);
+        //Get the invoice from the database and populate with values the editForm
+        var promise_edit = webix.ajax(SERVER_URL + DBNAME + "/" + item_id);
+        promise_edit.then(function(data) {
+            var invoice_data = data.json();
+            $$('editForm').clear();
+            $$('editForm').setValues(invoice_data, true);
+        }).fail(function(err) {
+            webix.message({ type: "error", text: err });
+            console.log(err);
+        });
+    },
+
     view: function(id, e) {
         //console.log(id);
         if (!webix.isUndefined($$('viewInvoice'))) $$('viewInvoice').destructor();
@@ -83,14 +204,15 @@ var payments = {
             id: "newPaymentWindow",
             width: 400,
             position: "top",
-            head: "Plata noua",
+            head: "Plată nouă",
             body: webix.copy(payments.paymentForm)
         }).show();
-        console.log(id);
+        //console.log(id);
         var control = (id == "payNewButtonId") ? "invoiceList" : "dueList";
         var item_id = $$(control).locate(e);
-
+        $$('newPaymentForm').clear();
         $$('newPaymentForm').setValues({
+            invoice_id: item_id,
             SERIA: $$(control).getItem(item_id).SERIA,
             NUMARUL: $$(control).getItem(item_id).NUMARUL,
             doctype: 'PAYMENT'
@@ -235,43 +357,7 @@ var payments = {
                     autowidth: true
                 }
             },
-            { view: 'resizer' },
-            /*
-            {
-                rows:[
-                    {
-                        view:'datatable', 
-                        id: 'paymentsTable',
-                        footer: true, 
-                        tooltip: true,
-                        columns: [
-                            {id: 'id', hidden: true},
-                            {id: 'invoice_id', hidden: true},
-                            {id: 'doctype', hidden: true},
-                            {id: 'SERIA', header: 'Serial', width: 90},
-                            {id: 'NUMARUL', header: 'Number', width: 90},
-                            {id: 'INVOICE_DATE', header: 'Issued', width: 100},
-                            {id: 'DUE_DATE', header: 'Due', width: 100},
-                            {id: 'description', header: 'Invoice details', fillspace: 2, tooltip: '#description#' },                            
-                            {id: 'INVOICE_TOTAL', header: 'SUM', width: 120, format: webix.i18n.numberFormat, footer:{content:"summColumn"}},
-                            {id: 'PAYMENT_SUM', header: 'PAYMENT', width: 120, format: webix.i18n.numberFormat, footer:{content:"summColumn"}},
-                            {id: 'PAYMENT_DATE', header: 'Date', width: 90},
-                            {id: 'PAYMENT_DETAILS', header: 'Payment details', fillspace: 2, tooltip: '#PAYMENT_DETAILS#'}
-                        ],
-                        on: {
-                          'onAfterLoad':  function(){
-                              $$('paymentsTable').sort(payments.dateSort);
-                          }
-                        },
-                        url: "CouchDB->../../_design/globallists/_list/toja/invoice/getinvoicestatement",
-                        save: "CouchDB->../../_design/invoice/_update/payment"
-                    },
-                    {view: 'toolbar', cols:[
-                        { view:"button", label:"NEW PAYMENT", click:"payments.paymentWindow();"}
-                    ]}
-                ]
-            } 
-            */
+            { view: 'resizer' }
         ]
     }
 
