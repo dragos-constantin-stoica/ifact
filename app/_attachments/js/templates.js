@@ -10,10 +10,12 @@ var templates = [
         "pageOrientation": "portrait",
         "pageMargins": [40, 60],
 
-        "content": [{
+        "content": [
+            {{#carboncopy COPIES}}
+            {
                 "columns": [{
                         "width": "50%",
-                        "text": "Exemplarul nr. 1"
+                        "text": "Exemplarul nr. {{@index}}"
                     },
                     {
                         "width": "50%",
@@ -182,6 +184,7 @@ var templates = [
                     }
                 ]
             }
+            {{/carboncopy}}
         ],
         "styles": {
             "header": {
@@ -208,10 +211,12 @@ var templates = [
         "pageOrientation": "portrait",
         "pageMargins": [40, 60],
 
-        "content": [{
+        "content": [
+            {{#carboncopy COPIES}}
+            {
                 "columns": [{
                         "width": "50%",
-                        "text": "Copy N°.1"
+                        "text": "Copy N°.{{@index}}"
                     },
                     {
                         "width": "50%",
@@ -333,6 +338,7 @@ var templates = [
                     "text": "Contractor's signature"
                 }]
             }
+            {{/carboncopy}}
         ],
         "styles": {
             "header": {
@@ -366,4 +372,19 @@ Handlebars.registerHelper("toDecimals", function(amount) {
 
 Handlebars.registerHelper("addOne", function(integer) {
     return integer + 1;
+});
+
+Handlebars.registerHelper("carboncopy", function(n, block) {
+    var accum = '';
+    for (var i = 0; i < n; ++i) {
+        block.data.index = i + 1;
+        block.data.first = i === 1;
+        block.data.last = i === (n - 1);
+        accum += block.fn(this);
+        //Add page break
+        if ((i < (n - 1)) && (n > 1)) {
+            accum += ',{ "text":" ", "pageBreak": "after"},';
+        }
+    }
+    return accum;
 });

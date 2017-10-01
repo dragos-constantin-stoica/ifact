@@ -1,6 +1,7 @@
 var invoice = {
 
     localData: {
+        COPIES: 1,
         TEMPLATE: "",
         SERIA: "",
         NUMARUL: "",
@@ -22,6 +23,7 @@ var invoice = {
     setlocalData: function(createNewInvoice) {
         //clean-up existing data
         invoice.localData = {
+            COPIES: 1,
             TEMPLATE: "",
             SERIA: "",
             NUMARUL: "",
@@ -75,6 +77,7 @@ var invoice = {
             }
 
             var form_data = $$('invoiceForm').getValues();
+            invoice.localData.COPIES = form_data.copies;
             invoice.localData.TEMPLATE = form_data.template;
             invoice.localData.TVA = (typeof form_data.TVA === 'string') ? parseFloat(form_data.TVA) : form_data.TVA;
             invoice.localData.CURS_BNR.data = form_data.invoice_date;
@@ -84,6 +87,7 @@ var invoice = {
             invoice.localData.DUE_DATE = form_data.due_date;
 
             //TODO: Add iterator for multiple invoice lines. Change the form control in a grid
+            //TVA applies for each line of the invoice
             var invoice_line_item = {};
 
             invoice_line_item.details = form_data.invoice_details;
@@ -102,6 +106,7 @@ var invoice = {
             if (createNewInvoice) {
                 var doc = webix.copy(invoice.localData);
                 doc.doctype = "INVOICE";
+                doc._id = doc.SERIA + "###" + ("00000" + doc.NUMARUL).substr(-5);
                 $.couch.db(DBNAME).saveDoc(doc, {
                     success: function(data) {
                         console.log(data);
@@ -124,7 +129,7 @@ var invoice = {
 
     generatePDF: function() {
 
-        tmpTemplate = Handlebars.compile(templates[$$('invoiceForm').elements.template.getValue() - 1]);
+        tmpTemplate = Handlebars.compile(templates[invoice.localData.TEMPLATE - 1]);
         //TODO: create proper JSON
         PDF_DOC = JSON.parse(tmpTemplate(invoice.localData));
         pdfMake.createPdf(PDF_DOC).getDataUrl(function(outDoc) {
@@ -141,7 +146,7 @@ var invoice = {
                 minWidth: 500,
                 elementsConfig: { labelWidth: 180 },
                 elements: [
-                    //{view:"counter", step:1, value:1, min:1, max:5, name:"copies", label:"Numarul de copii:"},
+                    { view: "counter", step: 1, value: 1, min: 1, max: 5, name: "copies", label: "Numarul de copii:" },
                     {
                         view: "combo",
                         name: "template",
