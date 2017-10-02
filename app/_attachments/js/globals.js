@@ -123,7 +123,7 @@ function loadData(id) {
             var promise_pg6 = webix.ajax(SERVER_URL + DBNAME + LOAD_URL[id]);
             promise_pg6.then(function(realdata) {
                 //success
-                $$("page-" + id).setValues(realdata.json());
+                $$("configForm").setValues(realdata.json());
             }).fail(function(err) {
                 //error
                 webix.message({ type: "error", text: err });
