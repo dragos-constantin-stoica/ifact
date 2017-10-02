@@ -1,5 +1,9 @@
 var payments = {
 
+    localData: {
+
+    },
+
     paymentForm: {
         id: 'newPaymentForm',
         view: 'form',
@@ -42,15 +46,16 @@ var payments = {
         cols: [{
                 id: "editForm",
                 view: "form",
-                width: 400,
+                width: 600,
                 scroll: 'y',
-                minWidth: 400,
+                minWidth: 600,
                 elementsConfig: { labelWidth: 180 },
                 elements: [
-                    { view: "counter", step: 1, value: 1, min: 1, max: 5, name: "copies", label: "Numarul de copii:" },
+                    { view: "text", name: "copies", label: "Numarul de copii:", readonly:true },
                     {
                         view: "combo",
                         name: "template",
+                        readonly: true,
                         label: "Template:",
                         value: 1,
                         options: [
@@ -59,8 +64,8 @@ var payments = {
                         ]
                     },
                     { view: "text", name: "serial_number", label: "Seria-Nr.:", placeholder: "get the current serial number", readonly: true },
-                    { view: "text", name: "supplier", label: "Furnizor:" },
-                    { view: "text", name: "customer_contract", label: "Beneficiar:" },
+                    { view: "text", name: "supplier", label: "Furnizor:", readonly:true },
+                    { view: "text", name: "customer_contract", label: "Beneficiar:", readonly:true },
                     {
                         view: "datepicker",
                         stringResult: true,
@@ -98,7 +103,54 @@ var payments = {
                                         webix.message({ type: "error", text: "Creatation date, due date, exchange rate and VAT are mandatory!" });
                                         return;
                                     }
-                                    //TODO: display PDF and save the data
+
+                                    var editValues = $$('editForm').getValues();
+                                    payments.localData.INVOICE_DATE = editValues.invoice_date;
+                                    payments.localData.DUE_DATE = editValues.due_date;
+                                    payments.localData.TVA = (typeof editValues.TVA === 'string') ? parseFloat(editValues.TVA) : editValues.TVA;
+                                    payments.localData.CURS_BNR.data = editValues.invoice_date;
+                                    payments.localData.CURS_BNR.eur_ron = (typeof editValues.exchange_rate === 'string') ? parseFloat(editValues.exchange_rate) : editValues.exchange_rate; 
+
+                                    payments.localData.INVOICE_LINE = [];
+                                    payments.localData.INVOICE_SUM = 0;
+                                    payments.localData.INVOICE_TVA_SUM = 0;
+                                    payments.localData.INVOICE_TOTAL = 0;
+
+                                    //TODO: change the control to a grid and get all lines in the array
+                                    var invoice_line_item = {};
+                                    
+                                    invoice_line_item.details = editValues.invoice_details;
+                                    invoice_line_item.um = editValues.invoice_mu;
+                                    invoice_line_item.qty = editValues.invoice_qty;
+                                    invoice_line_item.up = editValues.invoice_up;
+                                    invoice_line_item.line_value = eval(editValues.invoice_formula);
+                                    invoice_line_item.line_tva = (invoice_line_item.line_value * payments.localData.TVA) / 100.00;
+                                    //Add this line to line array
+                                    payments.localData.INVOICE_LINE.push(invoice_line_item);
+                        
+                                    payments.localData.INVOICE_SUM += invoice_line_item.line_value;
+                                    payments.localData.INVOICE_TVA_SUM += invoice_line_item.line_tva;
+                                    payments.localData.INVOICE_TOTAL += (payments.localData.INVOICE_SUM + payments.localData.INVOICE_TVA_SUM);
+                                    
+                                    tmpTemplate = Handlebars.compile(templates[payments.localData.TEMPLATE - 1]);
+                                    PDF_DOC = JSON.parse(tmpTemplate(payments.localData));
+                                    pdfMake.createPdf(PDF_DOC).getDataUrl(function(outDoc) {
+                                        $$("frame-edit").load(outDoc);
+                                    });
+
+                                    var doc = webix.copy(payments.localData);
+                                    doc.doctype = "INVOICE";
+                                    $.couch.db(DBNAME).saveDoc(doc, {
+                                        success: function(data) {
+                                            console.log(data);
+                                            webix.message("Factura " + payments.localData.SERIA + " - " + invoice.localData.NUMARUL +
+                                                " a fost salvata in baza de date cu succes!");
+                                        },
+                                        error: function(status) {
+                                            console.log(status);
+                                        }
+                                    });
+
                                 }
                             },
                             {
@@ -111,7 +163,39 @@ var payments = {
                                         webix.message({ type: "error", text: "Creatation date, due date, exchange rate and VAT are mandatory!" });
                                         return;
                                     }
-                                    //TODO: display PDF
+                                    var editValues = $$('editForm').getValues();
+                                    payments.localData.INVOICE_DATE = editValues.invoice_date;
+                                    payments.localData.DUE_DATE = editValues.due_date;
+                                    payments.localData.TVA = (typeof editValues.TVA === 'string') ? parseFloat(editValues.TVA) : editValues.TVA;
+                                    payments.localData.CURS_BNR.data = editValues.invoice_date;
+                                    payments.localData.CURS_BNR.eur_ron = (typeof editValues.exchange_rate === 'string') ? parseFloat(editValues.exchange_rate) : editValues.exchange_rate; 
+
+                                    payments.localData.INVOICE_LINE = [];
+                                    payments.localData.INVOICE_SUM = 0;
+                                    payments.localData.INVOICE_TVA_SUM = 0;
+                                    payments.localData.INVOICE_TOTAL = 0;
+
+                                    //TODO: change the control to a grid and get all lines in the array
+                                    var invoice_line_item = {};
+                                    
+                                    invoice_line_item.details = editValues.invoice_details;
+                                    invoice_line_item.um = editValues.invoice_mu;
+                                    invoice_line_item.qty = editValues.invoice_qty;
+                                    invoice_line_item.up = editValues.invoice_up;
+                                    invoice_line_item.line_value = eval(editValues.invoice_formula);
+                                    invoice_line_item.line_tva = (invoice_line_item.line_value * payments.localData.TVA) / 100.00;
+                                    //Add this line to line array
+                                    payments.localData.INVOICE_LINE.push(invoice_line_item);
+                        
+                                    payments.localData.INVOICE_SUM += invoice_line_item.line_value;
+                                    payments.localData.INVOICE_TVA_SUM += invoice_line_item.line_tva;
+                                    payments.localData.INVOICE_TOTAL += (payments.localData.INVOICE_SUM + payments.localData.INVOICE_TVA_SUM);
+                                    
+                                    tmpTemplate = Handlebars.compile(templates[payments.localData.TEMPLATE - 1]);
+                                    PDF_DOC = JSON.parse(tmpTemplate(payments.localData));
+                                    pdfMake.createPdf(PDF_DOC).getDataUrl(function(outDoc) {
+                                        $$("frame-edit").load(outDoc);
+                                    });
                                 }
                             }
                         ]
@@ -135,7 +219,7 @@ var payments = {
         webix.ui({
             view: "window",
             id: "editWindow",
-            width: 800,
+            width: 1000,
             height: 600,
             resize: true,
             position: "top",
@@ -147,9 +231,27 @@ var payments = {
         //Get the invoice from the database and populate with values the editForm
         var promise_edit = webix.ajax(SERVER_URL + DBNAME + "/" + item_id);
         promise_edit.then(function(data) {
-            var invoice_data = data.json();
+            payments.localData = data.json();
+
             $$('editForm').clear();
-            $$('editForm').setValues(invoice_data, true);
+            $$('editForm').setValues({
+                _id: payments.localData._id,
+               copies: payments.localData.COPIES,
+               template: payments.localData.TEMPLATE,
+               serial_number: payments.localData.SERIA + " " + payments.localData.NUMARUL,
+               supplier: payments.localData.FURNIZOR.nume + " [" + payments.localData.FURNIZOR.valuta + "]",
+               customer_contract: payments.localData.BENEFICIAR.nume,
+               invoice_date: payments.localData.INVOICE_DATE,
+               due_date: payments.localData.DUE_DATE,
+               TVA: "" + payments.localData.TVA,
+               exchange_rate: payments.localData.CURS_BNR.eur_ron,
+               invoice_details: payments.localData.INVOICE_LINE[0].details,
+               invoice_mu: payments.localData.INVOICE_LINE[0].um,
+               invoice_qty: payments.localData.INVOICE_LINE[0].qty,
+               invoice_up: payments.localData.INVOICE_LINE[0].up,
+               invoice_formula: payments.localData.INVOICE_LINE[0].line_value
+
+            }, true);
         }).fail(function(err) {
             webix.message({ type: "error", text: err });
             console.log(err);
