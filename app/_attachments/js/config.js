@@ -8,13 +8,13 @@ var config = {
         
             webix.ajax().header({
                     "Content-type":"application/json"
-            }).post(SERVER_URL + DBNAME + "/_design/config/_update/sn/" + doc["_id"], JSON.stringify(doc), 
+            }).post(SERVER_URL + DBNAME + "/_design/config/_update/sn/" + doc._id, JSON.stringify(doc), 
                 function(text, data, xhr){
                     //response
                     //console.log(text);
                     //console.log(data.json());
                     //console.log(xhr);
-                    var msg = data.json()
+                    var msg = data.json();
                     if('action' in msg){
                         msg.doc._rev = xhr.getResponseHeader('X-Couch-Update-NewRev'); //setting _rev property and value for it
                         $$('configForm').setValues(msg.doc);
@@ -30,7 +30,7 @@ var config = {
                     //console.log(text);
                     //console.log(data.json());
                     //console.log(xhr);
-                    var msg = data.json()
+                    var msg = data.json();
                     if('action' in msg){
                         msg.doc._id = xhr.getResponseHeader('X-Couch-Id');
                         msg.doc._rev = xhr.getResponseHeader('X-Couch-Update-NewRev'); //setting _rev property and value for it
