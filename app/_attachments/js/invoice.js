@@ -106,7 +106,7 @@ var invoice = {
             if (createNewInvoice) {
                 var doc = webix.copy(invoice.localData);
                 doc.doctype = "INVOICE";
-                doc._id = doc.SERIA + "###" + ("00000" + doc.NUMARUL).substr(-5);
+                doc._id = doc.SERIA + "___" + ("00000" + doc.NUMARUL).substr(-5);
                 $.couch.db(DBNAME).saveDoc(doc, {
                     success: function(data) {
                         console.log(data);
