@@ -25,7 +25,8 @@ function(head, req) {
                     PAYMENT_DATE: row.value.PAYMENT_DATE,
                     PAYMENT_DETAILS: row.value.PAYMENT_DETAILS,
                     PAYMENT_SUM: row.value.PAYMENT_SUM,
-                    currency: (typeof row.doc.FURNIZOR.valuta !== 'undefined') ? (row.doc.FURNIZOR.valuta) : "RON",
+                    eur_ron: row.value.eur_ron,
+                    currency: row.value.currency,
                     doctype: row.value.doctype
                 });
             } else {

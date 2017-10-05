@@ -11,9 +11,11 @@ var payments = {
         elements: [
             { view: 'text', name: 'SERIA', label: 'SN:', readonly: true },
             { view: 'text', name: 'NUMARUL', label: 'NR:', readonly: true },
-            { view: 'datepicker', name: 'PAYMENT_DATE', label: 'Date:', stringResult: true, format: webix.Date.dateToStr("%d.%m.%Y"), date: new Date() },
-            { view: 'textarea', name: 'PAYMENT_DETAILS', label: 'Payment description:', height: 110, labelPosition: "top" },
-            { view: 'text', name: 'PAYMENT_SUM', label: 'Ammount:', format: webix.i18n.numberFormat },
+            { view: 'datepicker', name: 'PAYMENT_DATE', label: 'Date:', stringResult: true, format: webix.Date.dateToStr("%d.%m.%Y") },
+            { view: 'combo', name: 'PAYMENT_DETAILS', label: 'Type:', value:1,
+              options:[{ id:1, value:"Virament bancar" }, {id:2, value:"Numerar"}]
+            },
+            { view: 'text', name: 'PAYMENT_SUM', label: 'Amount:', format: webix.i18n.numberFormat },
             {
                 view: 'button',
                 label: 'NEW PAYMENT',
@@ -21,15 +23,17 @@ var payments = {
                 click: function() {
                     var newpayment = $$('newPaymentForm').getValues();
                     if (typeof newpayment.doctype === 'undefined') newpayment.doctype = 'PAYMENT';
-                    newpayment.invoice_id = $$('invoiceList').getSelectedId();
+                    //newpayment.invoice_id = $$('invoiceList').getSelectedId();
                     if (typeof newpayment.NUMARUL === 'string') newpayment.NUMARUL = parseInt(newpayment.NUMARUL, 10);
                     if (typeof newpayment.PAYMENT_SUM === 'string') newpayment.PAYMENT_SUM = parseFloat(newpayment.PAYMENT_SUM);
+                    newpayment.PAYMENT_DETAILS = $$('newPaymentForm').elements.PAYMENT_DETAILS.getText();
                     console.log(newpayment);
                     $.couch.db(DBNAME).saveDoc(newpayment, {
                         success: function(data) {
                             console.log(data);
                             webix.message("Plata pentru factura" + newpayment.SERIA + " - " + newpayment.NUMARUL +
                                 " a fost salvata cu succes în baza de date!");
+                            $$('newPaymentForm').clear();                                
                         },
                         error: function(status) {
                             webix.message({ type: "error", text: status });
@@ -312,11 +316,13 @@ var payments = {
         //console.log(id);
         var control = (id == "payNewButtonId") ? "invoiceList" : "dueList";
         var item_id = $$(control).locate(e);
-        $$('newPaymentForm').clear();
         $$('newPaymentForm').setValues({
             invoice_id: item_id,
+            eur_ron: $$(control).getItem(item_id).eur_ron,
+            currency: $$(control).getItem(item_id).currency,
             SERIA: $$(control).getItem(item_id).SERIA,
             NUMARUL: $$(control).getItem(item_id).NUMARUL,
+            PAYMENT_DATE: new Date(),
             doctype: 'PAYMENT'
         }, true);
     },

@@ -104,6 +104,144 @@ var config = {
                 elements:[
                     { view:"button", label:"Export to Excel", click:'config.export'}
                 ]
+            },
+            {
+                cols: [
+                    {
+                        rows:[
+                            {
+                                view: "template",
+                                template: "Year to Date invoiced vs. payed RON",
+                                type:"header"
+                            },
+                            {
+                                view:"chart",
+                                type:"line",
+                                preset:"simple",
+                                xAxis:{ template:"#year#", title:"Month"},
+                                yAxis:{ title:"Amount (RON)"},
+                                legend:{
+                                    values:[{text:"Invoiced",color:"#1293f8"},{text:"Payed",color:"#66cc00"}],
+                                    align:"right",
+                                    valign:"middle",
+                                    layout:"y",
+                                    width: 100,
+                                    margin: 8
+                                },
+                                series:[
+                                    {
+                                        value:"#sales3#",
+                                        item:{
+                                            borderColor: "#1293f8",
+                                            color: "#ffffff"
+                                        },
+                                        line:{
+                                            color:"#1293f8",
+                                            width:3
+                                        },
+                                        tooltip:{
+                                            template:"#sales3#"
+                                        }
+                                    },
+                                    {
+                                        value:"#sales2#",
+                                        item:{
+                                            borderColor: "#66cc00",
+                                            color: "#ffffff"
+                                        },
+                                        line:{
+                                            color:"#66cc00",
+                                            width:3
+                                        },
+                                        tooltip:{
+                                            template:"#sales2#"
+                                        }
+                                    }
+                                ],
+                                data:  [
+                                    { sales:"20", sales2:"35", sales3:"55", year:"02" },
+                                    { sales:"40", sales2:"24", sales3:"40", year:"03" },
+                                    { sales:"44", sales2:"20", sales3:"27", year:"04" },
+                                    { sales:"23", sales2:"50", sales3:"43", year:"05" },
+                                    { sales:"21", sales2:"36", sales3:"31", year:"06" },
+                                    { sales:"50", sales2:"40", sales3:"56", year:"07" },
+                                    { sales:"30", sales2:"65", sales3:"75", year:"08" },
+                                    { sales:"90", sales2:"62", sales3:"55", year:"09" },
+                                    { sales:"55", sales2:"40", sales3:"60", year:"10" },
+                                    { sales:"72", sales2:"45", sales3:"54", year:"11" }
+                                ]
+                                
+                            }
+                        ]},
+                        {
+                        rows:[
+                            {
+                                view: "template",
+                                template: "Year to Date invoiced vs. payed EUR",
+                                type:"header"
+                            },
+                            {
+                                view:"chart",
+                                type:"line",
+                                preset:"simple",
+                                xAxis:{ template:"#year#", title:"Month"},
+                                yAxis:{ title:"Amount (EUR)"},
+                                legend:{
+                                    values:[{text:"Invoiced",color:"#1293f8"},{text:"Payed",color:"#66cc00"}],
+                                    align:"right",
+                                    valign:"middle",
+                                    layout:"y",
+                                    width: 100,
+                                    margin: 8
+                                },
+                                series:[
+                                    {
+                                        value:"#sales#",
+                                        item:{
+                                            borderColor: "#1293f8",
+                                            color: "#ffffff"
+                                        },
+                                        line:{
+                                            color:"#1293f8",
+                                            width:3
+                                        },
+                                        tooltip:{
+                                            template:"#sales#"
+                                        }
+                                    },
+                                    {
+                                        value:"#sales2#",
+                                        item:{
+                                            borderColor: "#66cc00",
+                                            color: "#ffffff"
+                                        },
+                                        line:{
+                                            color:"#66cc00",
+                                            width:3
+                                        },
+                                        tooltip:{
+                                            template:"#sales2#"
+                                        }
+                                    }
+                                ],
+                                data:  [
+                                    { sales:"20", sales2:"35", sales3:"55", year:"02" },
+                                    { sales:"40", sales2:"24", sales3:"40", year:"03" },
+                                    { sales:"44", sales2:"20", sales3:"27", year:"04" },
+                                    { sales:"23", sales2:"50", sales3:"43", year:"05" },
+                                    { sales:"21", sales2:"36", sales3:"31", year:"06" },
+                                    { sales:"50", sales2:"40", sales3:"56", year:"07" },
+                                    { sales:"30", sales2:"65", sales3:"75", year:"08" },
+                                    { sales:"90", sales2:"62", sales3:"55", year:"09" },
+                                    { sales:"55", sales2:"40", sales3:"60", year:"10" },
+                                    { sales:"72", sales2:"45", sales3:"54", year:"11" }
+                                ]
+                                
+                            }
+                        ]
+                    }
+                ]
+
             }
         ]
     }

@@ -11,6 +11,7 @@ function(doc){
                     DUE_DATE: doc.DUE_DATE,
                     INVOICE_TOTAL: doc.INVOICE_TOTAL,
                     currency: (typeof doc.FURNIZOR.valuta !== 'undefined')?doc.FURNIZOR.valuta:"RON",
+                    eur_ron: doc.CURS_BNR.eur_ron,
                     doctype: doc.doctype
                 }
             );
@@ -24,6 +25,7 @@ function(doc){
                     PAYMENT_DATE: doc.PAYMENT_DATE,
                     PAYMENT_DETAILS: doc.PAYMENT_DETAILS,
                     PAYMENT_SUM: doc.PAYMENT_SUM,
+                    currency: doc.currency,
                     doctype: doc.doctype
                 }
             );

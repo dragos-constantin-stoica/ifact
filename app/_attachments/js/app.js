@@ -97,8 +97,6 @@ var myApp = {
             on:{
                 onItemClick: function(id, e, node){
                     var item = this.getItem(id);
-                    //console.log("Selected item id: " + id);
-                    //... some code here ... 
                     if(! $$("menu").config.hidden) $$("menu").hide();
                     $$('page-' + id).show();
                     $$('breadcrumb').setValue('iFact - ' + node.textContent);
