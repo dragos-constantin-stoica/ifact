@@ -121,9 +121,42 @@ function loadData(id) {
         case "6":
             //Configuration form
             var promise_pg6 = webix.ajax(SERVER_URL + DBNAME + LOAD_URL[id]);
-            promise_pg6.then(function(realdata) {
-                //success
-                $$("configForm").setValues(realdata.json());
+            //chart data for y2m
+            var promise_pg6_y2m = webix.ajax(SERVER_URL + DBNAME +"/_design/globallists/_list/y2m/charts/y2d");
+
+            webix.promise.all([promise_pg6, promise_pg6_y2m]).then(function(realdata) {
+                //success for SERIA, NUMARUL
+                $$("configForm").setValues(realdata[0].json());
+                //setup series for Y2M graph
+                var series_labels = [], raw_data = realdata[1].json();
+
+                raw_data.forEach(function(element) {
+                    //element is an object containing the series label as attribute
+                    for (var key in element) {
+                        if ((key.indexOf("_ron")!= -1 || key.indexOf("_eur") != -1) && series_labels.indexOf(key.substr(0,4)) == -1){
+                            series_labels.push(key.substr(0,4));
+                        }
+                    }
+                }, this);
+                series_labels.sort();
+                series_labels.forEach(function(elm){
+                    $$("y2m_ron").addSeries({
+                        value:"#"+elm+"_ron#",
+                        line:{color:"#36abee"}
+                    });
+                    $$("y2m_eur").addSeries({
+                        value:"#"+elm+"_eur#",
+                        line: {color:"#36abee"}
+                    });
+                    //normalize data
+                    raw_data.forEach(function(element){
+                        if(typeof element[elm+"_ron"] === 'undefined') element[elm+"_ron"]=0;
+                        if(typeof element[elm+"_eur"] === 'undefined') element[elm+"_eur"]=0;
+                    });
+        
+                });
+                $$("y2m_ron").parse(raw_data);
+                $$("y2m_eur").parse(raw_data);
             }).fail(function(err) {
                 //error
                 webix.message({ type: "error", text: err });

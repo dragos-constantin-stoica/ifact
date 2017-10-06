@@ -159,10 +159,10 @@ var config = {
                                     }
                                 ],
                                 url: "../../_design/globallists/_list/y2d/charts/y2d?startkey=[\""+ new Date().getFullYear() +"\",\"01\"]&endkey=[\""+ new Date().getFullYear() +"\",\"12\"]"
-                                
                             }
-                        ]},
-                        {
+                        ]
+                    },
+                    {
                         rows:[
                             {
                                 view: "template",
@@ -218,7 +218,45 @@ var config = {
                         ]
                     }
                 ]
-
+            },
+            {
+                cols:[
+                    {
+                        rows:[
+                            {
+                                view: "template",
+                                template: "Monthly invoiced per Year RON",
+                                type:"header"
+                            },
+                            {
+                                view:"chart",
+                                id: "y2m_ron",
+                                type:"line",
+                                preset:"simple",
+                                xAxis:{ template:"#month#", title:"Month"},
+                                yAxis:{ title:"Amount (RON)"}
+                            }
+                            
+                        ]
+                    },
+                    {
+                        rows:[
+                            {
+                                view: "template",
+                                template: "Monthly invoiced per Year EUR",
+                                type:"header"
+                            },
+                            {
+                                view:"chart",
+                                id: "y2m_eur",
+                                type:"line",
+                                preset:"simple",
+                                xAxis:{ template:"#month#", title:"Month"},
+                                yAxis:{ title:"Amount (EUR)"}
+                            }
+                        ]
+                    }
+                ]
             }
         ]
     }
