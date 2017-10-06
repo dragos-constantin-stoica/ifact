@@ -19,7 +19,8 @@ function(doc){
             emit(doc.doctype, {
                 id: doc.invoice_id,
                 PAYMENT_DATE: doc.PAYMENT_DATE,
-                PAYMENT_SUM: doc.PAYMENT_SUM
+                pay_eur: (doc.currency == "EUR")?doc.PAYMENT_SUM:(doc.PAYMENT_SUM/doc.eur_ron),
+                pay_ron: (doc.currency == "RON")?doc.PAYMENT_SUM:(doc.PAYMENT_SUM*doc.eur_ron)
             });
         }
     }

@@ -21,29 +21,36 @@ var payments = {
                 label: 'NEW PAYMENT',
                 type: 'form',
                 click: function() {
-                    var newpayment = $$('newPaymentForm').getValues();
-                    if (typeof newpayment.doctype === 'undefined') newpayment.doctype = 'PAYMENT';
-                    //newpayment.invoice_id = $$('invoiceList').getSelectedId();
-                    if (typeof newpayment.NUMARUL === 'string') newpayment.NUMARUL = parseInt(newpayment.NUMARUL, 10);
-                    if (typeof newpayment.PAYMENT_SUM === 'string') newpayment.PAYMENT_SUM = parseFloat(newpayment.PAYMENT_SUM);
-                    newpayment.PAYMENT_DETAILS = $$('newPaymentForm').elements.PAYMENT_DETAILS.getText();
-                    console.log(newpayment);
-                    $.couch.db(DBNAME).saveDoc(newpayment, {
-                        success: function(data) {
-                            console.log(data);
-                            webix.message("Plata pentru factura" + newpayment.SERIA + " - " + newpayment.NUMARUL +
-                                " a fost salvata cu succes în baza de date!");
-                            $$('newPaymentForm').clear();                                
-                        },
-                        error: function(status) {
-                            webix.message({ type: "error", text: status });
-                            console.log(status);
-                        }
-                    });
-                    $$('newPaymentWindow').hide();
+                    if(!$$('newPaymentForm').validate()) {
+                        webix.message({ type: "error", text: "Amount is mandatory and must be numeric!" });
+                        return;
+                    }else{
+                        var newpayment = $$('newPaymentForm').getValues();
+                        if (typeof newpayment.doctype === 'undefined') newpayment.doctype = 'PAYMENT';
+                        if (typeof newpayment.NUMARUL === 'string') newpayment.NUMARUL = parseInt(newpayment.NUMARUL, 10);
+                        if (typeof newpayment.PAYMENT_SUM === 'string') newpayment.PAYMENT_SUM = parseFloat(newpayment.PAYMENT_SUM);
+                        newpayment.PAYMENT_DETAILS = $$('newPaymentForm').elements.PAYMENT_DETAILS.getText();
+                        console.log(newpayment);
+                        $.couch.db(DBNAME).saveDoc(newpayment, {
+                            success: function(data) {
+                                console.log(data);
+                                webix.message("Plata pentru factura" + newpayment.SERIA + " - " + newpayment.NUMARUL +
+                                    " a fost salvata cu succes în baza de date!");
+                                $$('newPaymentForm').clear();                                
+                            },
+                            error: function(status) {
+                                webix.message({ type: "error", text: status });
+                                console.log(status);
+                            }
+                        });
+                        $$('newPaymentWindow').hide();
+                    }
                 }
             }
-        ]
+        ],
+        rules: {
+            PAYMENT_SUM: webix.rules.isNumber
+        }
     },
 
     editForm: {
@@ -329,7 +336,8 @@ var payments = {
 
     ui: {
         id: "page-5",
-        cols: [{
+        cols: [
+            {
                 header: "New",
                 body: {
                     view: "activeList",

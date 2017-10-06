@@ -62,8 +62,6 @@ function (head, req) {
                 ]);
             }else{
                 for(var i=0; i< elm.plata.length; i++){
-                    var pay_eur = (elm.valuta == "EUR")?elm.plata[i].PAYMENT_SUM:(elm.plata[i].PAYMENT_SUM/elm.eur_ron), 
-                    pay_ron = (elm.valuta == "RON")?elm.plata[i].PAYMENT_SUM:(elm.plata[i].PAYMENT_SUM*elm.eur_ron);
                     if (i==0){
                         results.push([
                             "",
@@ -73,8 +71,8 @@ function (head, req) {
                             elm.detalii,
                             elm.suma_eur,
                             elm.suma_ron,
-                            pay_eur,
-                            pay_ron,
+                            elm.plata[i].pay_eur,
+                            elm.plata[i].pay_ron,
                             elm.plata[i].PAYMENT_DATE
                         ]);
                     }else{
@@ -86,8 +84,8 @@ function (head, req) {
                             "",
                             "",
                             "",
-                            pay_eur,
-                            pay_ron,
+                            elm.plata[i].pay_eur,
+                            elm.plata[i].pay_ron,
                             elm.plata[i].PAYMENT_DATE
                         ]);
                     }

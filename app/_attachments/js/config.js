@@ -118,7 +118,7 @@ var config = {
                                 view:"chart",
                                 type:"line",
                                 preset:"simple",
-                                xAxis:{ template:"#year#", title:"Month"},
+                                xAxis:{ template:"#year_month#", title:"Month"},
                                 yAxis:{ title:"Amount (RON)"},
                                 legend:{
                                     values:[{text:"Invoiced",color:"#1293f8"},{text:"Payed",color:"#66cc00"}],
@@ -130,7 +130,7 @@ var config = {
                                 },
                                 series:[
                                     {
-                                        value:"#sales3#",
+                                        value:"#invoiced_ron#",
                                         item:{
                                             borderColor: "#1293f8",
                                             color: "#ffffff"
@@ -140,11 +140,11 @@ var config = {
                                             width:3
                                         },
                                         tooltip:{
-                                            template:"#sales3#"
+                                            template:"#invoiced_ron#"
                                         }
                                     },
                                     {
-                                        value:"#sales2#",
+                                        value:"#payed_ron#",
                                         item:{
                                             borderColor: "#66cc00",
                                             color: "#ffffff"
@@ -154,22 +154,11 @@ var config = {
                                             width:3
                                         },
                                         tooltip:{
-                                            template:"#sales2#"
+                                            template:"#payed_ron#"
                                         }
                                     }
                                 ],
-                                data:  [
-                                    { sales:"20", sales2:"35", sales3:"55", year:"02" },
-                                    { sales:"40", sales2:"24", sales3:"40", year:"03" },
-                                    { sales:"44", sales2:"20", sales3:"27", year:"04" },
-                                    { sales:"23", sales2:"50", sales3:"43", year:"05" },
-                                    { sales:"21", sales2:"36", sales3:"31", year:"06" },
-                                    { sales:"50", sales2:"40", sales3:"56", year:"07" },
-                                    { sales:"30", sales2:"65", sales3:"75", year:"08" },
-                                    { sales:"90", sales2:"62", sales3:"55", year:"09" },
-                                    { sales:"55", sales2:"40", sales3:"60", year:"10" },
-                                    { sales:"72", sales2:"45", sales3:"54", year:"11" }
-                                ]
+                                url: "../../_design/globallists/_list/y2d/charts/y2d?startkey=[\""+ new Date().getFullYear() +"\",\"01\"]&endkey=[\""+ new Date().getFullYear() +"\",\"12\"]"
                                 
                             }
                         ]},
@@ -184,7 +173,7 @@ var config = {
                                 view:"chart",
                                 type:"line",
                                 preset:"simple",
-                                xAxis:{ template:"#year#", title:"Month"},
+                                xAxis:{ template:"#year_month#", title:"Month"},
                                 yAxis:{ title:"Amount (EUR)"},
                                 legend:{
                                     values:[{text:"Invoiced",color:"#1293f8"},{text:"Payed",color:"#66cc00"}],
@@ -196,7 +185,7 @@ var config = {
                                 },
                                 series:[
                                     {
-                                        value:"#sales#",
+                                        value:"#invoiced_eur#",
                                         item:{
                                             borderColor: "#1293f8",
                                             color: "#ffffff"
@@ -206,11 +195,11 @@ var config = {
                                             width:3
                                         },
                                         tooltip:{
-                                            template:"#sales#"
+                                            template:"#invoiced_eur#"
                                         }
                                     },
                                     {
-                                        value:"#sales2#",
+                                        value:"#payed_eur#",
                                         item:{
                                             borderColor: "#66cc00",
                                             color: "#ffffff"
@@ -220,23 +209,11 @@ var config = {
                                             width:3
                                         },
                                         tooltip:{
-                                            template:"#sales2#"
+                                            template:"#payed_eur#"
                                         }
                                     }
                                 ],
-                                data:  [
-                                    { sales:"20", sales2:"35", sales3:"55", year:"02" },
-                                    { sales:"40", sales2:"24", sales3:"40", year:"03" },
-                                    { sales:"44", sales2:"20", sales3:"27", year:"04" },
-                                    { sales:"23", sales2:"50", sales3:"43", year:"05" },
-                                    { sales:"21", sales2:"36", sales3:"31", year:"06" },
-                                    { sales:"50", sales2:"40", sales3:"56", year:"07" },
-                                    { sales:"30", sales2:"65", sales3:"75", year:"08" },
-                                    { sales:"90", sales2:"62", sales3:"55", year:"09" },
-                                    { sales:"55", sales2:"40", sales3:"60", year:"10" },
-                                    { sales:"72", sales2:"45", sales3:"54", year:"11" }
-                                ]
-                                
+                                url: "../../_design/globallists/_list/y2d/charts/y2d?startkey=[\""+ new Date().getFullYear() +"\",\"01\"]&endkey=[\""+ new Date().getFullYear() +"\",\"12\"]"                                
                             }
                         ]
                     }
