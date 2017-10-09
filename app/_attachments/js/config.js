@@ -81,7 +81,12 @@ var config = {
         });
     },
     
-    ui: {
+    series_y2m_ron: [],
+
+    legend_y2m_ron: {},
+
+    ui: function(){
+    return  {
         id: "page-6",
         rows:[
             {
@@ -234,7 +239,9 @@ var config = {
                                 type:"line",
                                 preset:"simple",
                                 xAxis:{ template:"#month#", title:"Month"},
-                                yAxis:{ title:"Amount (RON)"}
+                                yAxis:{ title:"Amount (RON)"},
+                                legend: function(){ return (config)?config.legend_y2m_ron:{};}(),
+                                series: function(){ return (config)?config.series_y2m_ron:[];}()
                             }
                             
                         ]
@@ -252,13 +259,16 @@ var config = {
                                 type:"line",
                                 preset:"simple",
                                 xAxis:{ template:"#month#", title:"Month"},
-                                yAxis:{ title:"Amount (EUR)"}
+                                yAxis:{ title:"Amount (EUR)"},
+                                legend: function(){ return (config)?config.legend_y2m_eur:{};}(),
+                                series: function(){ return (config)?config.series_y2m_eur:[];}()
                             }
                         ]
                     }
                 ]
             }
         ]
-    }
+    };
+}
     
 };

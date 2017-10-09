@@ -55,18 +55,28 @@ var myApp = {
                 id: "mainPage",
                 view: "multiview",
                 cells: [
-                    supplier.ui,
-                    customers.ui,
-                    contracts.ui,
-                    invoice.ui,
-                    payments.ui,
-                    config.ui
+                    webix.copy(supplier.ui),
+                    webix.copy(customers.ui),
+                    webix.copy(contracts.ui),
+                    webix.copy(invoice.ui),
+                    webix.copy(payments.ui),
+                    webix.copy(config.ui())
                 ],
                 fitBiggest:true
             }
         ]
     },
     
+
+    views: [
+        supplier.ui,
+        customers.ui,
+        contracts.ui,
+        invoice.ui,
+        payments.ui,
+        config.ui
+    ],
+
     sidemenu: {
         view: "sidemenu",
         id: "menu",
@@ -98,7 +108,8 @@ var myApp = {
                 onItemClick: function(id, e, node){
                     var item = this.getItem(id);
                     if(! $$("menu").config.hidden) $$("menu").hide();
-                    $$('page-' + id).show();
+                    preprocess(id);
+                    
                     $$('breadcrumb').setValue('iFact - ' + node.textContent);
                     loadData(id);
                 }

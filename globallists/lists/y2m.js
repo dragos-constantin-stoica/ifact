@@ -20,8 +20,8 @@ function (head, req) {
             var tmpData = {
                 month: row.key[1]
             };
-            tmpData[row.key[0]+"_ron"] = (row.value.type == "INVOICE")?row.value.ron:0;
-            tmpData[row.key[0]+"_eur"] = (row.value.type == "INVOICE")?row.value.eur:0;
+            tmpData["ron_" + row.key[0]] = (row.value.type == "INVOICE")?row.value.ron:0;
+            tmpData["eur_" + row.key[0]] = (row.value.type == "INVOICE")?row.value.eur:0;
             
             var dataIndex = -1;
             var dataElm = results.filter(filterElm);
@@ -30,8 +30,8 @@ function (head, req) {
                 results.push(tmpData);
             }else{
                 //update values for that element
-                tmpData[row.key[0]+"_ron"] += (typeof dataElm[0][row.key[0]+"_ron"] !== 'undefined')?dataElm[0][row.key[0]+"_ron"]:0;
-                tmpData[row.key[0]+"_eur"] += (typeof dataElm[0][row.key[0]+"_eur"] !== 'undefined')?dataElm[0][row.key[0]+"_eur"]:0;
+                tmpData["ron_" + row.key[0]] += (typeof dataElm[0]["ron_" + row.key[0]] !== 'undefined')?dataElm[0]["ron_" + row.key[0]]:0;
+                tmpData["eur_" + row.key[0]] += (typeof dataElm[0]["eur_" + row.key[0]] !== 'undefined')?dataElm[0]["eur_" + row.key[0]]:0;
                 results[dataIndex] = tmpData;
             }
 
