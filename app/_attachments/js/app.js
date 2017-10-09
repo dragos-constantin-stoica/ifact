@@ -55,11 +55,11 @@ var myApp = {
                 id: "mainPage",
                 view: "multiview",
                 cells: [
-                    webix.copy(supplier.ui),
-                    webix.copy(customers.ui),
-                    webix.copy(contracts.ui),
-                    webix.copy(invoice.ui),
-                    webix.copy(payments.ui),
+                    supplier.ui,
+                    customers.ui,
+                    contracts.ui,
+                    invoice.ui,
+                    payments.ui,
                     webix.copy(config.ui())
                 ],
                 fitBiggest:true
@@ -109,7 +109,6 @@ var myApp = {
                     var item = this.getItem(id);
                     if(! $$("menu").config.hidden) $$("menu").hide();
                     preprocess(id);
-                    
                     $$('breadcrumb').setValue('iFact - ' + node.textContent);
                     loadData(id);
                 }

@@ -86,189 +86,208 @@ var config = {
     legend_y2m_ron: {},
 
     ui: function(){
-    return  {
-        id: "page-6",
-        rows:[
-            {
-                view: "form",
-                id: "configForm",
-                elements:[
-                    { view:"fieldset", label:"Serii Facturi", body:{
-                        rows:[
-                            { view:"text", label:"SERIA:", placeholder:"Seria", name:"SERIA", labelWidth:180},
-                            { view:"counter", label:"NUMARUL:", step:1, min:0, name:"NUMARUL", labelWidth:180}    
-                        ]
+        return  {
+            id: "page-6",
+            rows:[
+                {
+                    cols:[
+                        {
+                            rows:[
+                                {
+                                    view: "form",
+                                    id: "configForm",
+                                    elements:[
+                                        { view:"fieldset", label:"Serii Facturi", body:{
+                                            rows:[
+                                                { view:"text", label:"SERIA:", placeholder:"Seria", name:"SERIA", labelWidth:180},
+                                                { view:"counter", label:"NUMARUL:", step:1, min:0, name:"NUMARUL", labelWidth:180}    
+                                            ]
+                                            }
+                                        },
+                                        {view:"button", label:"SAVE", click:'config.save'},
+                                        { view:"button", label:"Export to Excel", click:'config.export'}
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            rows:[
+                                { 
+                                    view:"property", id:"financialSummary",
+                                    elements:[
+                                        { label:"RON Year to Date", type:"label"},
+                                        { label:"Invoiced", type:"text", id:"invoicedRON"},
+                                        { label:"Overdue", type:"text", id:"dueRON"},
+                                        { label:"Payed", type:"text", id:"payedRON"},
+                                        { label:"EUR Year to Date", type:"label"},
+                                        { label:"Invoiced", type:"text", id:"invoicedEUR"},
+                                        { label:"Overdue", type:"text", id:"dueEUR"},
+                                        { label:"Payed", type:"text", id:"payedEUR"}
+                                    ]
+                                }
+                            ]
                         }
-                    },
-                    {view:"button", label:"SAVE", click:'config.save()'}
-                ]
-            },
-            {
-                view: "form", 
-                id: "exportForm",
-                elements:[
-                    { view:"button", label:"Export to Excel", click:'config.export'}
-                ]
-            },
-            {
-                cols: [
-                    {
-                        rows:[
-                            {
-                                view: "template",
-                                template: "Year to Date invoiced vs. payed RON",
-                                type:"header"
-                            },
-                            {
-                                view:"chart",
-                                type:"line",
-                                preset:"simple",
-                                xAxis:{ template:"#year_month#", title:"Month"},
-                                yAxis:{ title:"Amount (RON)"},
-                                legend:{
-                                    values:[{text:"Invoiced",color:"#1293f8"},{text:"Payed",color:"#66cc00"}],
-                                    align:"right",
-                                    valign:"middle",
-                                    layout:"y",
-                                    width: 100,
-                                    margin: 8
+                    ]                    
+                },
+                {
+                    cols: [
+                        {
+                            rows:[
+                                {
+                                    view: "template",
+                                    template: "Year to Date invoiced vs. payed RON",
+                                    type:"header"
                                 },
-                                series:[
-                                    {
-                                        value:"#invoiced_ron#",
-                                        item:{
-                                            borderColor: "#1293f8",
-                                            color: "#ffffff"
-                                        },
-                                        line:{
-                                            color:"#1293f8",
-                                            width:3
-                                        },
-                                        tooltip:{
-                                            template:"#invoiced_ron#"
-                                        }
+                                {
+                                    view:"chart",
+                                    type:"line",
+                                    preset:"simple",
+                                    xAxis:{ template:"#year_month#", title:"Month"},
+                                    yAxis:{ title:"Amount (RON)"},
+                                    legend:{
+                                        values:[{text:"Invoiced",color:"#1293f8"},{text:"Payed",color:"#66cc00"}],
+                                        align:"right",
+                                        valign:"middle",
+                                        layout:"y",
+                                        width: 100,
+                                        margin: 8
                                     },
-                                    {
-                                        value:"#payed_ron#",
-                                        item:{
-                                            borderColor: "#66cc00",
-                                            color: "#ffffff"
+                                    series:[
+                                        {
+                                            value:"#invoiced_ron#",
+                                            item:{
+                                                borderColor: "#1293f8",
+                                                color: "#ffffff"
+                                            },
+                                            line:{
+                                                color:"#1293f8",
+                                                width:3
+                                            },
+                                            tooltip:{
+                                                template:"#invoiced_ron#"
+                                            }
                                         },
-                                        line:{
-                                            color:"#66cc00",
-                                            width:3
-                                        },
-                                        tooltip:{
-                                            template:"#payed_ron#"
+                                        {
+                                            value:"#payed_ron#",
+                                            item:{
+                                                borderColor: "#66cc00",
+                                                color: "#ffffff"
+                                            },
+                                            line:{
+                                                color:"#66cc00",
+                                                width:3
+                                            },
+                                            tooltip:{
+                                                template:"#payed_ron#"
+                                            }
                                         }
-                                    }
-                                ],
-                                url: "../../_design/globallists/_list/y2d/charts/y2d?startkey=[\""+ new Date().getFullYear() +"\",\"01\"]&endkey=[\""+ new Date().getFullYear() +"\",\"12\"]"
-                            }
-                        ]
-                    },
-                    {
-                        rows:[
-                            {
-                                view: "template",
-                                template: "Year to Date invoiced vs. payed EUR",
-                                type:"header"
-                            },
-                            {
-                                view:"chart",
-                                type:"line",
-                                preset:"simple",
-                                xAxis:{ template:"#year_month#", title:"Month"},
-                                yAxis:{ title:"Amount (EUR)"},
-                                legend:{
-                                    values:[{text:"Invoiced",color:"#1293f8"},{text:"Payed",color:"#66cc00"}],
-                                    align:"right",
-                                    valign:"middle",
-                                    layout:"y",
-                                    width: 100,
-                                    margin: 8
+                                    ],
+                                    url: "../../_design/globallists/_list/y2d/charts/y2d?startkey=[\""+ new Date().getFullYear() +"\",\"01\"]&endkey=[\""+ new Date().getFullYear() +"\",\"12\"]"
+                                }
+                            ]                    
+                        },
+                        {
+                            rows:[
+                                {
+                                    view: "template",
+                                    template: "Year to Date invoiced vs. payed EUR",
+                                    type:"header"
                                 },
-                                series:[
-                                    {
-                                        value:"#invoiced_eur#",
-                                        item:{
-                                            borderColor: "#1293f8",
-                                            color: "#ffffff"
-                                        },
-                                        line:{
-                                            color:"#1293f8",
-                                            width:3
-                                        },
-                                        tooltip:{
-                                            template:"#invoiced_eur#"
-                                        }
+                                {
+                                    view:"chart",
+                                    type:"line",
+                                    preset:"simple",
+                                    xAxis:{ template:"#year_month#", title:"Month"},
+                                    yAxis:{ title:"Amount (EUR)"},
+                                    legend:{
+                                        values:[{text:"Invoiced",color:"#1293f8"},{text:"Payed",color:"#66cc00"}],
+                                        align:"right",
+                                        valign:"middle",
+                                        layout:"y",
+                                        width: 100,
+                                        margin: 8
                                     },
-                                    {
-                                        value:"#payed_eur#",
-                                        item:{
-                                            borderColor: "#66cc00",
-                                            color: "#ffffff"
+                                    series:[
+                                        {
+                                            value:"#invoiced_eur#",
+                                            item:{
+                                                borderColor: "#1293f8",
+                                                color: "#ffffff"
+                                            },
+                                            line:{
+                                                color:"#1293f8",
+                                                width:3
+                                            },
+                                            tooltip:{
+                                                template:"#invoiced_eur#"
+                                            }
                                         },
-                                        line:{
-                                            color:"#66cc00",
-                                            width:3
-                                        },
-                                        tooltip:{
-                                            template:"#payed_eur#"
+                                        {
+                                            value:"#payed_eur#",
+                                            item:{
+                                                borderColor: "#66cc00",
+                                                color: "#ffffff"
+                                            },
+                                            line:{
+                                                color:"#66cc00",
+                                                width:3
+                                            },
+                                            tooltip:{
+                                                template:"#payed_eur#"
+                                            }
                                         }
-                                    }
-                                ],
-                                url: "../../_design/globallists/_list/y2d/charts/y2d?startkey=[\""+ new Date().getFullYear() +"\",\"01\"]&endkey=[\""+ new Date().getFullYear() +"\",\"12\"]"                                
-                            }
-                        ]
-                    }
-                ]
-            },
-            {
-                cols:[
-                    {
-                        rows:[
-                            {
-                                view: "template",
-                                template: "Monthly invoiced per Year RON",
-                                type:"header"
-                            },
-                            {
-                                view:"chart",
-                                id: "y2m_ron",
-                                type:"line",
-                                preset:"simple",
-                                xAxis:{ template:"#month#", title:"Month"},
-                                yAxis:{ title:"Amount (RON)"},
-                                legend: function(){ return (config)?config.legend_y2m_ron:{};}(),
-                                series: function(){ return (config)?config.series_y2m_ron:[];}()
-                            }
-                            
-                        ]
-                    },
-                    {
-                        rows:[
-                            {
-                                view: "template",
-                                template: "Monthly invoiced per Year EUR",
-                                type:"header"
-                            },
-                            {
-                                view:"chart",
-                                id: "y2m_eur",
-                                type:"line",
-                                preset:"simple",
-                                xAxis:{ template:"#month#", title:"Month"},
-                                yAxis:{ title:"Amount (EUR)"},
-                                legend: function(){ return (config)?config.legend_y2m_eur:{};}(),
-                                series: function(){ return (config)?config.series_y2m_eur:[];}()
-                            }
-                        ]
-                    }
-                ]
-            }
-        ]
-    };
-}
+                                    ],
+                                    url: "../../_design/globallists/_list/y2d/charts/y2d?startkey=[\""+ new Date().getFullYear() +"\",\"01\"]&endkey=[\""+ new Date().getFullYear() +"\",\"12\"]"                                
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    cols: [
+                        {
+                            rows:[
+                                {
+                                    view: "template",
+                                    template: "Monthly invoiced per Year RON",
+                                    type:"header"
+                                },
+                                {
+                                    view:"chart",
+                                    id: "y2m_ron",
+                                    type:"line",
+                                    preset:"simple",
+                                    xAxis:{ template:"#month#", title:"Month"},
+                                    yAxis:{ title:"Amount (RON)"},
+                                    legend: function(){ return (config)?config.legend_y2m_ron:{};}(),
+                                    series: function(){ return (config)?config.series_y2m_ron:[];}()
+                                }
+                                
+                            ]
+                        },
+                        {
+                            rows:[
+                                {
+                                    view: "template",
+                                    template: "Monthly invoiced per Year EUR",
+                                    type:"header"
+                                },
+                                {
+                                    view:"chart",
+                                    id: "y2m_eur",
+                                    type:"line",
+                                    preset:"simple",
+                                    xAxis:{ template:"#month#", title:"Month"},
+                                    yAxis:{ title:"Amount (EUR)"},
+                                    legend: function(){ return (config)?config.legend_y2m_eur:{};}(),
+                                    series: function(){ return (config)?config.series_y2m_eur:[];}()
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        };
+    }
     
 };
