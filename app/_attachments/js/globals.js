@@ -24,9 +24,18 @@ var USERNAME = {
  * Create new view that extends List and webix.ActiveContent
  * 
  */
-webix.protoUI({
-    name: "activeList"
-}, webix.ui.list, webix.ActiveContent);
+webix.protoUI(  {name: 'activeList'}, 
+                webix.ui.list, 
+                webix.ActiveContent );
+
+/**
+ * 
+ * Create new view that extends Datatable and webix.ActiveContent
+ * 
+ */
+webix.protoUI(  {name:'activeTable'}, 
+                webix.ui.datatable, 
+                webix.ActiveContent );
 
 
 /**

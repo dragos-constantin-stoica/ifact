@@ -135,6 +135,13 @@ var invoice = {
         });
     },
 
+    addLine: function(){
+        //get the window with the edit form
+        $$("invoice_lines").add({
+            i_details: "pufi"
+        });
+    },
+
     ui: {
         id: "page-4",
         cols: [{
@@ -184,26 +191,56 @@ var invoice = {
                             url: "CouchDB->../../_design/globallists/_list/toja/contract/getcontract"
                         }
                     },
-                    {
-                        view: "datepicker",
-                        stringResult: true,
-                        format: webix.Date.dateToStr("%d.%m.%Y"),
-                        date: new Date(),
-                        name: "invoice_date",
-                        label: "Data emiterii:",
-                        placeholder: "data emiterii facturii"
-                    },
-                    {
-                        view: "datepicker",
-                        stringResult: true,
-                        format: webix.Date.dateToStr("%d.%m.%Y"),
-                        date: new Date(),
-                        name: "due_date",
-                        label: "Data scadentei:",
-                        placeholder: "data scadenta"
-                    },
+                    { view: "datepicker", stringResult: true, format: webix.Date.dateToStr("%d.%m.%Y"), date: new Date(), name: "invoice_date", label: "Data emiterii:", placeholder: "data emiterii facturii" },
+                    { view: "datepicker", stringResult: true, format: webix.Date.dateToStr("%d.%m.%Y"), date: new Date(), name: "due_date", label: "Data scadentei:", placeholder: "data scadenta" },
                     { view: "text", name: "TVA", label: "TVA:", placeholder: "TVA in procente" },
                     { view: "text", name: "exchange_rate", label: "Curs BNR:", placeholder: "Cursul BNR pentru €$£->RON la data emiterii facturii" },
+
+                    {
+                        view: "forminput",
+                        //label: "Linii factura:",
+                        //labelPosition:"top",
+                        height: 260,
+                        labelWidth:0,
+                        body:{
+                            rows:[
+                                {
+                                    view:"activeTable", autoheight:true, autowidth: true, select:false,
+                                    id: "invoice_lines",
+                                    activeContent:{
+                                        editButton: { 
+                                            view:'button', type:'icon', icon:'pencil-square-o', width: 32,
+                                            click:function(id, e){
+                                                var item_id = this.config.$masterId;
+                                              //$$("table1").remove(item_id.row)
+                                              //launch the edit form
+                                            }
+                                        },
+                                        delButton: { 
+                                            view:'button', type:'icon', icon:'trash-o', width: 32,
+                                            click:function(id, e){
+                                                var item_id = this.config.$masterId;
+                                              $$("invoice_lines").remove(item_id.row);
+                                            }
+                                        }
+                                    },
+                                    columns:[
+                                        { id:"i_details", header:"Detalii", fillspace: 1},
+                                        { id:"i_mu", header:"UM", fillspace: 1},
+                                        { id:"i_qty", header:"Cant.", fillspace: 1},
+                                        { id: "i_up", header: "PU", fillspace:1},
+                                        { id:"i_value", header:"Suma", fillspace:1},
+                                        { id: "actions", header:"Actions", template: "{common.editButton()} {common.delButton()}", fillspace:1 }
+                                    ]
+                                },
+                                {view:"button", type:"icon", icon:"plus-square", label: "Add", width: 80, click: "invoice.addLine"}
+                            ]
+                        }
+                        
+
+                    },
+
+
                     { view: "textarea", name: "invoice_details", label: "Detalii factura:", placeholder: "descrierea bunurilor si a serviciilor", height: 110 },
                     { view: "text", name: "invoice_mu", label: "UM:", placeholder: "unitatea de masura" },
                     { view: "text", name: "invoice_qty", label: "Cantitatea:", placeholder: "cantiatea" },
