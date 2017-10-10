@@ -61,7 +61,7 @@ var myApp = {
                     contracts.ui,
                     invoice.ui,
                     payments.ui,
-                   config.ui()
+                    config.ui()
                 ],
                 fitBiggest:true
             }

@@ -84,24 +84,23 @@ var config = {
     ui: function(){
         return  {
             id: "page-6",
+            fitBiggest: true,
             rows:[
                 {
                     cols:[
                         {
                             rows:[
-                                {
-                                    view: "form",
-                                    id: "configForm",
+                                { 
+                                    view:"property", id:"financialStatementY2D", autoheight: true, editable: false,
                                     elements:[
-                                        { view:"fieldset", label:"Serii Facturi", body:{
-                                            rows:[
-                                                { view:"text", label:"SERIA:", placeholder:"Seria", name:"SERIA", labelWidth:180},
-                                                { view:"counter", label:"NUMARUL:", step:1, min:0, name:"NUMARUL", labelWidth:180}    
-                                            ]
-                                            }
-                                        },
-                                        {view:"button", label:"SAVE", click:'config.save'},
-                                        { view:"button", label:"Export to Excel", click:'config.export'}
+                                        { label:"RON Year to Date", type:"label"},
+                                        { label:"Invoiced", type:"text", id:"invoicedRONY2D"},
+                                        { label:"Overdue", type:"text", id:"dueRONY2D"},
+                                        { label:"Payed", type:"text", id:"payedRONY2D"},
+                                        { label:"EUR Year to Date", type:"label"},
+                                        { label:"Invoiced", type:"text", id:"invoicedEURY2D"},
+                                        { label:"Overdue", type:"text", id:"dueEURY2D"},
+                                        { label:"Payed", type:"text", id:"payedEURY2D"}
                                     ]
                                 }
                             ]
@@ -109,20 +108,42 @@ var config = {
                         {
                             rows:[
                                 { 
-                                    view:"property", id:"financialSummary",
+                                    view:"property", id:"financialStatement", autoheight: true, editable: false,
                                     elements:[
-                                        { label:"RON Year to Date", type:"label"},
+                                        { label:"RON TOTAL", type:"label"},
                                         { label:"Invoiced", type:"text", id:"invoicedRON"},
                                         { label:"Overdue", type:"text", id:"dueRON"},
                                         { label:"Payed", type:"text", id:"payedRON"},
-                                        { label:"EUR Year to Date", type:"label"},
+                                        { label:"EUR TOTAL", type:"label"},
                                         { label:"Invoiced", type:"text", id:"invoicedEUR"},
                                         { label:"Overdue", type:"text", id:"dueEUR"},
                                         { label:"Payed", type:"text", id:"payedEUR"}
                                     ]
                                 }
                             ]
-                        }
+                        },
+                        {
+                            rows:[
+                                {
+                                    view: "form",
+                                    id: "configForm",
+                                    
+                                    elementsConfig: { labelWidth: 180 },
+                                    elements:[
+                                        { view:"fieldset", label:"Serii Facturi", body:{
+                                            rows:[
+                                                { view:"text", label:"SERIA:", placeholder:"Seria", name:"SERIA"},
+                                                { view:"counter", label:"NUMARUL:", step:1, min:0, name:"NUMARUL"},
+                                                {view:"button", label:"SAVE", type:"danger", click:'config.save'}   
+                                            ]
+                                            }
+                                        },
+                                        //{ template:"Export all data", type:"section"},
+                                        { view:"button", type:"iconButton", icon:"file-excel-o", label:"Export to Excel", click:'config.export'}
+                                    ]
+                                }
+                            ]
+                        }                        
                     ]                    
                 },
                 {
@@ -139,7 +160,7 @@ var config = {
                                     type:"line",
                                     preset:"simple",
                                     xAxis:{ template:"#year_month#", title:"Month"},
-                                    yAxis:{ title:"Amount (RON)"},
+                                    yAxis:{ title:"Amount (RON)", template: function(obj){return (obj%1000?"":obj/1000+"k");}},
                                     legend:{
                                         values:[{text:"Invoiced",color:"#1293f8"},{text:"Payed",color:"#66cc00"}],
                                         align:"right",
@@ -194,7 +215,7 @@ var config = {
                                     type:"line",
                                     preset:"simple",
                                     xAxis:{ template:"#year_month#", title:"Month"},
-                                    yAxis:{ title:"Amount (EUR)"},
+                                    yAxis:{ title:"Amount (EUR)", template: function(obj){return (obj%1000?"":obj/1000+"k");}},
                                     legend:{
                                         values:[{text:"Invoiced",color:"#1293f8"},{text:"Payed",color:"#66cc00"}],
                                         align:"right",
@@ -255,7 +276,7 @@ var config = {
                                     type:"line",
                                     preset:"simple",
                                     xAxis:{ template:"#month#", title:"Month"},
-                                    yAxis:{ title:"Amount (RON)"},
+                                    yAxis:{ title:"Amount (RON)", template: function(obj){return (obj%1000?"":obj/1000+"k");}},
                                     legend: function(){ return (config)?config.legend_y2m_ron:{};}(),
                                     series: function(){ return (config)?config.series_y2m_ron:[];}()
                                 }
@@ -275,7 +296,7 @@ var config = {
                                     type:"line",
                                     preset:"simple",
                                     xAxis:{ template:"#month#", title:"Month"},
-                                    yAxis:{ title:"Amount (EUR)"},
+                                    yAxis:{ title:"Amount (EUR)", template: function(obj){return (obj%1000?"":obj/1000+"k");}},
                                     legend: function(){ return (config)?config.legend_y2m_eur:{};}(),
                                     series: function(){ return (config)?config.series_y2m_eur:[];}()
                                 }

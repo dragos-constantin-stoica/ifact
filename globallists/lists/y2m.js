@@ -2,7 +2,7 @@ function (head, req) {
     // specify that we're providing a JSON response
     provides('json', function() {
         // create an array for our result set
-        var results = [];
+        var results = [], years = [];
 
         for (var i = 1; i <= 12; i++){
             results.push({
@@ -20,8 +20,10 @@ function (head, req) {
             var tmpData = {
                 month: row.key[1]
             };
-            tmpData["ron_" + row.key[0]] = (row.value.type == "INVOICE")?row.value.ron:0;
-            tmpData["eur_" + row.key[0]] = (row.value.type == "INVOICE")?row.value.eur:0;
+            var yr = row.key[0];
+            if (years.indexOf(yr) == -1) years.push(yr);
+            tmpData["ron_" + yr] = (row.value.type == "INVOICE")?row.value.ron:0;
+            tmpData["eur_" + yr] = (row.value.type == "INVOICE")?row.value.eur:0;
             
             var dataIndex = -1;
             var dataElm = results.filter(filterElm);
@@ -30,19 +32,32 @@ function (head, req) {
                 results.push(tmpData);
             }else{
                 //update values for that element
-                tmpData["ron_" + row.key[0]] += (typeof dataElm[0]["ron_" + row.key[0]] !== 'undefined')?dataElm[0]["ron_" + row.key[0]]:0;
-                tmpData["eur_" + row.key[0]] += (typeof dataElm[0]["eur_" + row.key[0]] !== 'undefined')?dataElm[0]["eur_" + row.key[0]]:0;
+                tmpData["ron_" + yr] += (typeof dataElm[0]["ron_" + yr] !== 'undefined')?dataElm[0]["ron_" + yr]:0;
+                tmpData["eur_" + yr] += (typeof dataElm[0]["eur_" + yr] !== 'undefined')?dataElm[0]["eur_" + yr]:0;
                 results[dataIndex] = tmpData;
             }
 
         }
-
+        years.sort();
         /*
-        results.forEach(function(elm){
-            elm.invoiced_ron = elm.invoiced_ron.toFixed();
-            elm.invoiced_eur = elm.invoiced_eur.toFixed();
-        });
+        normalize results
         */
+        results.forEach(function(elm){
+            years.forEach(function(element){
+                if (typeof elm["ron_" + element] === 'undefined') {
+                    elm["ron_" + element] = 0;
+                }else{
+                    elm["ron_" + element] =elm["ron_" + element].toFixed();
+                }
+
+                if (typeof elm["eur_" + element] === 'undefined') {
+                    elm["eur_" + element] = 0;
+                }else{
+                    elm["eur_" + element] =elm["eur_" + element].toFixed();
+                }
+            });
+
+        });
 
         // make sure to stringify the results :)
         send(JSON.stringify(results));

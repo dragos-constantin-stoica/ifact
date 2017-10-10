@@ -1,6 +1,8 @@
 /**
-Store user session at global level in browser session storage
-*/
+ * 
+ * Store user session at global level in browser session storage
+ * 
+ */
 var USERNAME = {
 
     getUSERNAME: function() {
@@ -17,24 +19,32 @@ var USERNAME = {
 };
 
 
-/*Create new view that extends List and webix.ActiveContent*/
+/**
+ * 
+ * Create new view that extends List and webix.ActiveContent
+ * 
+ */
 webix.protoUI({
     name: "activeList"
 }, webix.ui.list, webix.ActiveContent);
 
 
 /**
-CouchDB configuration
-- database name
-- server URL, so that the application may run from any CouchDB instance
-  that is exposed to the web
+ * 
+ * CouchDB configuration
+ *  - database name
+ * - server URL, so that the application may run from any CouchDB instance
+ *   that is exposed to the web
+ * 
 */
 var DBNAME = "ifact";
 var SERVER_URL = window.location.origin + "/";
 
 /**
-URL for loading JSON arrays for each view
-*/
+ * 
+ * URL for loading JSON arrays for each view
+ * 
+ */
 var LOAD_URL = {
     1: "/_design/globallists/_list/toja/supplier/getsupplier",
     2: "/_design/globallists/_list/toja/customer/getcustomer",
@@ -45,21 +55,21 @@ var LOAD_URL = {
 };
 
 /**
-Date formatting function
-*/
+ * 
+ * Date formatting function
+ * 
+ */
 var myDateFormat = webix.Date.dateToStr("%d.%m.%Y");
 
 
 /**
+ * 
  * Preprocess function has as main objective the coniguration
  * and preparation of data and layout components before rendering.
  * 
  * This is called before view show and data loading.
  * 
  */
-
-
-
 function preprocess(id) {
 
     switch (id) {
@@ -78,14 +88,13 @@ function preprocess(id) {
                 //setup series for Y2M graph
                 var series_labels = [], raw_data = realdata.json();
 
-                raw_data.forEach(function(element) {
-                    //element is an object containing the series label as attribute
-                    for (var key in element) {
-                        if ((key.indexOf("ron_")!= -1 || key.indexOf("eur_") != -1) && series_labels.indexOf(key.substr(4,4)) == -1){
-                            series_labels.push(key.substr(4,4));
-                        }
+                //element is an object containing the series label as attribute
+                for (var key in raw_data[0]) {
+                    if ((key.indexOf("ron_")!= -1 || key.indexOf("eur_") != -1) && series_labels.indexOf(key.substr(4,4)) == -1){
+                        series_labels.push(key.substr(4,4));
                     }
-                }, this);
+                }
+                
                 series_labels.sort();
                 var line_colors = ["#342b75", "#63a05a", "#6eace9", "#843b0e", "#aabc59", "#e4c495", "#f06497"];
                 //generateRandomColors(series_labels.length);
@@ -113,23 +122,22 @@ function preprocess(id) {
                     
                     config.series_y2m_ron.push({
                         value:"#ron_" + elm +"#",
-                        line:{color:line_colors[index], width:3},
+                        line:{color:line_colors[index%line_colors.length], width:3},
                         tooltip:{  template:"#ron_" + elm +"#" }
                     });
                     config.series_y2m_eur.push({
                         value:"#eur_" +elm+ "#",
-                        line: {color:line_colors[index], width:3},
+                        line: {color:line_colors[index%line_colors.length], width:3},
                         tooltip:{  template:"#eur_" + elm +"#" }
                     });
-                    config.legend_y2m_ron.values.push( {text: elm, color: line_colors[index]});
-                    config.legend_y2m_eur.values.push( {text: elm, color: line_colors[index]});                    
+                    config.legend_y2m_ron.values.push( {text: elm, color: line_colors[index%line_colors.length]});
+                    config.legend_y2m_eur.values.push( {text: elm, color: line_colors[index%line_colors.length]});                    
                 });
                 
                 //rebiuld the view
                 //webix.ui(myApp.views[parseInt(id,10)-1](), $$("mainPage"), $$("page-"+id));
                 $$('mainPage').removeView('page-'+id);
                 $$('mainPage').addView(myApp.views[parseInt(id,10)-1](), -1);
-                //$$('mainPage').ui(myApp.views[parseInt(id,10)-1](), $$('mainPage').$$('page-'+id));
                 loadData(id);
                 $$('page-' + id).show();
 
@@ -151,10 +159,12 @@ function preprocess(id) {
 }
 
 /**
-Main controller function
-loads programmatically the views and intializes with data
-from LOAD_URL
-*/
+ * 
+ * Main controller function
+ * loads programmatically the views and intializes with data
+ * from LOAD_URL
+ * 
+ */
 function loadData(id) {
     switch (id) {
         case "1":
@@ -224,36 +234,27 @@ function loadData(id) {
             var promise_pg6 = webix.ajax(SERVER_URL + DBNAME + LOAD_URL[id]);
             //chart data for y2m
             var promise_pg6_y2m = webix.ajax(SERVER_URL + DBNAME +"/_design/globallists/_list/y2m/charts/y2d");
-
-            webix.promise.all([promise_pg6, promise_pg6_y2m]).then(function(realdata) {
+            //data for financialSummary
+            var promise_pg6_fsy2d = webix.ajax(SERVER_URL + DBNAME + "/_design/globallists/_list/financialstatement/charts/y2d" +
+            "?startkey=[\"" + new Date().getFullYear() + "\",\"01\"]&endkey=[\"" + new Date().getFullYear() + "\",{}]" );
+            var promise_pg6_fstotal = webix.ajax(SERVER_URL + DBNAME + "/_design/globallists/_list/financialstatement/charts/y2d");
+            webix.promise.all([promise_pg6, promise_pg6_y2m, promise_pg6_fsy2d, promise_pg6_fstotal]).then(function(realdata) {
                 //success for SERIA, NUMARUL
                 $$("configForm").setValues(realdata[0].json());
                 //setup series for Y2M graph
-                var series_labels = [], raw_data = realdata[1].json();
-
-                raw_data.forEach(function(element) {
-                    //element is an object containing the series label as attribute
-                    for (var key in element) {
-                        if ((key.indexOf("ron_")!= -1 || key.indexOf("eur_") != -1) && series_labels.indexOf(key.substr(4,4)) == -1){
-                            series_labels.push(key.substr(4,4));
-                        }
-                    }
-                }, this);
-                series_labels.sort();
-                
-                series_labels.forEach(function(elm, index){
-                    //normalize data
-                    raw_data.forEach(function(element){
-                        if(typeof element["ron_" + elm] === 'undefined') element["ron_" + elm]=0;
-                        else element["ron_" + elm]=element["ron_" + elm].toFixed();
-                        
-                        if(typeof element["eur_" + elm] === 'undefined') element["eur_" + elm]=0;
-                        else element["eur_" + elm]=element["eur_" + elm].toFixed();
-                    });
-        
+                $$("y2m_ron").parse(realdata[1].json());
+                $$("y2m_eur").parse(realdata[1].json());
+                //setup finalcial statement
+                var raw_data = realdata[2].json()
+                $$("financialStatementY2D").setValues({
+                    invoicedRONY2D: raw_data.invoicedRON,
+                    dueRONY2D: raw_data.dueRON,
+                    payedRONY2D: raw_data.payedRON,
+                    invoicedEURY2D: raw_data.invoicedEUR,
+                    dueEURY2D: raw_data.dueEUR,
+                    payedEURY2D: raw_data.payedEUR
                 });
-                $$("y2m_ron").parse(raw_data);
-                $$("y2m_eur").parse(raw_data);
+                $$("financialStatement").setValues(realdata[3].json());
             }).fail(function(err) {
                 //error
                 webix.message({ type: "error", text: err });
@@ -267,10 +268,11 @@ function loadData(id) {
 
 
 /**
-Proxy for CouchDB Webix style
-The response from CouchDB may be used for DHTMLX components also
-It was tested with DHTMLX Scheduler
-*/
+ * Proxy for CouchDB Webix style
+ * The response from CouchDB may be used for DHTMLX components also
+ * It was tested with DHTMLX Scheduler
+ * 
+ */
 webix.proxy.CouchDB = {
     $proxy: true,
 
