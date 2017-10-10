@@ -135,7 +135,7 @@ var invoice = {
         });
     },
 
-    addLine: function(){
+    addLine: function() {
         //get the window with the edit form
         $$("invoice_lines").add({
             i_details: "pufi"
@@ -149,9 +149,13 @@ var invoice = {
                 view: "form",
                 scroll: 'y',
                 minWidth: 500,
-                elementsConfig: { labelWidth: 180 },
-                elements: [
-                    { view: "counter", step: 1, value: 1, min: 1, max: 5, name: "copies", label: "Numarul de copii:" },
+                elementsConfig: { labelWidth: 100 },
+                elements: [{
+                        cols: [
+                            { view: "counter", step: 1, value: 1, min: 1, max: 5, name: "copies", label: "Nr. copii:" },
+                            { view: "text", name: "serial_number", label: "Seria-Nr.:", placeholder: "get the current serial number", readonly: true },
+                        ]
+                    },
                     {
                         view: "combo",
                         name: "template",
@@ -159,16 +163,17 @@ var invoice = {
                         options: [{ id: 1, value: "RO" }, { id: 2, value: "EN" }],
                         value: 1
                     },
-                    { view: "text", name: "serial_number", label: "Seria-Nr.:", placeholder: "get the current serial number", readonly: true },
                     {
                         view: "combo",
                         name: "supplier",
                         label: "Furnizor:",
                         options: "CouchDB->../../_design/globallists/_list/toja/supplier/getsupplierbank"
                     },
+                    { view: "label", label: "Beneficiar:" },
                     {
                         view: "forminput",
-                        label: "Beneficiar:",
+                        //label: "Beneficiar:",
+                        labelWidth: 0,
                         height: 180,
                         body: {
                             view: "unitlist",
@@ -191,61 +196,63 @@ var invoice = {
                             url: "CouchDB->../../_design/globallists/_list/toja/contract/getcontract"
                         }
                     },
-                    { view: "datepicker", stringResult: true, format: webix.Date.dateToStr("%d.%m.%Y"), date: new Date(), name: "invoice_date", label: "Data emiterii:", placeholder: "data emiterii facturii" },
-                    { view: "datepicker", stringResult: true, format: webix.Date.dateToStr("%d.%m.%Y"), date: new Date(), name: "due_date", label: "Data scadentei:", placeholder: "data scadenta" },
-                    { view: "text", name: "TVA", label: "TVA:", placeholder: "TVA in procente" },
-                    { view: "text", name: "exchange_rate", label: "Curs BNR:", placeholder: "Cursul BNR pentru €$£->RON la data emiterii facturii" },
+                    {
+                        cols: [
+                            { view: "datepicker", stringResult: true, format: webix.Date.dateToStr("%d.%m.%Y"), date: new Date(), name: "invoice_date", label: "Emisa la:", placeholder: "data emiterii facturii" },
+                            { view: "datepicker", stringResult: true, format: webix.Date.dateToStr("%d.%m.%Y"), date: new Date(), name: "due_date", label: "Scadenta la:", placeholder: "data scadenta" }
+                        ]
+                    },
+                    {
+                        cols: [
+                            { view: "text", name: "TVA", label: "TVA:", placeholder: "TVA in procente" },
+                            { view: "text", name: "exchange_rate", label: "Curs BNR:", placeholder: "€$£->RON" }
+                        ]
+                    },
 
+                    { view: "label", label: "Detalii factura:" },
                     {
                         view: "forminput",
                         //label: "Linii factura:",
                         //labelPosition:"top",
-                        height: 260,
-                        labelWidth:0,
-                        body:{
-                            rows:[
-                                {
-                                    view:"activeTable", autoheight:true, autowidth: true, select:false,
-                                    id: "invoice_lines",
-                                    activeContent:{
-                                        editButton: { 
-                                            view:'button', type:'icon', icon:'pencil-square-o', width: 32,
-                                            click:function(id, e){
-                                                var item_id = this.config.$masterId;
-                                              //$$("table1").remove(item_id.row)
-                                              //launch the edit form
-                                            }
-                                        },
-                                        delButton: { 
-                                            view:'button', type:'icon', icon:'trash-o', width: 32,
-                                            click:function(id, e){
-                                                var item_id = this.config.$masterId;
-                                              $$("invoice_lines").remove(item_id.row);
-                                            }
-                                        }
-                                    },
-                                    columns:[
-                                        { id:"i_details", header:"Detalii", fillspace: 1},
-                                        { id:"i_mu", header:"UM", fillspace: 1},
-                                        { id:"i_qty", header:"Cant.", fillspace: 1},
-                                        { id: "i_up", header: "PU", fillspace:1},
-                                        { id:"i_value", header:"Suma", fillspace:1},
-                                        { id: "actions", header:"Actions", template: "{common.editButton()} {common.delButton()}", fillspace:1 }
-                                    ]
-                                },
-                                {view:"button", type:"icon", icon:"plus-square", label: "Add", width: 80, click: "invoice.addLine"}
-                            ]
+                        autoheight: true,
+                        labelWidth: 0,
+                        body: {
+                            rows: [{
+                                view: "datatable",
+                                autoheight: true,
+                                autowidth: true,
+                                select: true,
+                                id: "invoice_lines",
+                                columns: [
+                                    { id: "i_details", header: "Detalii", fillspace: 1 },
+                                    { id: "i_mu", header: "UM", fillspace: 1 },
+                                    { id: "i_qty", header: "Cant.", fillspace: 1 },
+                                    { id: "i_up", header: "PU", fillspace: 1 },
+                                    { id: "i_value", header: "Suma", fillspace: 1 }
+                                ]
+                            }]
                         }
-                        
+
 
                     },
 
+                    {
+                        cols: [
+                            { view: "button", type: "icon", icon: "plus-square", label: "Add", width: 80, click: "invoice.addLine" },
+                            { view: "button", type: "icon", icon: "pencil-square-o", label: "Edit", width: 80, click: "invoice.addLine" },
+                            {},
+                            { view: "button", type: "icon", icon: "trash-o", label: "DEL", width: 80, click: "invoice.addLine" }
+                        ]
+                    },
 
+                    /*
                     { view: "textarea", name: "invoice_details", label: "Detalii factura:", placeholder: "descrierea bunurilor si a serviciilor", height: 110 },
                     { view: "text", name: "invoice_mu", label: "UM:", placeholder: "unitatea de masura" },
                     { view: "text", name: "invoice_qty", label: "Cantitatea:", placeholder: "cantiatea" },
                     { view: "text", name: "invoice_up", label: "Pret unitar:", placeholder: "pret unitar" },
                     { view: "textarea", name: "invoice_formula", label: "Formula de calcul:", placeholder: "formula de calcul a sumei toatale", height: 110 },
+                    */
+
                     {
                         margin: 10,
                         cols: [{
