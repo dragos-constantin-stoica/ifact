@@ -61,7 +61,7 @@ var myApp = {
                     contracts.ui,
                     invoice.ui,
                     payments.ui,
-                    config.ui()
+                    dashboard.ui()
                 ],
                 fitBiggest:true
             }
@@ -75,7 +75,7 @@ var myApp = {
         contracts.ui,
         invoice.ui,
         payments.ui,
-        config.ui
+        dashboard.ui
     ],
 
     sidemenu: {
@@ -99,7 +99,7 @@ var myApp = {
                 {id: 3, value: "Contracts", icon: "briefcase"},
                 {id: 4, value: "Invoice", icon: "calculator"},
                 {id: 5, value: "Payments", icon: "bitcoin"},
-                {id: 6, value: "Config", icon: "cog"}
+                {id: 6, value: "Dashboard", icon: "line-chart"}
             ],
             select:true,
             type:{

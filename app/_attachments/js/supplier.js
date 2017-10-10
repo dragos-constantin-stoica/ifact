@@ -1,5 +1,87 @@
 var supplier = {
 
+    export: function(){  
+
+        var promise_xls = webix.ajax(SERVER_URL + DBNAME + "/_design/globallists/_list/toxls/charts/export2Excel");
+
+        promise_xls.then(function(realdata) {
+            //success
+            /* original data */
+            var data = realdata.json();
+            var ws_name = "Invoices";
+            
+            function Workbook() {
+                if(!(this instanceof Workbook)) return new Workbook();
+                this.SheetNames = [];
+                this.Sheets = {};
+            }
+            
+            var wb = new Workbook(),  ws = XLSX.utils.aoa_to_sheet(data);
+            
+            /* add worksheet to workbook */
+            wb.SheetNames.push(ws_name);
+            wb.Sheets[ws_name] = ws;
+            var wbout = XLSX.write(wb, {bookType:'xlsx', bookSST:true, type: 'binary'});
+            
+            function s2ab(s) {
+                var buf = new ArrayBuffer(s.length);
+                var view = new Uint8Array(buf);
+                for (var i=0; i!=s.length; ++i) view[i] = s.charCodeAt(i) & 0xFF;
+                return buf;
+            }
+            saveAs(new Blob([s2ab(wbout)],{type:"application/octet-stream"}), "financialstatement.xlsx");
+            
+        }).fail(function(err) {
+            //error
+            webix.message({ type: "error", text: err });
+            console.log(err);
+        });
+    },
+
+    saveseriifacturi: function(){
+        var doc = $$("page-1").getValues().INVOICE_CFG;
+        doc.doctype = "INVOICE_CFG";
+        
+        if (typeof doc._id !== 'undefined'){
+        
+            webix.ajax().header({
+                    "Content-type":"application/json"
+            }).post(SERVER_URL + DBNAME + "/_design/config/_update/sn/" + doc._id, JSON.stringify(doc), 
+                function(text, data, xhr){
+                    //response
+                    //console.log(text);
+                    //console.log(data.json());
+                    //console.log(xhr);
+                    webix.message("Informatia despre seria si numarul a fost salvata cu succes!");
+                    var msg = data.json();
+                    if('action' in msg){
+                        msg.doc._rev = xhr.getResponseHeader('X-Couch-Update-NewRev'); //setting _rev property and value for it
+                        $$('page-1').setValues({INVOICE_CFG:msg.doc}, true);
+                    }
+                }
+            );
+        }else{
+            webix.ajax().header({
+			    "Content-type":"application/json"
+			}).post(SERVER_URL + DBNAME + "/_design/config/_update/sn/", JSON.stringify(doc), 
+				function(text, data, xhr){
+                    //response
+                    //console.log(text);
+                    //console.log(data.json());
+                    //console.log(xhr);
+                    webix.message("Informatia despre seria si numarul a fost salvata cu succes!");
+                    var msg = data.json();
+                    if('action' in msg){
+                        msg.doc._id = xhr.getResponseHeader('X-Couch-Id');
+                        msg.doc._rev = xhr.getResponseHeader('X-Couch-Update-NewRev'); //setting _rev property and value for it
+                        $$('page-1').setValues({INVOICE_CFG: msg.doc},true);
+                    }
+				}
+			);
+        }
+        
+    },
+
     save: function(){
         var doc = $$("page-1").getValues();
         doc.conturi = [];
@@ -94,53 +176,65 @@ var supplier = {
     ui: {
         id: "page-1",
         view: "form",
+        scroll: 'y',
+        complexData:true,
         elementsConfig:{ labelWidth: 180 },
         elements:[
-            {view:"text", name:"nume", label:"Nume", placeholder:"Numele societatii"},
-            {view:"text", name:"NORG", label:"Nr. Ord. Reg. Com.", placeholder:"Numar de Ordine in Registrul Comertului"},
-            {view:"text", name:"EUNORG", label:"NORC European", placeholder:"Numar de ordine European in Registrul Comertului"},
-            {view:"text", name:"CUI" ,label:"C.U.I", placeholder:"Cod Unic de Identificare"},
-            {view:"text", name:"TVA" ,label:"TVA EU", placeholder:"TVA European"},            
-            {view:"textarea", name:"adresa" , label:"Adresa", height:110,  
-                placeholder: "Str. , Nr. , Bl., Sc., Apt., Cod Postal, Localitatea, Comuna, Judetul/Sector, Tara" 
-            },
+                { template:"Date Furnizor", type:"section"},
+                {view:"text", name:"nume", label:"Nume", placeholder:"Numele societatii"},
+                {view:"text", name:"NORG", label:"Nr. Ord. Reg. Com.", placeholder:"Numar de Ordine in Registrul Comertului"},
+                {view:"text", name:"EUNORG", label:"NORC European", placeholder:"Numar de ordine European in Registrul Comertului"},
+                {view:"text", name:"CUI" ,label:"C.U.I", placeholder:"Cod Unic de Identificare"},
+                {view:"text", name:"TVA" ,label:"TVA EU", placeholder:"TVA European"},            
+                {view:"textarea", name:"adresa" , label:"Adresa", height:110,  
+                    placeholder: "Str. , Nr. , Bl., Sc., Apt., Cod Postal, Localitatea, Comuna, Judetul/Sector, Tara" 
+                },
 
-            { view:"forminput", label:"Conturi", 
-                body:{
-                    rows:[
-                        {
-                            view:"activeList",autoheight:true, autowidth:true, id:"conturi",
-                            type:{
-                                height:58
-                            },
-                            activeContent:{
-                                deleteButton:{
-                                    id:"deleteButtonId",
-                                    view:"button",
-                                    type:"icon",
-                                    icon:"trash-o",
-                                    width: 32,
-                                    click:"supplier.delete"
+                { view:"forminput", label:"Conturi", 
+                    body:{
+                        rows:[
+                            {
+                                view:"activeList",autoheight:true, autowidth:true, id:"conturi",
+                                type:{
+                                    height:58
                                 },
-                                editButton:{
-                                    id:"editButtonId",
-                                    view:"button",
-                                    type: "icon",
-                                    icon:"pencil-square-o",
-                                    width: 32,
-                                    click:"supplier.edit"
-                                }
+                                activeContent:{
+                                    deleteButton:{
+                                        id:"deleteButtonId",
+                                        view:"button",
+                                        type:"icon",
+                                        icon:"trash-o",
+                                        width: 32,
+                                        click:"supplier.delete"
+                                    },
+                                    editButton:{
+                                        id:"editButtonId",
+                                        view:"button",
+                                        type: "icon",
+                                        icon:"pencil-square-o",
+                                        width: 32,
+                                        click:"supplier.edit"
+                                    }
+                                },
+                                template: "<div style='overflow: hidden;float:left;'>Banca: #banca#, Sucursala: #sucursala#" +
+                                    "<br/>IBAN: #IBAN# SWIFT: #SWIFT# BIC: #BIC# [#valuta#]</div>" +
+                                    "<div style='height: 50px; padding-left: 10px;padding-top:10px;float:right;'>{common.deleteButton()}</div>" +
+                                    "<div style='height: 50px; padding-left: 10px;padding-top:10px;float:right;'>{common.editButton()}</div>"
                             },
-                            template: "<div style='overflow: hidden;float:left;'>Banca: #banca#, Sucursala: #sucursala#" +
-                                "<br/>IBAN: #IBAN# SWIFT: #SWIFT# BIC: #BIC# [#valuta#]</div>" +
-                                "<div style='height: 50px; padding-left: 10px;padding-top:10px;float:right;'>{common.deleteButton()}</div>" +
-                                "<div style='height: 50px; padding-left: 10px;padding-top:10px;float:right;'>{common.editButton()}</div>"
-                        },
-                        {view:"button", type:"icon", icon:"plus-square", label: "Add", width: 80, click: "supplier.add"}
-                    ]
-                }
-            },
-            {view:"button", type:"form", label:"SAVE", align:"center", width: 100, click: "supplier.save"}
+                            {view:"button", type:"icon", icon:"plus-square", label: "Add", width: 80, click: "supplier.add"}
+                        ]
+                    }
+                },
+                {view:"button", type:"form", label:"SAVE", align:"center", width: 100, click: "supplier.save"},
+
+                {template:"Serii facturi", type:"section"},
+                { view:"text", label:"SERIA:", placeholder:"Seria", name:"INVOICE_CFG.SERIA"},
+                { view:"counter", label:"NUMARUL:", step:1, min:0, name:"INVOICE_CFG.NUMARUL"},
+                { view:"button", label:"SAVE", type:"danger", width: 100, align:"center", click:'supplier.saveseriifacturi'}, 
+
+                { template:"Export situatie financiara", type:"section"},
+                { view:"button", type:"iconButton", icon:"file-excel-o", autowidth:true, align:"center", label:"Export to Excel", click:'supplier.export'}
+               
         ]
     }
 };

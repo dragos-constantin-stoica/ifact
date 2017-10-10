@@ -51,7 +51,7 @@ var LOAD_URL = {
     3: "",
     4: "/INVOICE_CFG",
     5: "/_design/globallists/_list/payments/invoice/getinvoicestatement?include_docs=true",
-    6: "/INVOICE_CFG"
+    6: ""
 };
 
 /**
@@ -99,9 +99,9 @@ function preprocess(id) {
                 var line_colors = ["#342b75", "#63a05a", "#6eace9", "#843b0e", "#aabc59", "#e4c495", "#f06497"];
                 //generateRandomColors(series_labels.length);
 
-                config.series_y2m_ron = [];
-                config.series_y2m_eur = [];
-                config.legend_y2m_ron = {
+                dashboard.series_y2m_ron = [];
+                dashboard.series_y2m_eur = [];
+                dashboard.legend_y2m_ron = {
                     values:[],
                     align:"right",
                     valign:"middle",
@@ -109,7 +109,7 @@ function preprocess(id) {
                     width: 100,
                     margin: 8
                 };
-                config.legend_y2m_eur = {
+                dashboard.legend_y2m_eur = {
                     values:[],
                     align:"right",
                     valign:"middle",
@@ -120,18 +120,18 @@ function preprocess(id) {
 
                 series_labels.forEach(function(elm, index){
                     
-                    config.series_y2m_ron.push({
+                    dashboard.series_y2m_ron.push({
                         value:"#ron_" + elm +"#",
                         line:{color:line_colors[index%line_colors.length], width:3},
                         tooltip:{  template:"#ron_" + elm +"#" }
                     });
-                    config.series_y2m_eur.push({
+                    dashboard.series_y2m_eur.push({
                         value:"#eur_" +elm+ "#",
                         line: {color:line_colors[index%line_colors.length], width:3},
                         tooltip:{  template:"#eur_" + elm +"#" }
                     });
-                    config.legend_y2m_ron.values.push( {text: elm, color: line_colors[index%line_colors.length]});
-                    config.legend_y2m_eur.values.push( {text: elm, color: line_colors[index%line_colors.length]});                    
+                    dashboard.legend_y2m_ron.values.push( {text: elm, color: line_colors[index%line_colors.length]});
+                    dashboard.legend_y2m_eur.values.push( {text: elm, color: line_colors[index%line_colors.length]});                    
                 });
                 
                 //rebiuld the view
@@ -170,13 +170,17 @@ function loadData(id) {
         case "1":
             //supplier form
             var promise_pg1 = webix.ajax(SERVER_URL + DBNAME + LOAD_URL[id]);
-            promise_pg1.then(function(realdata) {
+            //serii facturi form
+            var promise_pg1_sf = webix.ajax(SERVER_URL + DBNAME + "/INVOICE_CFG");
+
+            webix.promise.all([promise_pg1, promise_pg1_sf]).then(function(realdata) {
                 //success
                 //We expect one single supplier
-                $$("page-" + id).setValues((realdata.json())[0]);
+                $$("page-" + id).setValues((realdata[0].json())[0]);
                 $$("conturi").clearAll();
                 $$("conturi").parse($$("page-" + id).getValues().conturi);
                 $$("conturi").refresh();
+                $$("page-" + id).setValues({INVOICE_CFG:realdata[1].json()},true);
             }).fail(function(err) {
                 //error
                 webix.message({ type: "error", text: err });
@@ -230,22 +234,18 @@ function loadData(id) {
             });
             break;
         case "6":
-            //Configuration form
-            var promise_pg6 = webix.ajax(SERVER_URL + DBNAME + LOAD_URL[id]);
             //chart data for y2m
             var promise_pg6_y2m = webix.ajax(SERVER_URL + DBNAME +"/_design/globallists/_list/y2m/charts/y2d");
             //data for financialSummary
             var promise_pg6_fsy2d = webix.ajax(SERVER_URL + DBNAME + "/_design/globallists/_list/financialstatement/charts/y2d" +
             "?startkey=[\"" + new Date().getFullYear() + "\",\"01\"]&endkey=[\"" + new Date().getFullYear() + "\",{}]" );
             var promise_pg6_fstotal = webix.ajax(SERVER_URL + DBNAME + "/_design/globallists/_list/financialstatement/charts/y2d");
-            webix.promise.all([promise_pg6, promise_pg6_y2m, promise_pg6_fsy2d, promise_pg6_fstotal]).then(function(realdata) {
-                //success for SERIA, NUMARUL
-                $$("configForm").setValues(realdata[0].json());
+            webix.promise.all([promise_pg6_y2m, promise_pg6_fsy2d, promise_pg6_fstotal]).then(function(realdata) {
                 //setup series for Y2M graph
-                $$("y2m_ron").parse(realdata[1].json());
-                $$("y2m_eur").parse(realdata[1].json());
+                $$("y2m_ron").parse(realdata[0].json());
+                $$("y2m_eur").parse(realdata[0].json());
                 //setup finalcial statement
-                var raw_data = realdata[2].json()
+                var raw_data = realdata[1].json()
                 $$("financialStatementY2D").setValues({
                     invoicedRONY2D: raw_data.invoicedRON,
                     dueRONY2D: raw_data.dueRON,
@@ -254,7 +254,7 @@ function loadData(id) {
                     dueEURY2D: raw_data.dueEUR,
                     payedEURY2D: raw_data.payedEUR
                 });
-                $$("financialStatement").setValues(realdata[3].json());
+                $$("financialStatement").setValues(realdata[2].json());
             }).fail(function(err) {
                 //error
                 webix.message({ type: "error", text: err });
