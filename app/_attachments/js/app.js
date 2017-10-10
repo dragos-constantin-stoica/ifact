@@ -24,6 +24,7 @@ var myApp = {
     
     ui: {
         id: "mainLayout",
+        view: "layout",
         rows:[
             {
                 view: "toolbar", 
@@ -60,7 +61,7 @@ var myApp = {
                     contracts.ui,
                     invoice.ui,
                     payments.ui,
-                    webix.copy(config.ui())
+                   config.ui()
                 ],
                 fitBiggest:true
             }
@@ -110,7 +111,6 @@ var myApp = {
                     if(! $$("menu").config.hidden) $$("menu").hide();
                     preprocess(id);
                     $$('breadcrumb').setValue('iFact - ' + node.textContent);
-                    loadData(id);
                 }
             }
         }

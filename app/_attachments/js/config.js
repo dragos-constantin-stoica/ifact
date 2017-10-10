@@ -81,10 +81,6 @@ var config = {
         });
     },
     
-    series_y2m_ron: [],
-
-    legend_y2m_ron: {},
-
     ui: function(){
         return  {
             id: "page-6",
@@ -255,6 +251,7 @@ var config = {
                                 {
                                     view:"chart",
                                     id: "y2m_ron",
+                                    title: "SDS",
                                     type:"line",
                                     preset:"simple",
                                     xAxis:{ template:"#month#", title:"Month"},

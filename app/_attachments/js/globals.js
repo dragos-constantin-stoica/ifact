@@ -66,6 +66,7 @@ function preprocess(id) {
         case "1": case "2": case "3": case "4": case "5":
             //rebiuld the view
             //webix.ui(myApp.views[parseInt(id,10)-1], $$("mainPage"), $$("page-"+id));
+            loadData(id);
             $$('page-' + id).show();
         break;
         case "6":
@@ -125,7 +126,11 @@ function preprocess(id) {
                 });
                 
                 //rebiuld the view
-                webix.ui(myApp.views[parseInt(id,10)-1](), $$("mainPage"), $$("page-"+id));
+                //webix.ui(myApp.views[parseInt(id,10)-1](), $$("mainPage"), $$("page-"+id));
+                $$('mainPage').removeView('page-'+id);
+                $$('mainPage').addView(myApp.views[parseInt(id,10)-1](), -1);
+                //$$('mainPage').ui(myApp.views[parseInt(id,10)-1](), $$('mainPage').$$('page-'+id));
+                loadData(id);
                 $$('page-' + id).show();
 
             }).fail(function(err) {
@@ -138,7 +143,9 @@ function preprocess(id) {
         default:
             //rebiuld the view
             //webix.ui(webix.copy(myApp.views[parseInt(id,10)-1]()), $$("mainPage"), $$("page-"+id));
-            //$$('page-' + id).show();
+
+            loadData(id);
+            $$('page-' + id).show();
             break;
     }
 }
