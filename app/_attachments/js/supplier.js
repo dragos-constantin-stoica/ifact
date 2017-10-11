@@ -38,6 +38,21 @@ var supplier = {
         });
     },
 
+    //TODO - export all entities in JSON format
+    exportJSON: function(){
+
+    },
+
+    //TODO - import all entities from a JSON file
+    importJSON: function(){
+
+    },
+
+    //TODO - sync data with another CouchDB replication protocol aware database, like Cloudant
+    sync: function(){
+
+    },
+
     saveseriifacturi: function(){
         var doc = $$("page-1").getValues().INVOICE_CFG;
         doc.doctype = "INVOICE_CFG";
@@ -85,7 +100,17 @@ var supplier = {
     save: function(){
         var doc = $$("page-1").getValues();
         doc.conturi = [];
-        $$("conturi").data.each(function(obj){ delete obj.id; doc.conturi.push(obj); });
+        $$("conturi").data.each(function(obj){ 
+            var cpy = {};
+            for (var key in obj) {
+                cpy[key] = obj[key];
+            }
+            delete cpy.id; 
+            doc.conturi.push(cpy); 
+        });
+        if (typeof doc.INVOICE_CFG !== 'undefined') delete doc.INVOICE_CFG;
+        if (typeof doc.submit !== 'undefined') delete doc.submit;
+        
         doc.doctype = "SUPPLIER";
         //console.log(doc);
         $.couch.db(DBNAME).saveDoc(doc, {
