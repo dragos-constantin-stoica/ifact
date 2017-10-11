@@ -4,6 +4,89 @@ var payments = {
 
     },
 
+    addLine: function() {
+        //get the window with the edit form
+        webix.ui({
+            view:"window",
+            id: "invoicepaymentwindow",
+            width:600,
+            position:"top",
+            head:"Adauga Linie Factura",
+            body: webix.copy(payments.paymentsLineForm)
+        }).show();
+
+        $$('paymentsLineForm').clear();
+        $$('paymentsLineForm').setValues({"id":"new"});
+    },
+
+    editLine: function(){
+        if (typeof $$("invoice_line_edit").getSelectedId(false, true) !== 'undefined' ){
+            webix.ui({
+                view:"window",
+                id: "invoicepaymentwindow",
+                width:600,
+                position:"top",
+                head:"Modifica Linie Factura",
+                body: webix.copy(payments.paymentsLineForm)
+            }).show();
+
+            $$('paymentsLineForm').clear();
+            $$('paymentsLineForm').setValues($$('invoice_line_edit').getSelectedItem());
+        }else{
+            webix.message({type:"error", text:"Please select one row!"});
+        }
+       
+    },
+
+    delLine: function(){
+        if (typeof $$("invoice_line_edit").getSelectedId(false, true) !== 'undefined'){
+            $$("invoice_line_edit").remove($$("invoice_line_edit").getSelectedId(false, true));
+            $$("invoice_line_edit").clearSelection();
+        }else{
+            webix.message({type:"error", text:"Please select one row!"});
+        }
+    },
+
+    paymentsLineForm:{
+        view: "form",
+        id: "paymentsLineForm",
+        minWidth: 600,
+        elementsConfig: { labelWidth: 180 },
+        elements:[
+            { view: "textarea", name: "details", label: "Detalii factura:", placeholder: "descrierea bunurilor si a serviciilor", height: 110 },
+            { view: "text", name: "um", label: "UM:", placeholder: "unitatea de masura" },
+            { view: "text", name: "qty", label: "Cantitatea:", placeholder: "cantiatea" },
+            { view: "text", name: "up", label: "Pret unitar:", placeholder: "pret unitar" },
+            { view: "textarea", name: "line_value", label: "Valoarea:", placeholder: "formula de calcul sau valoarea sumei totale", height: 110 },
+            { view:"button", label:"Save" , type:"form", click:function(){
+                if (!this.getParentView().validate()){
+                    webix.message({ type:"error", text:"Detaliile si suma sunt obligatorii!" });
+                }else{
+                    var result = $$('paymentsLineForm').getValues();
+                    if (result.id == "new"){
+                        delete result.id;
+                        result.line_value = eval(result.line_value);
+                        result.line_tva = (result.line_value * $$('editForm').getValues().TVA)/100.0;
+                        $$('invoice_line_edit').add(result);
+                        $$('invoice_line_edit').refresh();
+                    }else{
+                        result.line_value = eval(result.line_value);
+                        result.line_tva = (result.line_value * $$('editForm').getValues().TVA)/100.0;
+                        $$('invoice_line_edit').updateItem(result.id, result);
+                        $$('invoice_line_edit').refresh();
+                    }
+                    $$("paymentsLineForm").hide();	
+                    $$("invoice_line_edit").clearSelection();					
+                }
+             }
+            }
+        ],
+        rules:{
+            "details":webix.rules.isNotEmpty,
+            "line_value":webix.rules.isNotEmpty
+        }
+    },
+
     paymentForm: {
         id: 'newPaymentForm',
         view: 'form',
@@ -57,51 +140,110 @@ var payments = {
         cols: [{
                 id: "editForm",
                 view: "form",
-                width: 600,
+                width: 700,
                 scroll: 'y',
                 minWidth: 600,
-                elementsConfig: { labelWidth: 180 },
+                elementsConfig: { labelWidth: 100 },
                 elements: [
-                    { view: "text", name: "copies", label: "Numarul de copii:", readonly:true },
                     {
-                        view: "combo",
-                        name: "template",
-                        readonly: true,
-                        label: "Template:",
-                        value: 1,
-                        options: [
-                            { id: 1, value: "RO" },
-                            { id: 2, value: "EN" }
+                        cols:[
+                            { view: "text", name: "copies", label: "Nr. copii:", readonly:true },
+                            { view: "text", name: "serial_number", label: "Seria-Nr.:", placeholder: "get the current serial number", readonly: true },
+                            {
+                                view: "combo",
+                                name: "template",
+                                readonly: true,
+                                label: "Template:",
+                                value: 1,
+                                options: [
+                                    { id: 1, value: "RO" },
+                                    { id: 2, value: "EN" }
+                                ]
+                            }
                         ]
                     },
-                    { view: "text", name: "serial_number", label: "Seria-Nr.:", placeholder: "get the current serial number", readonly: true },
                     { view: "text", name: "supplier", label: "Furnizor:", readonly:true },
                     { view: "text", name: "customer_contract", label: "Beneficiar:", readonly:true },
                     {
-                        view: "datepicker",
-                        stringResult: true,
-                        format: webix.Date.dateToStr("%d.%m.%Y"),
-                        date: new Date(),
-                        name: "invoice_date",
-                        label: "Data emiterii:",
-                        placeholder: "data emiterii facturii"
+                        cols:[
+                            {
+                                view: "datepicker",
+                                stringResult: true,
+                                format: webix.Date.dateToStr("%d.%m.%Y"),
+                                date: new Date(),
+                                name: "invoice_date",
+                                label: "Emisa la:",
+                                placeholder: "data emiterii facturii"
+                            },
+                            {
+                                view: "datepicker",
+                                stringResult: true,
+                                format: webix.Date.dateToStr("%d.%m.%Y"),
+                                date: new Date(),
+                                name: "due_date",
+                                label: "Scadenta la:",
+                                placeholder: "data scadenta"
+                            }
+                        ]
                     },
                     {
-                        view: "datepicker",
-                        stringResult: true,
-                        format: webix.Date.dateToStr("%d.%m.%Y"),
-                        date: new Date(),
-                        name: "due_date",
-                        label: "Data scadentei:",
-                        placeholder: "data scadenta"
-                    },
-                    { view: "text", name: "TVA", label: "TVA:", placeholder: "TVA in procente" },
-                    { view: "text", name: "exchange_rate", label: "Curs BNR:", placeholder: "Cursul BNR pentru €$£->RON la data emiterii facturii" },
-                    { view: "textarea", name: "invoice_details", label: "Detalii factura:", placeholder: "descrierea bunurilor si a serviciilor", height: 110 },
-                    { view: "text", name: "invoice_mu", label: "UM:", placeholder: "unitatea de masura" },
-                    { view: "text", name: "invoice_qty", label: "Cantitatea:", placeholder: "cantiatea" },
-                    { view: "text", name: "invoice_up", label: "Pret unitar:", placeholder: "pret unitar" },
-                    { view: "textarea", name: "invoice_formula", label: "Formula de calcul:", placeholder: "formula de calcul a sumei toatale", height: 110 },
+                        cols:[
+                            { view: "text", name: "TVA", label: "TVA:", placeholder: "TVA in procente" },
+                            { view: "text", name: "exchange_rate", label: "Curs BNR:", placeholder: "Cursul BNR pentru €$£->RON la data emiterii facturii" }
+                        ]
+                    },                   
+                    
+                    {
+                        view: "forminput",
+                        autoheight: true,
+                        labelWidth: 0,
+                        body: {
+                            rows:[
+                                { view: "label", label: "Detalii factura:" },
+                                {
+                                    view: "datatable",
+                                    autoheight: true,
+                                    autowidth: true,
+                                    resizeColumn:true,
+                                    resizeRow:true,
+                                    fixedRowHeight:false,  
+                                    rowLineHeight:25, 
+                                    rowHeight:25,
+                                    select: true,
+                                    footer: true,
+                                    tooltip: true,
+                                    id: "invoice_line_edit",
+                                    columns: [
+                                        { id: "details", header: "Detalii", width: 300, fillspace:true, footer:{text:"TOTAL", colspan:4} },
+                                        { id: "um", header: "UM",adjust:true, width: 50 },
+                                        { id: "qty", header: "Cant.", adjust:true, width: 50 },
+                                        { id: "up", header: "PU", adjust:true, width: 50 },
+                                        { id: "line_value", header: "Suma", adjust:true, width: 55, footer:{content:"summColumn"} },
+                                        { id: "line_tva", header: "TVA", adjust:true, width: 55, footer:{content:"summColumn"} }
+                                    ],
+                                    on:{
+                                        "onresize":function(){ 
+                                            this.adjustRowHeight("details", true); 
+                                        },
+                                        "onAfterAdd":function(id, index){
+                                            this.adjustRowHeight("details", true);
+                                        },
+                                        "onAfterUnSelect": function(data){
+                                            this.adjustRowHeight("details", true);
+                                        }
+                                    }
+                                },
+                                {
+                                    cols: [
+                                        { view: "button", type: "icon", icon: "plus-square", label: "Add", width: 80, click: "payments.addLine" },
+                                        { view: "button", type: "icon", icon: "pencil-square-o", label: "Edit", width: 80, click: "payments.editLine" },
+                                        {},
+                                        { view: "button", type: "icon", icon: "trash-o", label: "DEL", width: 80, click: "payments.delLine" }
+                                    ]
+                                }
+                            ]
+                        }
+                    },                   
                     {
                         margin: 10,
                         cols: [{
@@ -127,22 +269,20 @@ var payments = {
                                     payments.localData.INVOICE_TVA_SUM = 0;
                                     payments.localData.INVOICE_TOTAL = 0;
 
-                                    //TODO: change the control to a grid and get all lines in the array
-                                    var invoice_line_item = {};
-                                    
-                                    invoice_line_item.details = editValues.invoice_details;
-                                    invoice_line_item.um = editValues.invoice_mu;
-                                    invoice_line_item.qty = editValues.invoice_qty;
-                                    invoice_line_item.up = editValues.invoice_up;
-                                    invoice_line_item.line_value = eval(editValues.invoice_formula);
-                                    invoice_line_item.line_tva = (invoice_line_item.line_value * payments.localData.TVA) / 100.00;
-                                    //Add this line to line array
-                                    payments.localData.INVOICE_LINE.push(invoice_line_item);
-                        
-                                    payments.localData.INVOICE_SUM += invoice_line_item.line_value;
-                                    payments.localData.INVOICE_TVA_SUM += invoice_line_item.line_tva;
+                                    $$("invoice_line_edit").data.each(function(obj){
+                                        payments.localData.INVOICE_LINE.push({
+                                            details: obj.details,
+                                            um: obj.um,
+                                            qty: obj.qty,
+                                            up: obj.up,
+                                            line_value: obj.line_value,
+                                            line_tva: obj.line_tva
+                                        }); 
+                                        payments.localData.INVOICE_SUM += obj.line_value;
+                                        payments.localData.INVOICE_TVA_SUM += obj.line_tva;
+                                    });              
                                     payments.localData.INVOICE_TOTAL += (payments.localData.INVOICE_SUM + payments.localData.INVOICE_TVA_SUM);
-                                    
+
                                     tmpTemplate = Handlebars.compile(templates[payments.localData.TEMPLATE - 1]);
                                     PDF_DOC = JSON.parse(tmpTemplate(payments.localData));
                                     pdfMake.createPdf(PDF_DOC).getDataUrl(function(outDoc) {
@@ -186,22 +326,20 @@ var payments = {
                                     payments.localData.INVOICE_TVA_SUM = 0;
                                     payments.localData.INVOICE_TOTAL = 0;
 
-                                    //TODO: change the control to a grid and get all lines in the array
-                                    var invoice_line_item = {};
-                                    
-                                    invoice_line_item.details = editValues.invoice_details;
-                                    invoice_line_item.um = editValues.invoice_mu;
-                                    invoice_line_item.qty = editValues.invoice_qty;
-                                    invoice_line_item.up = editValues.invoice_up;
-                                    invoice_line_item.line_value = eval(editValues.invoice_formula);
-                                    invoice_line_item.line_tva = (invoice_line_item.line_value * payments.localData.TVA) / 100.00;
-                                    //Add this line to line array
-                                    payments.localData.INVOICE_LINE.push(invoice_line_item);
-                        
-                                    payments.localData.INVOICE_SUM += invoice_line_item.line_value;
-                                    payments.localData.INVOICE_TVA_SUM += invoice_line_item.line_tva;
+                                    $$("invoice_line_edit").data.each(function(obj){
+                                        payments.localData.INVOICE_LINE.push({
+                                            details: obj.details,
+                                            um: obj.um,
+                                            qty: obj.qty,
+                                            up: obj.up,
+                                            line_value: obj.line_value,
+                                            line_tva: obj.line_tva
+                                        }); 
+                                        payments.localData.INVOICE_SUM += obj.line_value;
+                                        payments.localData.INVOICE_TVA_SUM += obj.line_tva;
+                                    });              
                                     payments.localData.INVOICE_TOTAL += (payments.localData.INVOICE_SUM + payments.localData.INVOICE_TVA_SUM);
-                                    
+
                                     tmpTemplate = Handlebars.compile(templates[payments.localData.TEMPLATE - 1]);
                                     PDF_DOC = JSON.parse(tmpTemplate(payments.localData));
                                     pdfMake.createPdf(PDF_DOC).getDataUrl(function(outDoc) {
@@ -224,17 +362,16 @@ var payments = {
         ]
     },
 
-    //TODO: to be implemented
     edit: function(id, e) {
         console.log(id);
         webix.ui({
             view: "window",
             id: "editWindow",
-            width: 1000,
+            width: 1200,
             height: 600,
             resize: true,
             position: "top",
-            head: "Modifică factura",
+            head: "Modifica factura",
             body: webix.copy(payments.editForm)
         }).show();
         var control = (id == "editNewButtonId") ? "invoiceList" : "dueList";
@@ -255,14 +392,9 @@ var payments = {
                invoice_date: payments.localData.INVOICE_DATE,
                due_date: payments.localData.DUE_DATE,
                TVA: "" + payments.localData.TVA,
-               exchange_rate: payments.localData.CURS_BNR.eur_ron,
-               invoice_details: payments.localData.INVOICE_LINE[0].details,
-               invoice_mu: payments.localData.INVOICE_LINE[0].um,
-               invoice_qty: payments.localData.INVOICE_LINE[0].qty,
-               invoice_up: payments.localData.INVOICE_LINE[0].up,
-               invoice_formula: payments.localData.INVOICE_LINE[0].line_value
-
+               exchange_rate: payments.localData.CURS_BNR.eur_ron
             }, true);
+            $$("invoice_line_edit").parse(data.json().INVOICE_LINE);
         }).fail(function(err) {
             webix.message({ type: "error", text: err });
             console.log(err);

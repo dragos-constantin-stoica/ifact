@@ -232,8 +232,11 @@ var supplier = {
                 { view:"counter", label:"NUMARUL:", step:1, min:0, name:"INVOICE_CFG.NUMARUL"},
                 { view:"button", label:"SAVE", type:"danger", width: 100, align:"center", click:'supplier.saveseriifacturi'}, 
 
-                { template:"Export situatie financiara", type:"section"},
-                { view:"button", type:"iconButton", icon:"file-excel-o", autowidth:true, align:"center", label:"Export to Excel", click:'supplier.export'}
+                { template:"Export/Import date ", type:"section"},
+                { view:"button", type:"iconButton", icon:"file-excel-o", autowidth:true, align:"center", label:"Export Finacial Statement to Excel", click:'supplier.export'},
+                { view:"button", type:"iconButton", icon:"", autowidth:true, align:"center", label:"Export Entities to JSON", click:'supplier.exportJSON'},
+                { view:"button", type:"iconButton", icon:"", autowidth:true, align:"center", label:"Import Entities from JSON", click:'supplier.importJSON'},
+                { view:"button", type:"iconButton", icon:"", autowidth:true, align:"center", label:"Sync with Cloud", click:'supplier.sync'}                
                
         ]
     }

@@ -30,16 +30,6 @@ webix.protoUI(  {name: 'activeList'},
 
 /**
  * 
- * Create new view that extends Datatable and webix.ActiveContent
- * 
- */
-webix.protoUI(  {name:'activeTable'}, 
-                webix.ui.datatable, 
-                webix.ActiveContent );
-
-
-/**
- * 
  * CouchDB configuration
  *  - database name
  * - server URL, so that the application may run from any CouchDB instance
