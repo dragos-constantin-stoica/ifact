@@ -39,7 +39,6 @@ var supplier = {
         });
     },
 
-    //TODO - export all entities in JSON format
     exportJSON: function(){
         var promise_exportJSON = webix.ajax(SERVER_URL + DBNAME + "/_design/globallists/_list/exportJSON/config/exportJSON");
         
@@ -55,14 +54,89 @@ var supplier = {
                 });
     },
 
-    //TODO - import all entities from a JSON file
     importJSON: function(){
+        //New import window
+        webix.ui({
+            view:"window",
+            id: "importwindow",
+            width:400,
+            position:"top",
+            head:{
+                view: "toolbar",
+                cols: [
+                    { view: "label", label: "Import JSON" },
+                    { view: "button", type: "icon", icon: "times-circle-o", width: 32, align: 'right', click: "$$('importwindow').close();" }
+                ]
+            },
+            body: webix.copy(supplier.importJSONForm)
+        }).show();
+    },
+
+    importJSONForm: {
+        view:"form", 
+        id: "importJSON",
+        elements:[
+            { view:"button", label:"Process JSON", type:"form", 
+                click:function(){
+                    var file_id = $$("files").files.getFirstId(); //getting the ID
+                    var fileobj = $$("files").files.getItem(file_id).file; //getting file object
+                    //console.log(fileobj);
+                    reader = new FileReader();
+                    reader.onloadend = function() {
+                        var raw_data = JSON.parse(reader.result);
+                        //save data in the database - keep _id as provided
+                        var bulk_doc = [];
+                        for (var key in raw_data) {
+                            bulk_doc = bulk_doc.concat(raw_data[key]);
+                        }
+                        //console.log(bulk_doc);
+                        var doc ={
+                            docs: bulk_doc,
+                            all_or_nothing: false
+                        };
+                        webix.ajax().header({
+                            "Content-type":"application/json"
+                        }).post(SERVER_URL + DBNAME + "/_bulk_docs",JSON.stringify(doc),
+                            function(text, data, xhr){
+                                console.log(data.json());
+                            }
+                        );
+                    };
+                  
+                    // Read in the JSON file as a binary string.
+                    reader.readAsText(fileobj,"UTF8");
+                } 
+            },
+            {
+                view:"uploader",
+                id:"files", name:"files",
+                value:"Add document", 
+                link:"doclist", 
+                multiple:false, 
+                autosend:false, //!important
+                on:{
+                    onBeforeFileAdd:function(item){
+                        var type = item.type.toLowerCase(); //deriving file extension
+                        if (type != "json"){ //checking the format
+                            webix.message("Only JSON files!");
+                            return false;
+                        }
+                    }
+                }
+            },
+            {
+                view:"list", scroll:false, id:"doclist", type:"uploader" 
+            }
+        ]
+    },
+
+    //TODO: sync data with another CouchDB replication protocol aware database, like Cloudant
+    syncTo: function(){
 
     },
 
-    //TODO - sync data with another CouchDB replication protocol aware database, like Cloudant
-    sync: function(){
-
+    syncFrom: function(){
+        
     },
 
     saveseriifacturi: function(){
@@ -263,11 +337,13 @@ var supplier = {
 
                 { template:"Export/Import date ", type:"section"},
                 {
+                    view:"toolbar",
                     cols:[
                         { view:"button", type:"iconButton", icon:"file-excel-o", autowidth:true, label:"Export Finacial Statement to Excel", click:'supplier.export'},
-                        { view:"button", type:"iconButton", icon:"", autowidth:true, label:"Export Entities to JSON", click:'supplier.exportJSON'},
-                        { view:"button", type:"iconButton", icon:"", autowidth:true, label:"Import Entities from JSON", click:'supplier.importJSON'},
-                        { view:"button", type:"iconButton", icon:"", autowidth:true, label:"Sync with Cloud", click:'supplier.sync'}
+                        { view:"button", type:"iconButton", icon:"download", autowidth:true, label:"Export Entities to JSON", click:'supplier.exportJSON'},
+                        { view:"button", type:"iconButton", icon:"upload", autowidth:true, label:"Import Entities from JSON", click:'supplier.importJSON'},
+                        { view:"button", type:"iconButton", icon:"cloud-download", autowidth:true, label:"Sync from Cloud", click:'supplier.syncFrom'},
+                        { view:"button", type:"iconButton", icon:"cloud-upload", autowidth:true, label:"Sync to Cloud", click:'supplier.syncTo'}
                     ]
                 }
         ]
