@@ -4,7 +4,8 @@ var supplier = {
 
         var promise_xls = webix.ajax(SERVER_URL + DBNAME + "/_design/globallists/_list/toxls/charts/export2Excel");
 
-        promise_xls.then(function(realdata) {
+        promise_xls
+        .then(function(realdata) {
             //success
             /* original data */
             var data = realdata.json();
@@ -40,7 +41,18 @@ var supplier = {
 
     //TODO - export all entities in JSON format
     exportJSON: function(){
-
+        var promise_exportJSON = webix.ajax(SERVER_URL + DBNAME + "/_design/globallists/_list/exportJSON/config/exportJSON");
+        
+                promise_exportJSON
+                .then(function(realdata) {
+                    
+                    saveAs(new Blob([JSON.stringify(realdata.json(),2)],{type:"application/json"}), "iFact_EXPORT.json");
+                })
+                .fail(function(err){
+                    //error
+                    webix.message({ type: "error", text: err });
+                    console.log(err);
+                });
     },
 
     //TODO - import all entities from a JSON file
@@ -63,10 +75,6 @@ var supplier = {
                     "Content-type":"application/json"
             }).post(SERVER_URL + DBNAME + "/_design/config/_update/sn/" + doc._id, JSON.stringify(doc), 
                 function(text, data, xhr){
-                    //response
-                    //console.log(text);
-                    //console.log(data.json());
-                    //console.log(xhr);
                     webix.message("Informatia despre seria si numarul a fost salvata cu succes!");
                     var msg = data.json();
                     if('action' in msg){
@@ -80,10 +88,6 @@ var supplier = {
 			    "Content-type":"application/json"
 			}).post(SERVER_URL + DBNAME + "/_design/config/_update/sn/", JSON.stringify(doc), 
 				function(text, data, xhr){
-                    //response
-                    //console.log(text);
-                    //console.log(data.json());
-                    //console.log(xhr);
                     webix.message("Informatia despre seria si numarul a fost salvata cu succes!");
                     var msg = data.json();
                     if('action' in msg){
@@ -258,11 +262,14 @@ var supplier = {
                 { view:"button", label:"SAVE", type:"danger", width: 100, align:"center", click:'supplier.saveseriifacturi'}, 
 
                 { template:"Export/Import date ", type:"section"},
-                { view:"button", type:"iconButton", icon:"file-excel-o", autowidth:true, align:"center", label:"Export Finacial Statement to Excel", click:'supplier.export'},
-                { view:"button", type:"iconButton", icon:"", autowidth:true, align:"center", label:"Export Entities to JSON", click:'supplier.exportJSON'},
-                { view:"button", type:"iconButton", icon:"", autowidth:true, align:"center", label:"Import Entities from JSON", click:'supplier.importJSON'},
-                { view:"button", type:"iconButton", icon:"", autowidth:true, align:"center", label:"Sync with Cloud", click:'supplier.sync'}                
-               
+                {
+                    cols:[
+                        { view:"button", type:"iconButton", icon:"file-excel-o", autowidth:true, label:"Export Finacial Statement to Excel", click:'supplier.export'},
+                        { view:"button", type:"iconButton", icon:"", autowidth:true, label:"Export Entities to JSON", click:'supplier.exportJSON'},
+                        { view:"button", type:"iconButton", icon:"", autowidth:true, label:"Import Entities from JSON", click:'supplier.importJSON'},
+                        { view:"button", type:"iconButton", icon:"", autowidth:true, label:"Sync with Cloud", click:'supplier.sync'}
+                    ]
+                }
         ]
     }
 };
