@@ -130,13 +130,58 @@ var supplier = {
         ]
     },
 
-    //TODO: sync data with another CouchDB replication protocol aware database, like Cloudant
-    syncTo: function(){
-
+    syncForm: {
+        view: "form",
+        id: "syncForm",
+        minWidth: 400,
+        elementsConfig:{ labelWidth: 100 },
+        elements:[
+            { view: "text", name:"src", label:"Source:", placeholder:"http(s)://user:password@local.server:port/databse"},                    
+            { view: "text", name:"dest", label:"Destination:", placeholder:"http(s)://user:password@remote.server:port/databse" },
+            { view: "button", type: "form", label:"Send to Heavens!", 
+                click: function(){
+                    var doc = {
+                        source: $$("syncForm").getValues().src,
+                        target: $$("syncForm").getValues().dest
+                    };
+                    webix.ajax()
+                    .header({
+                        "Content-type":"application/json",
+                        "Accept":"application/json"
+                    })
+                    .post(SERVER_URL + "_replicate",JSON.stringify(doc))
+                    .then(
+                        function(realdata){
+                            webix.message(realdata.text());
+                            console.log(realdata.json());
+                        }
+                    )
+                    .fail(
+                        function(err){
+                            webix.message({type:"error", text: err.responseText});
+                            console.log(err);
+                        }
+                    );
+                }
+            }
+        ]
     },
 
-    syncFrom: function(){
-        
+    sync: function(){
+        webix.ui({
+            view:"window",
+            id: "syncwindow",
+            width:400,
+            position:"top",
+            head:{
+                view: "toolbar",
+                cols: [
+                    { view: "label", label: "Sync local to remote" },
+                    { view: "button", type: "icon", icon: "times-circle-o", width: 32, align: 'right', click: "$$('syncwindow').close();" }
+                ]
+            },
+            body: webix.copy(supplier.syncForm)
+        }).show(); 
     },
 
     saveseriifacturi: function(){
@@ -342,8 +387,7 @@ var supplier = {
                         { view:"button", type:"iconButton", icon:"file-excel-o", autowidth:true, label:"Export Finacial Statement to Excel", click:'supplier.export'},
                         { view:"button", type:"iconButton", icon:"download", autowidth:true, label:"Export Entities to JSON", click:'supplier.exportJSON'},
                         { view:"button", type:"iconButton", icon:"upload", autowidth:true, label:"Import Entities from JSON", click:'supplier.importJSON'},
-                        { view:"button", type:"iconButton", icon:"cloud-download", autowidth:true, label:"Sync from Cloud", click:'supplier.syncFrom'},
-                        { view:"button", type:"iconButton", icon:"cloud-upload", autowidth:true, label:"Sync to Cloud", click:'supplier.syncTo'}
+                        { view:"button", type:"iconButton", icon:"cloud", autowidth:true, label:"Cloud Sync", click:'supplier.sync'}
                     ]
                 }
         ]
