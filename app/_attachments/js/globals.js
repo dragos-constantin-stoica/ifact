@@ -218,6 +218,10 @@ function loadData(id) {
             //Payments
             var promise_pg5 = webix.ajax(SERVER_URL + DBNAME + LOAD_URL[id]);
             promise_pg5.then(function(realdata) {
+                //clear all lists
+                $$('invoiceList').clearAll();
+                $$('dueList').clearAll();
+                $$('payedList').clearAll();
                 $$('invoiceList').parse(realdata.json().filter(function(obj) {
                     return (obj.doctype == "INVOICE") && (obj.PAYMENT_TOTAL < obj.INVOICE_TOTAL) &&
                         (new Date(obj.DUE_DATE.substr(6) + "-" + obj.DUE_DATE.substr(3, 2) + "-" + obj.DUE_DATE.substr(0, 2)) >= new Date());
@@ -226,7 +230,31 @@ function loadData(id) {
                     return (obj.doctype == "INVOICE") && (obj.PAYMENT_TOTAL < obj.INVOICE_TOTAL) &&
                         (new Date(obj.DUE_DATE.substr(6) + "-" + obj.DUE_DATE.substr(3, 2) + "-" + obj.DUE_DATE.substr(0, 2)) < new Date());
                 }));
-                $$('payedList').parse(realdata.json().filter(function(obj) { return obj.doctype == "PAYMENT"; }));
+                //Group multiple payments per invoice
+                var payed_raw = realdata.json().filter(function(obj) { return obj.doctype == "PAYMENT"; });
+                payed_proc = payed_raw.reduce(function(prevValue, crtValue){
+                    if (prevValue.length == 0) {
+                        crtValue.PAYMENT_SUM = crtValue.PAYMENT_SUM.toFixed(2);
+                        prevValue.push(crtValue);
+                    }else{
+                        var FOUND = false;
+                        for (var index = 0; index < prevValue.length; index++) {
+                            var element = prevValue[index];
+                            if (element.id == crtValue.id){
+                                element.PAYMENT_SUM = element.PAYMENT_SUM + " | " + crtValue.PAYMENT_SUM.toFixed(2);
+                                element.PAYMENT_DATE = element.PAYMENT_DATE + " | " + crtValue.PAYMENT_DATE;
+                                FOUND = true;
+                                break;
+                            }
+                        }
+                        if (!FOUND){
+                            crtValue.PAYMENT_SUM = crtValue.PAYMENT_SUM.toFixed(2);
+                            prevValue.push(crtValue);
+                        }
+                    }
+                    return prevValue;
+                }, []);
+                $$('payedList').parse(payed_proc);
             }).fail(function(err) {
                 webix.message({ type: "error", text: err });
                 console.log(err);

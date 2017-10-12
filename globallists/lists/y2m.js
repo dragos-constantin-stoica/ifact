@@ -10,33 +10,35 @@ function (head, req) {
             });
         }
 
-        function filterElm(elm, index){
-            if (elm.month == row.key[1]) dataIndex = index;
-            return elm.month == row.key[1];
-        }
-        
-
         while (row = getRow()) {
-            var tmpData = {
-                month: row.key[1]
-            };
             var yr = row.key[0];
             if (years.indexOf(yr) == -1) years.push(yr);
-            tmpData["ron_" + yr] = (row.value.type == "INVOICE")?row.value.ron:0;
-            tmpData["eur_" + yr] = (row.value.type == "INVOICE")?row.value.eur:0;
-            
-            var dataIndex = -1;
-            var dataElm = results.filter(filterElm);
 
-            if( dataIndex == -1){
-                results.push(tmpData);
-            }else{
-                //update values for that element
-                tmpData["ron_" + yr] += (typeof dataElm[0]["ron_" + yr] !== 'undefined')?dataElm[0]["ron_" + yr]:0;
-                tmpData["eur_" + yr] += (typeof dataElm[0]["eur_" + yr] !== 'undefined')?dataElm[0]["eur_" + yr]:0;
-                results[dataIndex] = tmpData;
+            var FOUND = false;
+            for (var index = 0; index < results.length; index++) {
+                var element = results[index];
+                if (element.month == row.key[1]){
+                    if (typeof element["ron_"+yr] === 'undefined'){
+                        element["ron_"+yr] = (row.value.type == "INVOICE")?row.value.ron:0;
+                    }else{
+                        element["ron_"+ yr] += (row.value.type == "INVOICE")?row.value.ron:0;
+                    }
+                    if (typeof element["eur_"+yr] === 'undefined'){
+                        element["eur_"+yr] = (row.value.type == "INVOICE")?row.value.eur:0;
+                    }else{
+                        element["eur_"+ yr] += (row.value.type == "INVOICE")?row.value.eur:0;
+                    }
+                    FOUND = true;
+                    break;
+                }
             }
-
+            if(!FOUND){
+                //This will be really absurd!!!
+                var tmp = { month: row.key[1] };
+                tmp["ron_"+yr] = (row.value.type == "INVOICE")?row.value.ron:0;
+                tmp["eur_"+yr] = (row.value.type == "INVOICE")?row.value.eur:0;
+                results.push(tmp);
+            }
         }
         years.sort();
         /*

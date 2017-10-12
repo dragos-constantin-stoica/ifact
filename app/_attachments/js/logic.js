@@ -71,7 +71,10 @@ var logic = {
                                     //console.log(data);
                                 }
                             });
+
+                            myApp.showUI();
                             //Check for INVOICE_CFG document
+                            /*
                             webix.ajax()
                             .headers({"Content-type":"application/json"})
                             .get(SERVER_URL + DBNAME +"/INVOICE_CFG")
@@ -83,7 +86,7 @@ var logic = {
                                 console.log(err);
                                 return webix.ajax()
                                 .headers({"Content-type":"application/json"})
-                                .post(SERVER_URL + DBNAME, JSON.stringify({NUMARUL:1,SERIA:"A",_id:"INVOICE_CFG",doctype:"INVOICE_CFG"}))
+                                .post(SERVER_URL + DBNAME, JSON.stringify({NUMARUL:1,SERIA:"DEMO",_id:"INVOICE_CFG",doctype:"INVOICE_CFG"}))
                                 .then(function(data){
                                     console.log(data);
                                     myApp.showUI();
@@ -92,7 +95,7 @@ var logic = {
                                     console.log(err);
                                 });
                             });
-                            
+                            */
                             
                         },
                         error: function(status) {

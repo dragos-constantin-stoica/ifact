@@ -119,7 +119,8 @@ var payments = {
                                 console.log(data);
                                 webix.message("Plata pentru factura" + newpayment.SERIA + " - " + newpayment.NUMARUL +
                                     " a fost salvata cu succes în baza de date!");
-                                $$('newPaymentForm').clear();                                
+                                $$('newPaymentForm').clear(); 
+                                loadData("5");                               
                             },
                             error: function(status) {
                                 webix.message({ type: "error", text: status });
@@ -590,7 +591,7 @@ var payments = {
                         return "<div style='display: flex;justify-content: space-between;'><div>Fact.: " + obj.SERIA + " " + obj.NUMARUL +
                             " din: " + obj.INVOICE_DATE + ", [scadenta: <em>" + obj.DUE_DATE + "</em>]. SUMA: <b>" +
                             obj.INVOICE_TOTAL.toFixed(2) + "</b> " + obj.currency + "</br>" +
-                            "Payed: <b>" + obj.PAYMENT_SUM.toFixed(2) + "</b> " + obj.currency + " on " + obj.PAYMENT_DATE + "<br/>" +
+                            "Payed: <b>" + obj.PAYMENT_SUM + "</b> " + obj.currency + " on " + obj.PAYMENT_DATE + "<br/>" +
                             "Detalii plata: " + obj.PAYMENT_DETAILS + "</div>" +
                             "<div style='height: 50px; padding-left: 2px;padding-top:1px;'>" +
                             common.viewButton(obj, common) + "</div></div>";

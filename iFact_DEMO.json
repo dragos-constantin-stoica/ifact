@@ -1,0 +1,1093 @@
+{
+    "INVOICE_CFG": [
+        {
+            "_id": "INVOICE_CFG",
+            "NUMARUL": 12,
+            "SERIA": "DEMO",
+            "doctype": "INVOICE_CFG"
+        }
+    ],
+    "SUPPLIER": [
+        {
+            "_id": "4d18b1ff1cc494158a07d1dbff0044ba",
+            "doctype": "SUPPLIER",
+            "conturi": [
+                {
+                    "banca": "ING Bank Bucuresti",
+                    "sucursala": "Centrala",
+                    "IBAN": "RO99INGB0000999911112222",
+                    "SWIFT": "INGBROBU",
+                    "BIC": "INGB",
+                    "valuta": "EUR"
+                },
+                {
+                    "banca": "ING Bank Bucuresti",
+                    "sucursala": "Centrala",
+                    "IBAN": "RO99INGB0000999912341234",
+                    "SWIFT": "INGBROBU",
+                    "BIC": "INGB",
+                    "valuta": "RON"
+                }
+            ],
+            "nume": "ACME PFA",
+            "NORG": "F00/1111/2000",
+            "EUNORG": "ROONRC.F00/1111/2000",
+            "CUI": "12341234",
+            "TVA": "RO11223344",
+            "adresa": "Bd. Unirii, Nr. 1, Apt. 1,\nSectorul 1, 012345, Bucuresti , Romania"
+        }
+    ],
+    "CUSTOMER": [
+        {
+            "_id": "3c44a312aa470a2e0c67135836009565",
+            "doctype": "CUSTOMER",
+            "nume": "Local S.R.L",
+            "NORG": "J00/1234/2000",
+            "CUI": "RO12345678",
+            "adresa": "Bd. Victoriei, Nr. 1, Ap.1,\nSectorul 1, 012344, Bucuresti , Romania",
+            "banca": "ING Bank",
+            "sucursala": "Bucuresti",
+            "IBAN": "RO11INGB0000999900009999"
+        },
+        {
+            "_id": "4f06a3f73f9be535c931e6a190017335",
+            "doctype": "CUSTOMER",
+            "nume": "International S.A.",
+            "NORG": "FR12345",
+            "CUI": "",
+            "adresa": "1, Av. Charles de Gaulle\nParis, France",
+            "banca": "",
+            "sucursala": "",
+            "IBAN": "",
+            "TVA": "FR12345678"
+        }
+    ],
+    "CONTRACT": [
+        {
+            "_id": "45f01f7ccd2ce46b518171269c01afe3",
+            "doctype": "CONTRACT",
+            "nume": "Local S.R.L",
+            "contract": "Contract nr. 1",
+            "start_date": "01.01.2000",
+            "end_date": "31.12.2030",
+            "detalii": "Invoice at the end of the month the number of full worked days. Fee 100EUR/day.",
+            "supplier_id": "3c44a312aa470a2e0c67135836009565"
+        },
+        {
+            "_id": "d3d2dd409fca311721aedda185005025",
+            "doctype": "CONTRACT",
+            "nume": "International S.A.",
+            "contract": "Contract nr. 2",
+            "start_date": "01.05.2000",
+            "end_date": "31.12.2020",
+            "supplier_id": "4f06a3f73f9be535c931e6a190017335",
+            "detalii": "25 EUR/hour without VAT, payment at 30 days"
+        }
+    ],
+    "INVOICE": [
+        {
+            "_id": "DEMO___00001",
+            "SERIA": "DEMO",
+            "NUMARUL": 1,
+            "FURNIZOR": {
+                "_id": "4d18b1ff1cc494158a07d1dbff0044ba",
+                "doctype": "SUPPLIER",
+                "nume": "ACME PFA",
+                "NORG": "F00/1111/2000",
+                "EUNORG": "ROONRC.F00/1111/2000",
+                "CUI": "12341234",
+                "TVA": "RO11223344",
+                "adresa": "Bd. Unirii, Nr. 1, Apt. 1,\nSectorul 1, 012345, Bucuresti , Romania",    
+                "conturi": [
+                    {
+                        "banca": "ING Bank Bucuresti",
+                        "sucursala": "Centrala",
+                        "IBAN": "RO99INGB0000999911112222",
+                        "SWIFT": "INGBROBU",
+                        "BIC": "INGB",
+                        "valuta": "EUR"
+                    },
+                    {
+                        "banca": "ING Bank Bucuresti",
+                        "sucursala": "Centrala",
+                        "IBAN": "RO99INGB0000999912341234",
+                        "SWIFT": "INGBROBU",
+                        "BIC": "INGB",
+                        "valuta": "RON"
+                    }
+                ],
+                "banca": "ING Bank Bucuresti",
+                "sucursala": "Centrala",
+                "IBAN": "RO99INGB0000999912341234",
+                "SWIFT": "INGBROBU",
+                "BIC": "INGB",
+                "valuta": "RON"
+            },
+            "BENEFICIAR": {
+                "_id": "3c44a312aa470a2e0c67135836009565",
+                "doctype": "CUSTOMER",
+                "nume": "Local S.R.L",
+                "NORG": "J00/1234/2000",
+                "CUI": "RO12345678",
+                "adresa": "Bd. Victoriei, Nr. 1, Ap.1,\nSectorul 1, 012344, Bucuresti , Romania",
+                "banca": "ING Bank",
+                "sucursala": "Bucuresti",
+                "IBAN": "RO11INGB0000999900009999"
+            },
+            "TVA": 0,
+            "INVOICE_DATE": "31.01.2000",
+            "DUE_DATE": "28.02.2000",
+            "CURS_BNR": {
+                "data": "31.01.2000",
+                "eur_ron": 4.3101
+            },
+            "INVOICE_LINE": [
+                {
+                    "details": "Prestari servicii IT luna Ianuarie 2000 conform cu Contract nr. 1 din data de 01.01.2000",
+                    "um": "-",
+                    "qty": "1",
+                    "up": 1500.00,
+                    "line_value": 1500.00,
+                    "line_tva": 0
+                }
+            ],
+            "INVOICE_SUM": 1500.00,
+            "INVOICE_TVA_SUM": 0,
+            "INVOICE_TOTAL": 1500.00,
+            "doctype": "INVOICE",
+            "COPIES": 1,
+            "TEMPLATE": 1
+        },
+        {
+            "_id": "DEMO___00002",
+            "doctype": "INVOICE",
+            "SERIA": "DEMO",
+            "NUMARUL": 2,
+            "FURNIZOR": {
+                "_id": "4d18b1ff1cc494158a07d1dbff0044ba",
+                "doctype": "SUPPLIER",
+                "nume": "ACME PFA",
+                "NORG": "F00/1111/2000",
+                "EUNORG": "ROONRC.F00/1111/2000",
+                "CUI": "12341234",
+                "TVA": "RO11223344",
+                "adresa": "Bd. Unirii, Nr. 1, Apt. 1,\nSectorul 1, 012345, Bucuresti , Romania",    
+                "conturi": [
+                    {
+                        "banca": "ING Bank Bucuresti",
+                        "sucursala": "Centrala",
+                        "IBAN": "RO99INGB0000999911112222",
+                        "SWIFT": "INGBROBU",
+                        "BIC": "INGB",
+                        "valuta": "EUR"
+                    },
+                    {
+                        "banca": "ING Bank Bucuresti",
+                        "sucursala": "Centrala",
+                        "IBAN": "RO99INGB0000999912341234",
+                        "SWIFT": "INGBROBU",
+                        "BIC": "INGB",
+                        "valuta": "RON"
+                    }
+                ],
+                "banca": "ING Bank Bucuresti",
+                "sucursala": "Centrala",
+                "IBAN": "RO99INGB0000999911112222",
+                "SWIFT": "INGBROBU",
+                "BIC": "INGB",
+                "valuta": "EUR"
+            },
+            "BENEFICIAR": {
+                "_id": "4f06a3f73f9be535c931e6a190017335",
+                "doctype": "CUSTOMER",
+                "nume": "International S.A.",
+                "NORG": "FR12345",
+                "CUI": "",
+                "adresa": "1, Av. Charles de Gaulle\nParis, France",
+                "banca": "",
+                "sucursala": "",
+                "IBAN": "",
+                "TVA": "FR12345678"
+            },
+            "TVA": 0,
+            "INVOICE_DATE": "28.02.2000",
+            "DUE_DATE": "30.03.2000",
+            "CURS_BNR": {
+                "data": "28.02.2000",
+                "eur_ron": 4.2802
+            },
+            "INVOICE_LINE": [
+                {
+                    "details": "Trainig Python for Beginers, January-February 2000",
+                    "um": "hour",
+                    "qty": "100",
+                    "up": "25",
+                    "line_value": 2500,
+                    "line_tva": 0
+                }
+            ],
+            "INVOICE_SUM": 2500,
+            "INVOICE_TVA_SUM": 0,
+            "INVOICE_TOTAL": 2500,
+            "TEMPLATE": 2,
+            "COPIES": 1
+        },
+        {
+            "_id": "DEMO___00003",
+            "SERIA": "DEMO",
+            "NUMARUL": 3,
+            "FURNIZOR": {
+                "_id": "4d18b1ff1cc494158a07d1dbff0044ba",
+                "doctype": "SUPPLIER",
+                "nume": "ACME PFA",
+                "NORG": "F00/1111/2000",
+                "EUNORG": "ROONRC.F00/1111/2000",
+                "CUI": "12341234",
+                "TVA": "RO11223344",
+                "adresa": "Bd. Unirii, Nr. 1, Apt. 1,\nSectorul 1, 012345, Bucuresti , Romania",    
+                "conturi": [
+                    {
+                        "banca": "ING Bank Bucuresti",
+                        "sucursala": "Centrala",
+                        "IBAN": "RO99INGB0000999911112222",
+                        "SWIFT": "INGBROBU",
+                        "BIC": "INGB",
+                        "valuta": "EUR"
+                    },
+                    {
+                        "banca": "ING Bank Bucuresti",
+                        "sucursala": "Centrala",
+                        "IBAN": "RO99INGB0000999912341234",
+                        "SWIFT": "INGBROBU",
+                        "BIC": "INGB",
+                        "valuta": "RON"
+                    }
+                ],
+                "banca": "ING Bank Bucuresti",
+                "sucursala": "Centrala",
+                "IBAN": "RO99INGB0000999912341234",
+                "SWIFT": "INGBROBU",
+                "BIC": "INGB",
+                "valuta": "RON"
+            },
+            "BENEFICIAR": {
+                "_id": "3c44a312aa470a2e0c67135836009565",
+                "doctype": "CUSTOMER",
+                "nume": "Local S.R.L",
+                "NORG": "J00/1234/2000",
+                "CUI": "RO12345678",
+                "adresa": "Bd. Victoriei, Nr. 1, Ap.1,\nSectorul 1, 012344, Bucuresti , Romania",
+                "banca": "ING Bank",
+                "sucursala": "Bucuresti",
+                "IBAN": "RO11INGB0000999900009999"
+            },
+            "TVA": 0,
+            "INVOICE_DATE": "30.03.2000",
+            "DUE_DATE": "30.04.2000",
+            "CURS_BNR": {
+                "data": "30.03.2000",
+                "eur_ron": 4.3003
+            },
+            "INVOICE_LINE": [
+                {
+                    "details": "Prestari servicii IT luna Martie 2000 conform cu Contract nr. 1 din data de 01.01.2000",
+                    "um": "-",
+                    "qty": "1",
+                    "up": 1200.00,
+                    "line_value": 1200.00,
+                    "line_tva": 0
+                }
+            ],
+            "INVOICE_SUM": 1200.00,
+            "INVOICE_TVA_SUM": 0,
+            "INVOICE_TOTAL": 1200.00,
+            "doctype": "INVOICE",
+            "COPIES": 1,
+            "TEMPLATE": 1
+        },
+        {
+            "_id": "DEMO___00004",
+            "SERIA": "DEMO",
+            "NUMARUL": 4,
+            "FURNIZOR": {
+                "_id": "4d18b1ff1cc494158a07d1dbff0044ba",
+                "doctype": "SUPPLIER",
+                "nume": "ACME PFA",
+                "NORG": "F00/1111/2000",
+                "EUNORG": "ROONRC.F00/1111/2000",
+                "CUI": "12341234",
+                "TVA": "RO11223344",
+                "adresa": "Bd. Unirii, Nr. 1, Apt. 1,\nSectorul 1, 012345, Bucuresti , Romania",    
+                "conturi": [
+                    {
+                        "banca": "ING Bank Bucuresti",
+                        "sucursala": "Centrala",
+                        "IBAN": "RO99INGB0000999911112222",
+                        "SWIFT": "INGBROBU",
+                        "BIC": "INGB",
+                        "valuta": "EUR"
+                    },
+                    {
+                        "banca": "ING Bank Bucuresti",
+                        "sucursala": "Centrala",
+                        "IBAN": "RO99INGB0000999912341234",
+                        "SWIFT": "INGBROBU",
+                        "BIC": "INGB",
+                        "valuta": "RON"
+                    }
+                ],
+                "banca": "ING Bank Bucuresti",
+                "sucursala": "Centrala",
+                "IBAN": "RO99INGB0000999912341234",
+                "SWIFT": "INGBROBU",
+                "BIC": "INGB",
+                "valuta": "RON"
+            },
+            "BENEFICIAR": {
+                "_id": "3c44a312aa470a2e0c67135836009565",
+                "doctype": "CUSTOMER",
+                "nume": "Local S.R.L",
+                "NORG": "J00/1234/2000",
+                "CUI": "RO12345678",
+                "adresa": "Bd. Victoriei, Nr. 1, Ap.1,\nSectorul 1, 012344, Bucuresti , Romania",
+                "banca": "ING Bank",
+                "sucursala": "Bucuresti",
+                "IBAN": "RO11INGB0000999900009999"
+            },
+            "TVA": 0,
+            "INVOICE_DATE": "30.04.2000",
+            "DUE_DATE": "30.05.2000",
+            "CURS_BNR": {
+                "data": "30.04.2000",
+                "eur_ron": 4.3004
+            },
+            "INVOICE_LINE": [
+                {
+                    "details": "Prestari servicii IT luna Aprilie 2000 conform cu Contract nr. 1 din data de 01.01.2000",
+                    "um": "-",
+                    "qty": "1",
+                    "up": 2000.00,
+                    "line_value": 2000.00,
+                    "line_tva": 0
+                }
+            ],
+            "INVOICE_SUM": 2000.00,
+            "INVOICE_TVA_SUM": 0,
+            "INVOICE_TOTAL": 2000.00,
+            "doctype": "INVOICE",
+            "COPIES": 1,
+            "TEMPLATE": 1
+        },
+        {
+            "_id": "DEMO___00005",
+            "doctype": "INVOICE",
+            "SERIA": "DEMO",
+            "NUMARUL": 5,
+            "FURNIZOR": {
+                "_id": "4d18b1ff1cc494158a07d1dbff0044ba",
+                "doctype": "SUPPLIER",
+                "nume": "ACME PFA",
+                "NORG": "F00/1111/2000",
+                "EUNORG": "ROONRC.F00/1111/2000",
+                "CUI": "12341234",
+                "TVA": "RO11223344",
+                "adresa": "Bd. Unirii, Nr. 1, Apt. 1,\nSectorul 1, 012345, Bucuresti , Romania",    
+                "conturi": [
+                    {
+                        "banca": "ING Bank Bucuresti",
+                        "sucursala": "Centrala",
+                        "IBAN": "RO99INGB0000999911112222",
+                        "SWIFT": "INGBROBU",
+                        "BIC": "INGB",
+                        "valuta": "EUR"
+                    },
+                    {
+                        "banca": "ING Bank Bucuresti",
+                        "sucursala": "Centrala",
+                        "IBAN": "RO99INGB0000999912341234",
+                        "SWIFT": "INGBROBU",
+                        "BIC": "INGB",
+                        "valuta": "RON"
+                    }
+                ],
+                "banca": "ING Bank Bucuresti",
+                "sucursala": "Centrala",
+                "IBAN": "RO99INGB0000999911112222",
+                "SWIFT": "INGBROBU",
+                "BIC": "INGB",
+                "valuta": "EUR"
+            },
+            "BENEFICIAR": {
+                "_id": "4f06a3f73f9be535c931e6a190017335",
+                "doctype": "CUSTOMER",
+                "nume": "International S.A.",
+                "NORG": "FR12345",
+                "CUI": "",
+                "adresa": "1, Av. Charles de Gaulle\nParis, France",
+                "banca": "",
+                "sucursala": "",
+                "IBAN": "",
+                "TVA": "FR12345678"
+            },
+            "TVA": 0,
+            "INVOICE_DATE": "30.05.2000",
+            "DUE_DATE": "30.06.2000",
+            "CURS_BNR": {
+                "data": "30.05.2000",
+                "eur_ron": 4.3005
+            },
+            "INVOICE_LINE": [
+                {
+                    "details": "Trainig Python Advanced I, April-May 2000",
+                    "um": "hour",
+                    "qty": "200",
+                    "up": "25",
+                    "line_value": 5000,
+                    "line_tva": 0
+                }
+            ],
+            "INVOICE_SUM": 5000,
+            "INVOICE_TVA_SUM": 0,
+            "INVOICE_TOTAL": 5000,
+            "TEMPLATE": 2,
+            "COPIES": 1
+        },
+        {
+            "_id": "DEMO___00006",
+            "doctype": "INVOICE",
+            "SERIA": "DEMO",
+            "NUMARUL": 6,
+            "FURNIZOR": {
+                "_id": "4d18b1ff1cc494158a07d1dbff0044ba",
+                "doctype": "SUPPLIER",
+                "nume": "ACME PFA",
+                "NORG": "F00/1111/2000",
+                "EUNORG": "ROONRC.F00/1111/2000",
+                "CUI": "12341234",
+                "TVA": "RO11223344",
+                "adresa": "Bd. Unirii, Nr. 1, Apt. 1,\nSectorul 1, 012345, Bucuresti , Romania",    
+                "conturi": [
+                    {
+                        "banca": "ING Bank Bucuresti",
+                        "sucursala": "Centrala",
+                        "IBAN": "RO99INGB0000999911112222",
+                        "SWIFT": "INGBROBU",
+                        "BIC": "INGB",
+                        "valuta": "EUR"
+                    },
+                    {
+                        "banca": "ING Bank Bucuresti",
+                        "sucursala": "Centrala",
+                        "IBAN": "RO99INGB0000999912341234",
+                        "SWIFT": "INGBROBU",
+                        "BIC": "INGB",
+                        "valuta": "RON"
+                    }
+                ],
+                "banca": "ING Bank Bucuresti",
+                "sucursala": "Centrala",
+                "IBAN": "RO99INGB0000999911112222",
+                "SWIFT": "INGBROBU",
+                "BIC": "INGB",
+                "valuta": "EUR"
+            },
+            "BENEFICIAR": {
+                "_id": "4f06a3f73f9be535c931e6a190017335",
+                "doctype": "CUSTOMER",
+                "nume": "International S.A.",
+                "NORG": "FR12345",
+                "CUI": "",
+                "adresa": "1, Av. Charles de Gaulle\nParis, France",
+                "banca": "",
+                "sucursala": "",
+                "IBAN": "",
+                "TVA": "FR12345678"
+            },
+            "TVA": 0,
+            "INVOICE_DATE": "30.06.2000",
+            "DUE_DATE": "30.07.2000",
+            "CURS_BNR": {
+                "data": "30.06.2000",
+                "eur_ron": 4.3006
+            },
+            "INVOICE_LINE": [
+                {
+                    "details": "Trainig Python Advanced I, June 2000",
+                    "um": "hour",
+                    "qty": "20",
+                    "up": "25",
+                    "line_value": 500,
+                    "line_tva": 0
+                }
+            ],
+            "INVOICE_SUM": 500,
+            "INVOICE_TVA_SUM": 0,
+            "INVOICE_TOTAL": 500,
+            "TEMPLATE": 2,
+            "COPIES": 1
+        },
+        {
+            "_id": "DEMO___00007",
+            "doctype": "INVOICE",
+            "SERIA": "DEMO",
+            "NUMARUL": 7,
+            "FURNIZOR": {
+                "_id": "4d18b1ff1cc494158a07d1dbff0044ba",
+                "doctype": "SUPPLIER",
+                "nume": "ACME PFA",
+                "NORG": "F00/1111/2000",
+                "EUNORG": "ROONRC.F00/1111/2000",
+                "CUI": "12341234",
+                "TVA": "RO11223344",
+                "adresa": "Bd. Unirii, Nr. 1, Apt. 1,\nSectorul 1, 012345, Bucuresti , Romania",    
+                "conturi": [
+                    {
+                        "banca": "ING Bank Bucuresti",
+                        "sucursala": "Centrala",
+                        "IBAN": "RO99INGB0000999911112222",
+                        "SWIFT": "INGBROBU",
+                        "BIC": "INGB",
+                        "valuta": "EUR"
+                    },
+                    {
+                        "banca": "ING Bank Bucuresti",
+                        "sucursala": "Centrala",
+                        "IBAN": "RO99INGB0000999912341234",
+                        "SWIFT": "INGBROBU",
+                        "BIC": "INGB",
+                        "valuta": "RON"
+                    }
+                ],
+                "banca": "ING Bank Bucuresti",
+                "sucursala": "Centrala",
+                "IBAN": "RO99INGB0000999911112222",
+                "SWIFT": "INGBROBU",
+                "BIC": "INGB",
+                "valuta": "EUR"
+            },
+            "BENEFICIAR": {
+                "_id": "4f06a3f73f9be535c931e6a190017335",
+                "doctype": "CUSTOMER",
+                "nume": "International S.A.",
+                "NORG": "FR12345",
+                "CUI": "",
+                "adresa": "1, Av. Charles de Gaulle\nParis, France",
+                "banca": "",
+                "sucursala": "",
+                "IBAN": "",
+                "TVA": "FR12345678"
+            },
+            "TVA": 0,
+            "INVOICE_DATE": "30.07.2000",
+            "DUE_DATE": "30.07.2000",
+            "CURS_BNR": {
+                "data": "30.07.2000",
+                "eur_ron": 4.3007
+            },
+            "INVOICE_LINE": [
+                {
+                    "details": "Trainig Python Advanced I, July 2000",
+                    "um": "hour",
+                    "qty": "20",
+                    "up": "25",
+                    "line_value": 500,
+                    "line_tva": 0
+                }
+            ],
+            "INVOICE_SUM": 500,
+            "INVOICE_TVA_SUM": 0,
+            "INVOICE_TOTAL": 500,
+            "TEMPLATE": 2,
+            "COPIES": 1
+        },
+        {
+            "_id": "DEMO___00008",
+            "SERIA": "DEMO",
+            "NUMARUL": 8,
+            "FURNIZOR": {
+                "_id": "4d18b1ff1cc494158a07d1dbff0044ba",
+                "doctype": "SUPPLIER",
+                "nume": "ACME PFA",
+                "NORG": "F00/1111/2000",
+                "EUNORG": "ROONRC.F00/1111/2000",
+                "CUI": "12341234",
+                "TVA": "RO11223344",
+                "adresa": "Bd. Unirii, Nr. 1, Apt. 1,\nSectorul 1, 012345, Bucuresti , Romania",    
+                "conturi": [
+                    {
+                        "banca": "ING Bank Bucuresti",
+                        "sucursala": "Centrala",
+                        "IBAN": "RO99INGB0000999911112222",
+                        "SWIFT": "INGBROBU",
+                        "BIC": "INGB",
+                        "valuta": "EUR"
+                    },
+                    {
+                        "banca": "ING Bank Bucuresti",
+                        "sucursala": "Centrala",
+                        "IBAN": "RO99INGB0000999912341234",
+                        "SWIFT": "INGBROBU",
+                        "BIC": "INGB",
+                        "valuta": "RON"
+                    }
+                ],
+                "banca": "ING Bank Bucuresti",
+                "sucursala": "Centrala",
+                "IBAN": "RO99INGB0000999912341234",
+                "SWIFT": "INGBROBU",
+                "BIC": "INGB",
+                "valuta": "RON"
+            },
+            "BENEFICIAR": {
+                "_id": "3c44a312aa470a2e0c67135836009565",
+                "doctype": "CUSTOMER",
+                "nume": "Local S.R.L",
+                "NORG": "J00/1234/2000",
+                "CUI": "RO12345678",
+                "adresa": "Bd. Victoriei, Nr. 1, Ap.1,\nSectorul 1, 012344, Bucuresti , Romania",
+                "banca": "ING Bank",
+                "sucursala": "Bucuresti",
+                "IBAN": "RO11INGB0000999900009999"
+            },
+            "TVA": 0,
+            "INVOICE_DATE": "30.08.2000",
+            "DUE_DATE": "30.09.2000",
+            "CURS_BNR": {
+                "data": "30.08.2000",
+                "eur_ron": 4.3008
+            },
+            "INVOICE_LINE": [
+                {
+                    "details": "Prestari servicii IT luna August 2000 conform cu Contract nr. 1 din data de 01.01.2000",
+                    "um": "-",
+                    "qty": "1",
+                    "up": 4000.00,
+                    "line_value": 4000.00,
+                    "line_tva": 0
+                }
+            ],
+            "INVOICE_SUM": 4000.00,
+            "INVOICE_TVA_SUM": 0,
+            "INVOICE_TOTAL": 4000.00,
+            "doctype": "INVOICE",
+            "COPIES": 1,
+            "TEMPLATE": 1
+        },
+        {
+            "_id": "DEMO___00009",
+            "SERIA": "DEMO",
+            "NUMARUL": 9,
+            "FURNIZOR": {
+                "_id": "4d18b1ff1cc494158a07d1dbff0044ba",
+                "doctype": "SUPPLIER",
+                "nume": "ACME PFA",
+                "NORG": "F00/1111/2000",
+                "EUNORG": "ROONRC.F00/1111/2000",
+                "CUI": "12341234",
+                "TVA": "RO11223344",
+                "adresa": "Bd. Unirii, Nr. 1, Apt. 1,\nSectorul 1, 012345, Bucuresti , Romania",    
+                "conturi": [
+                    {
+                        "banca": "ING Bank Bucuresti",
+                        "sucursala": "Centrala",
+                        "IBAN": "RO99INGB0000999911112222",
+                        "SWIFT": "INGBROBU",
+                        "BIC": "INGB",
+                        "valuta": "EUR"
+                    },
+                    {
+                        "banca": "ING Bank Bucuresti",
+                        "sucursala": "Centrala",
+                        "IBAN": "RO99INGB0000999912341234",
+                        "SWIFT": "INGBROBU",
+                        "BIC": "INGB",
+                        "valuta": "RON"
+                    }
+                ],
+                "banca": "ING Bank Bucuresti",
+                "sucursala": "Centrala",
+                "IBAN": "RO99INGB0000999912341234",
+                "SWIFT": "INGBROBU",
+                "BIC": "INGB",
+                "valuta": "RON"
+            },
+            "BENEFICIAR": {
+                "_id": "3c44a312aa470a2e0c67135836009565",
+                "doctype": "CUSTOMER",
+                "nume": "Local S.R.L",
+                "NORG": "J00/1234/2000",
+                "CUI": "RO12345678",
+                "adresa": "Bd. Victoriei, Nr. 1, Ap.1,\nSectorul 1, 012344, Bucuresti , Romania",
+                "banca": "ING Bank",
+                "sucursala": "Bucuresti",
+                "IBAN": "RO11INGB0000999900009999"
+            },
+            "TVA": 0,
+            "INVOICE_DATE": "30.09.2000",
+            "DUE_DATE": "30.10.2000",
+            "CURS_BNR": {
+                "data": "30.09.2000",
+                "eur_ron": 4.3009
+            },
+            "INVOICE_LINE": [
+                {
+                    "details": "Prestari servicii IT luna Septembrie 2000 conform cu Contract nr. 1 din data de 01.01.2000",
+                    "um": "-",
+                    "qty": "1",
+                    "up": 2500.00,
+                    "line_value": 2500.00,
+                    "line_tva": 0
+                }
+            ],
+            "INVOICE_SUM": 2500.00,
+            "INVOICE_TVA_SUM": 0,
+            "INVOICE_TOTAL": 2500.00,
+            "doctype": "INVOICE",
+            "COPIES": 1,
+            "TEMPLATE": 1
+        },
+        {
+            "_id": "DEMO___00010",
+            "SERIA": "DEMO",
+            "NUMARUL": 10,
+            "FURNIZOR": {
+                "_id": "4d18b1ff1cc494158a07d1dbff0044ba",
+                "doctype": "SUPPLIER",
+                "nume": "ACME PFA",
+                "NORG": "F00/1111/2000",
+                "EUNORG": "ROONRC.F00/1111/2000",
+                "CUI": "12341234",
+                "TVA": "RO11223344",
+                "adresa": "Bd. Unirii, Nr. 1, Apt. 1,\nSectorul 1, 012345, Bucuresti , Romania",    
+                "conturi": [
+                    {
+                        "banca": "ING Bank Bucuresti",
+                        "sucursala": "Centrala",
+                        "IBAN": "RO99INGB0000999911112222",
+                        "SWIFT": "INGBROBU",
+                        "BIC": "INGB",
+                        "valuta": "EUR"
+                    },
+                    {
+                        "banca": "ING Bank Bucuresti",
+                        "sucursala": "Centrala",
+                        "IBAN": "RO99INGB0000999912341234",
+                        "SWIFT": "INGBROBU",
+                        "BIC": "INGB",
+                        "valuta": "RON"
+                    }
+                ],
+                "banca": "ING Bank Bucuresti",
+                "sucursala": "Centrala",
+                "IBAN": "RO99INGB0000999912341234",
+                "SWIFT": "INGBROBU",
+                "BIC": "INGB",
+                "valuta": "RON"
+            },
+            "BENEFICIAR": {
+                "_id": "3c44a312aa470a2e0c67135836009565",
+                "doctype": "CUSTOMER",
+                "nume": "Local S.R.L",
+                "NORG": "J00/1234/2000",
+                "CUI": "RO12345678",
+                "adresa": "Bd. Victoriei, Nr. 1, Ap.1,\nSectorul 1, 012344, Bucuresti , Romania",
+                "banca": "ING Bank",
+                "sucursala": "Bucuresti",
+                "IBAN": "RO11INGB0000999900009999"
+            },
+            "TVA": 0,
+            "INVOICE_DATE": "30.10.2000",
+            "DUE_DATE": "30.11.2000",
+            "CURS_BNR": {
+                "data": "30.10.2000",
+                "eur_ron": 4.3013
+            },
+            "INVOICE_LINE": [
+                {
+                    "details": "Prestari servicii IT luna Octombrie 2000 conform cu Contract nr. 1 din data de 01.01.2000",
+                    "um": "-",
+                    "qty": "1",
+                    "up": 4200.00,
+                    "line_value": 4200.00,
+                    "line_tva": 0
+                }
+            ],
+            "INVOICE_SUM": 4200.00,
+            "INVOICE_TVA_SUM": 0,
+            "INVOICE_TOTAL": 4200.00,
+            "doctype": "INVOICE",
+            "COPIES": 1,
+            "TEMPLATE": 1
+        },
+        {
+            "_id": "DEMO___00011",
+            "doctype": "INVOICE",
+            "SERIA": "DEMO",
+            "NUMARUL": 11,
+            "FURNIZOR": {
+                "_id": "4d18b1ff1cc494158a07d1dbff0044ba",
+                "doctype": "SUPPLIER",
+                "nume": "ACME PFA",
+                "NORG": "F00/1111/2000",
+                "EUNORG": "ROONRC.F00/1111/2000",
+                "CUI": "12341234",
+                "TVA": "RO11223344",
+                "adresa": "Bd. Unirii, Nr. 1, Apt. 1,\nSectorul 1, 012345, Bucuresti , Romania",    
+                "conturi": [
+                    {
+                        "banca": "ING Bank Bucuresti",
+                        "sucursala": "Centrala",
+                        "IBAN": "RO99INGB0000999911112222",
+                        "SWIFT": "INGBROBU",
+                        "BIC": "INGB",
+                        "valuta": "EUR"
+                    },
+                    {
+                        "banca": "ING Bank Bucuresti",
+                        "sucursala": "Centrala",
+                        "IBAN": "RO99INGB0000999912341234",
+                        "SWIFT": "INGBROBU",
+                        "BIC": "INGB",
+                        "valuta": "RON"
+                    }
+                ],
+                "banca": "ING Bank Bucuresti",
+                "sucursala": "Centrala",
+                "IBAN": "RO99INGB0000999911112222",
+                "SWIFT": "INGBROBU",
+                "BIC": "INGB",
+                "valuta": "EUR"
+            },
+            "BENEFICIAR": {
+                "_id": "4f06a3f73f9be535c931e6a190017335",
+                "doctype": "CUSTOMER",
+                "nume": "International S.A.",
+                "NORG": "FR12345",
+                "CUI": "",
+                "adresa": "1, Av. Charles de Gaulle\nParis, France",
+                "banca": "",
+                "sucursala": "",
+                "IBAN": "",
+                "TVA": "FR12345678"
+            },
+            "TVA": 0,
+            "INVOICE_DATE": "30.11.2000",
+            "DUE_DATE": "30.12.2000",
+            "CURS_BNR": {
+                "data": "30.11.2000",
+                "eur_ron": 4.3015
+            },
+            "INVOICE_LINE": [
+                {
+                    "details": "Trainig Python Advanced II, October-November 2000",
+                    "um": "hour",
+                    "qty": "200",
+                    "up": "25",
+                    "line_value": 5000,
+                    "line_tva": 0
+                }
+            ],
+            "INVOICE_SUM": 5000,
+            "INVOICE_TVA_SUM": 0,
+            "INVOICE_TOTAL": 5000,
+            "TEMPLATE": 2,
+            "COPIES": 1
+        },
+        {
+            "_id": "DEMO___00012",
+            "doctype": "INVOICE",
+            "SERIA": "DEMO",
+            "NUMARUL": 12,
+            "FURNIZOR": {
+                "_id": "4d18b1ff1cc494158a07d1dbff0044ba",
+                "doctype": "SUPPLIER",
+                "nume": "ACME PFA",
+                "NORG": "F00/1111/2000",
+                "EUNORG": "ROONRC.F00/1111/2000",
+                "CUI": "12341234",
+                "TVA": "RO11223344",
+                "adresa": "Bd. Unirii, Nr. 1, Apt. 1,\nSectorul 1, 012345, Bucuresti , Romania",    
+                "conturi": [
+                    {
+                        "banca": "ING Bank Bucuresti",
+                        "sucursala": "Centrala",
+                        "IBAN": "RO99INGB0000999911112222",
+                        "SWIFT": "INGBROBU",
+                        "BIC": "INGB",
+                        "valuta": "EUR"
+                    },
+                    {
+                        "banca": "ING Bank Bucuresti",
+                        "sucursala": "Centrala",
+                        "IBAN": "RO99INGB0000999912341234",
+                        "SWIFT": "INGBROBU",
+                        "BIC": "INGB",
+                        "valuta": "RON"
+                    }
+                ],
+                "banca": "ING Bank Bucuresti",
+                "sucursala": "Centrala",
+                "IBAN": "RO99INGB0000999911112222",
+                "SWIFT": "INGBROBU",
+                "BIC": "INGB",
+                "valuta": "EUR"
+            },
+            "BENEFICIAR": {
+                "_id": "4f06a3f73f9be535c931e6a190017335",
+                "doctype": "CUSTOMER",
+                "nume": "International S.A.",
+                "NORG": "FR12345",
+                "CUI": "",
+                "adresa": "1, Av. Charles de Gaulle\nParis, France",
+                "banca": "",
+                "sucursala": "",
+                "IBAN": "",
+                "TVA": "FR12345678"
+            },
+            "TVA": 0,
+            "INVOICE_DATE": "15.12.2000",
+            "DUE_DATE": "30.01.2001",
+            "CURS_BNR": {
+                "data": "15.12.2000",
+                "eur_ron": 4.3099
+            },
+            "INVOICE_LINE": [
+                {
+                    "details": "Trainig Python Advanced II, July 2000",
+                    "um": "hour",
+                    "qty": "100",
+                    "up": "25",
+                    "line_value": 2500,
+                    "line_tva": 0
+                }
+            ],
+            "INVOICE_SUM": 2500,
+            "INVOICE_TVA_SUM": 0,
+            "INVOICE_TOTAL": 2500,
+            "TEMPLATE": 2,
+            "COPIES": 1
+        }
+    ],
+    "PAYMENT": [
+        {
+            "_id": "3e77fef1ae4243a31f42ec1c06039b61",
+            "SERIA": "DEMO",
+            "NUMARUL": 1,
+            "PAYMENT_DATE": "06.02.2000",
+            "PAYMENT_DETAILS": "Virament bancar",
+            "PAYMENT_SUM": 1500,
+            "invoice_id": "DEMO___00001",
+            "eur_ron": 4.3101,
+            "currency": "RON",
+            "doctype": "PAYMENT"
+        },
+        {
+            "_id": "3e77fef1ae4243a31f42ec1c060b00b5",
+            "SERIA": "DEMO",
+            "NUMARUL": 2,
+            "PAYMENT_DATE": "18.04.2000",
+            "PAYMENT_DETAILS": "Virament bancar",
+            "PAYMENT_SUM": 2500,
+            "invoice_id": "DEMO___00002",
+            "eur_ron": 4.2802,
+            "currency": "EUR",
+            "doctype": "PAYMENT"
+        },
+        {
+            "_id": "b00b5ef1ae4243a31f42ec1c06039b61",
+            "SERIA": "DEMO",
+            "NUMARUL": 3,
+            "PAYMENT_DATE": "06.04.2000",
+            "PAYMENT_DETAILS": "Virament bancar",
+            "PAYMENT_SUM": 1200,
+            "invoice_id": "DEMO___00003",
+            "eur_ron": 4.3003,
+            "currency": "RON",
+            "doctype": "PAYMENT"
+        },
+        {
+            "_id": "3b00b5f1ae4243a31f42ec1c06039b61",
+            "SERIA": "DEMO",
+            "NUMARUL": 4,
+            "PAYMENT_DATE": "06.05.2000",
+            "PAYMENT_DETAILS": "Virament bancar",
+            "PAYMENT_SUM": 2000,
+            "invoice_id": "DEMO___00004",
+            "eur_ron": 4.3004,
+            "currency": "RON",
+            "doctype": "PAYMENT"
+        },
+        {
+            "_id": "3e77fefb00b543a31f42ec1c06039b61",
+            "SERIA": "DEMO",
+            "NUMARUL": 5,
+            "PAYMENT_DATE": "18.08.2000",
+            "PAYMENT_DETAILS": "Virament bancar",
+            "PAYMENT_SUM": 5000,
+            "invoice_id": "DEMO___00005",
+            "eur_ron": 4.3005,
+            "currency": "EUR",
+            "doctype": "PAYMENT"
+        },
+        {
+            "_id": "3e77fef1ae4243a3b00b5c1c06039b61",
+            "SERIA": "DEMO",
+            "NUMARUL": 6,
+            "PAYMENT_DATE": "18.09.2000",
+            "PAYMENT_DETAILS": "Virament bancar",
+            "PAYMENT_SUM": 500,
+            "invoice_id": "DEMO___00006",
+            "eur_ron": 4.3006,
+            "currency": "EUR",
+            "doctype": "PAYMENT"
+        },
+        {
+            "_id": "2b00b5f1ae4243a3b00b5c1c06039b61",
+            "SERIA": "DEMO",
+            "NUMARUL": 7,
+            "PAYMENT_DATE": "18.10.2000",
+            "PAYMENT_DETAILS": "Virament bancar",
+            "PAYMENT_SUM": 500,
+            "invoice_id": "DEMO___00007",
+            "eur_ron": 4.3007,
+            "currency": "EUR",
+            "doctype": "PAYMENT"
+        },
+        {
+            "_id": "3b00b5b00b4243a31f42ec1c06039b61",
+            "SERIA": "DEMO",
+            "NUMARUL": 8,
+            "PAYMENT_DATE": "06.09.2000",
+            "PAYMENT_DETAILS": "Virament bancar",
+            "PAYMENT_SUM": 4000,
+            "invoice_id": "DEMO___00008",
+            "eur_ron": 4.3008,
+            "currency": "RON",
+            "doctype": "PAYMENT"
+        },
+        {
+            "_id": "3b00b5b00bb00ba31f42ec1c06039b61",
+            "SERIA": "DEMO",
+            "NUMARUL": 9,
+            "PAYMENT_DATE": "06.10.2000",
+            "PAYMENT_DETAILS": "Virament bancar",
+            "PAYMENT_SUM": 2500,
+            "invoice_id": "DEMO___00009",
+            "eur_ron": 4.3009,
+            "currency": "RON",
+            "doctype": "PAYMENT"
+        },
+        {
+            "_id": "3b00b5b00bb00bbabe42ec1c06039b61",
+            "SERIA": "DEMO",
+            "NUMARUL": 10,
+            "PAYMENT_DATE": "06.11.2000",
+            "PAYMENT_DETAILS": "Virament bancar",
+            "PAYMENT_SUM": 4200,
+            "invoice_id": "DEMO___00010",
+            "eur_ron": 4.3013,
+            "currency": "RON",
+            "doctype": "PAYMENT"
+        }
+    ]    
+}
