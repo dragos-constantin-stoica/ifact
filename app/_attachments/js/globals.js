@@ -182,7 +182,7 @@ function loadData(id) {
                 $$("page-" + id).setValues({INVOICE_CFG:realdata[1].json()},true);
             }).fail(function(err) {
                 //error
-                webix.message({ type: "error", text: err });
+                webix.message({ type: "error", text: err.responseText });
                 console.log(err);
             });
             break;

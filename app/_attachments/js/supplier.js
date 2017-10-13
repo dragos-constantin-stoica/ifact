@@ -98,6 +98,15 @@ var supplier = {
                             "Content-type":"application/json"
                         }).post(SERVER_URL + DBNAME + "/_bulk_docs",JSON.stringify(doc),
                             function(text, data, xhr){
+                                var result = {ok:0, err:0};
+                                data.json().forEach(function(element) {
+                                    if (typeof element.ok !== 'undefined'){
+                                        result.ok++;
+                                    }else{
+                                        result.err++;
+                                    }
+                                }, this);
+                                webix.message("Import results:<br/>" + result.ok + " OK<br/>" + result.err + " ERRORS!");
                                 console.log(data.json());
                             }
                         );
