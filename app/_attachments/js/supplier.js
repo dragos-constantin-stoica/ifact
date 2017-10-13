@@ -34,7 +34,7 @@ var supplier = {
             
         }).fail(function(err) {
             //error
-            webix.message({ type: "error", text: err });
+            webix.message({ type: "error", text: err.responseText });
             console.log(err);
         });
     },
@@ -42,16 +42,15 @@ var supplier = {
     exportJSON: function(){
         var promise_exportJSON = webix.ajax(SERVER_URL + DBNAME + "/_design/globallists/_list/exportJSON/config/exportJSON");
         
-                promise_exportJSON
-                .then(function(realdata) {
-                    
-                    saveAs(new Blob([JSON.stringify(realdata.json(),2)],{type:"application/json"}), "iFact_EXPORT.json");
-                })
-                .fail(function(err){
-                    //error
-                    webix.message({ type: "error", text: err });
-                    console.log(err);
-                });
+        promise_exportJSON
+        .then(function(realdata) {
+            saveAs(new Blob([JSON.stringify(realdata.json(),2)],{type:"application/json"}), "iFact_EXPORT.json");
+        })
+        .fail(function(err){
+            //error
+            webix.message({ type: "error", text: err.responseText });
+            console.log(err);
+        });
     },
 
     importJSON: function(){
@@ -194,7 +193,7 @@ var supplier = {
     },
 
     saveseriifacturi: function(){
-        var doc = $$("page-1").getValues().INVOICE_CFG;
+        var doc = $$("seriifacturiForm").getValues();
         doc.doctype = "INVOICE_CFG";
         
         if (typeof doc._id !== 'undefined'){
@@ -207,7 +206,7 @@ var supplier = {
                     var msg = data.json();
                     if('action' in msg){
                         msg.doc._rev = xhr.getResponseHeader('X-Couch-Update-NewRev'); //setting _rev property and value for it
-                        $$('page-1').setValues({INVOICE_CFG:msg.doc}, true);
+                        $$('seriifacturiForm').setValues(msg.doc, true);
                     }
                 }
             );
@@ -221,7 +220,7 @@ var supplier = {
                     if('action' in msg){
                         msg.doc._id = xhr.getResponseHeader('X-Couch-Id');
                         msg.doc._rev = xhr.getResponseHeader('X-Couch-Update-NewRev'); //setting _rev property and value for it
-                        $$('page-1').setValues({INVOICE_CFG: msg.doc},true);
+                        $$('seriifacturiForm').setValues( msg.doc,true);
                     }
 				}
 			);
@@ -230,13 +229,10 @@ var supplier = {
     },
 
     save: function(){
-        var doc = $$("page-1").getValues();
+        var doc = $$("supplierForm").getValues();
         doc.conturi = [];
         $$("conturi").data.each(function(obj){ 
-            var cpy = {};
-            for (var key in obj) {
-                cpy[key] = obj[key];
-            }
+            var cpy = webix.copy(obj);
             delete cpy.id; 
             doc.conturi.push(cpy); 
         });
@@ -248,7 +244,7 @@ var supplier = {
         $.couch.db(DBNAME).saveDoc(doc, {
             success: function(data) {
                 //console.log(data);
-                $$('page-1').setValues({_id:data.id, _rev:data.rev}, true);
+                $$('supplierForm').setValues({_id:data.id, _rev:data.rev}, true);
                 webix.message("Datele firmei au fost salvate cu succes!");
             },
             error: function(status) {
@@ -332,73 +328,80 @@ var supplier = {
 
     ui: {
         id: "page-1",
-        view: "form",
-        scroll: 'y',
-        complexData:true,
-        elementsConfig:{ labelWidth: 180 },
-        elements:[
-                { template:"Date Furnizor", type:"section"},
-                {view:"text", name:"nume", label:"Nume", placeholder:"Numele societatii"},
-                {view:"text", name:"NORG", label:"Nr. Ord. Reg. Com.", placeholder:"Numar de Ordine in Registrul Comertului"},
-                {view:"text", name:"EUNORG", label:"NORC European", placeholder:"Numar de ordine European in Registrul Comertului"},
-                {view:"text", name:"CUI" ,label:"C.U.I", placeholder:"Cod Unic de Identificare"},
-                {view:"text", name:"TVA" ,label:"TVA EU", placeholder:"TVA European"},            
-                {view:"textarea", name:"adresa" , label:"Adresa", height:110,  
-                    placeholder: "Str. , Nr. , Bl., Sc., Apt., Cod Postal, Localitatea, Comuna, Judetul/Sector, Tara" 
-                },
-
-                { view:"forminput", label:"Conturi", 
-                    body:{
-                        rows:[
-                            {
-                                view:"activeList",autoheight:true, autowidth:true, id:"conturi",
-                                type:{
-                                    height:58
-                                },
-                                activeContent:{
-                                    deleteButton:{
-                                        id:"deleteButtonId",
-                                        view:"button",
-                                        type:"icon",
-                                        icon:"trash-o",
-                                        width: 32,
-                                        click:"supplier.delete"
+        cols:[                   
+            {
+                view: "form",
+                id: "supplierForm",
+                scroll: 'y',
+                width: 800,
+                elementsConfig:{ labelWidth: 180 },
+                elements:[
+                        {template:"Date Furnizor", type:"section"},
+                        {view:"text", name:"nume", label:"Nume", placeholder:"Numele societatii"},
+                        {view:"text", name:"NORG", label:"Nr. Ord. Reg. Com.", placeholder:"Numar de Ordine in Registrul Comertului"},
+                        {view:"text", name:"EUNORG", label:"NORC European", placeholder:"Numar de ordine European in Registrul Comertului"},
+                        {view:"text", name:"CUI" ,label:"C.U.I", placeholder:"Cod Unic de Identificare"},
+                        {view:"text", name:"TVA" ,label:"TVA EU", placeholder:"TVA European"},            
+                        {view:"textarea", name:"adresa" , label:"Adresa", height:110,  
+                            placeholder: "Str. , Nr. , Bl., Sc., Apt., Cod Postal, Localitatea, Comuna, Judetul/Sector, Tara" 
+                        },
+    
+                        { view:"forminput", label:"Conturi", 
+                            body:{
+                                rows:[
+                                    {
+                                        view:"activeList",autoheight:true, autowidth:true, id:"conturi",
+                                        type:{
+                                            height:58
+                                        },
+                                        activeContent:{
+                                            deleteButton:{
+                                                id:"deleteButtonId",
+                                                view:"button",
+                                                type:"icon",
+                                                icon:"trash-o",
+                                                width: 32,
+                                                click:"supplier.delete"
+                                            },
+                                            editButton:{
+                                                id:"editButtonId",
+                                                view:"button",
+                                                type: "icon",
+                                                icon:"pencil-square-o",
+                                                width: 32,
+                                                click:"supplier.edit"
+                                            }
+                                        },
+                                        template: "<div style='overflow: hidden;float:left;'>Banca: #banca#, Sucursala: #sucursala#" +
+                                            "<br/>IBAN: #IBAN# SWIFT: #SWIFT# BIC: #BIC# [#valuta#]</div>" +
+                                            "<div style='height: 50px; padding-left: 10px;padding-top:10px;float:right;'>{common.deleteButton()}</div>" +
+                                            "<div style='height: 50px; padding-left: 10px;padding-top:10px;float:right;'>{common.editButton()}</div>"
                                     },
-                                    editButton:{
-                                        id:"editButtonId",
-                                        view:"button",
-                                        type: "icon",
-                                        icon:"pencil-square-o",
-                                        width: 32,
-                                        click:"supplier.edit"
-                                    }
-                                },
-                                template: "<div style='overflow: hidden;float:left;'>Banca: #banca#, Sucursala: #sucursala#" +
-                                    "<br/>IBAN: #IBAN# SWIFT: #SWIFT# BIC: #BIC# [#valuta#]</div>" +
-                                    "<div style='height: 50px; padding-left: 10px;padding-top:10px;float:right;'>{common.deleteButton()}</div>" +
-                                    "<div style='height: 50px; padding-left: 10px;padding-top:10px;float:right;'>{common.editButton()}</div>"
-                            },
-                            {view:"button", type:"icon", icon:"plus-square", label: "Add", width: 80, click: "supplier.add"}
-                        ]
-                    }
-                },
-                {view:"button", type:"form", label:"SAVE", align:"center", width: 100, click: "supplier.save"},
-
-                {template:"Serii facturi", type:"section"},
-                { view:"text", label:"SERIA:", placeholder:"Seria", name:"INVOICE_CFG.SERIA"},
-                { view:"counter", label:"NUMARUL:", step:1, min:0, name:"INVOICE_CFG.NUMARUL"},
-                { view:"button", label:"SAVE", type:"danger", width: 100, align:"center", click:'supplier.saveseriifacturi'}, 
-
-                { template:"Export/Import date ", type:"section"},
-                {
-                    view:"toolbar",
-                    cols:[
-                        { view:"button", type:"iconButton", icon:"file-excel-o", autowidth:true, label:"Export Finacial Statement to Excel", click:'supplier.export'},
-                        { view:"button", type:"iconButton", icon:"download", autowidth:true, label:"Export Entities to JSON", click:'supplier.exportJSON'},
-                        { view:"button", type:"iconButton", icon:"upload", autowidth:true, label:"Import Entities from JSON", click:'supplier.importJSON'},
-                        { view:"button", type:"iconButton", icon:"cloud", autowidth:true, label:"Cloud Sync", click:'supplier.sync'}
-                    ]
-                }
+                                    {view:"button", type:"icon", icon:"plus-square", label: "Add", width: 80, click: "supplier.add"}
+                                ]
+                            }
+                        },
+                        {view:"button", type:"form", label:"SAVE", align:"center", width: 100, click: "supplier.save"}
+                ]
+            },
+            {
+                view: "form",
+                id: "seriifacturiForm",
+                autowidth: true,
+                elementsConfig:{ labelWidth: 180, minWidth:300 },
+                elements:[
+                    {template:"Serii facturi", type:"section"},
+                    { view:"text", label:"SERIA:", placeholder:"Seria", name:"SERIA"},
+                    { view:"counter", label:"NUMARUL:", step:1, min:0, name:"NUMARUL"},
+                    { view:"button", label:"SAVE", type:"danger", align:"center", click:'supplier.saveseriifacturi'},
+                    { template:"Export/Import date ", type:"section"},
+                    { view:"button", type:"iconButton", icon:"file-excel-o", label:"Export Finacial Statement to Excel", click:'supplier.export'},
+                    { view:"button", type:"iconButton", icon:"download",  label:"Export Entities to JSON", click:'supplier.exportJSON'},
+                    { view:"button", type:"iconButton", icon:"upload",  label:"Import Entities from JSON", click:'supplier.importJSON'},
+                    { view:"button", type:"iconButton", icon:"cloud", label:"Cloud Sync", click:'supplier.sync'}
+                ]
+            }
         ]
     }
+        
 };

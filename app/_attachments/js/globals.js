@@ -175,11 +175,11 @@ function loadData(id) {
             webix.promise.all([promise_pg1, promise_pg1_sf]).then(function(realdata) {
                 //success
                 //We expect one single supplier
-                $$("page-" + id).setValues((realdata[0].json())[0]);
+                $$("supplierForm").setValues((realdata[0].json())[0]);
                 $$("conturi").clearAll();
-                $$("conturi").parse($$("page-" + id).getValues().conturi);
+                $$("conturi").parse($$("supplierForm").getValues().conturi);
                 $$("conturi").refresh();
-                $$("page-" + id).setValues({INVOICE_CFG:realdata[1].json()},true);
+                $$("seriifacturiForm").setValues(realdata[1].json(),true);
             }).fail(function(err) {
                 //error
                 webix.message({ type: "error", text: err.responseText });
