@@ -13,44 +13,43 @@ function(doc, req){
 		}
 	*/
     
+    var payload = JSON.parse(req.body);
+    var fields = [ 'nume', 'NORG', 'CUI', 'TVA', 'adresa', 'banca', 'sucursala', 'IBAN'];
+
     if(req.method == "DELETE"){
 		//Delete document keeping history
 		//The document may be 'undeleted'
-    	doc['_deleted']=true;
+    	doc._deleted = true;
       	return [doc, JSON.stringify({"action":"deleted"})];
     }
 
     if(req.method == "PUT"){
       //update document
-    	var payload = JSON.parse(req.body);
-        var fields = [ 'nume', 'NORG', 'CUI', 'TVA', 'adresa', 'banca', 'sucursala', 'IBAN'];
         fields.forEach(function(elm, idx){
             doc[elm] = payload[elm];
         });
     	return [doc,JSON.stringify({"action":"updated","doc":doc})];
     }
 
-    if(req.method == "POST"){
-    	var payload = JSON.parse(req.body);
+    if(req.method == "POST"){   	
         if(doc === null){
             //Create new document
-            newdoc = {};
-            newdoc['_id'] = req['uuid'];
-            newdoc['doctype'] = "CUSTOMER";
-            var fields = [ 'nume', 'NORG', 'CUI', 'TVA', 'adresa', 'banca', 'sucursala', 'IBAN', 'id'];
+            var newdoc = {
+                _id: req.uuid,
+                doctype: "CUSTOMER"
+            };
             fields.forEach(function(elm, idx){
                 newdoc[elm] = payload[elm];
             });
 		  
-            return [newdoc, JSON.stringify({"action":"created", "sid":req.id, "tid":req['uuid'], "doc":newdoc})];
+            return [newdoc, JSON.stringify({"action":"created", "sid":req.id, "tid":req.uuid, "doc":newdoc})];
         }else{
           //Update existing document
-            var fields = [ 'nume', 'NORG', 'CUI', 'TVA', 'adresa', 'banca', 'sucursala', 'IBAN', 'id'];
             fields.forEach(function(elm, idx){
                 doc[elm] = payload[elm];
             });
 
-            return [doc, JSON.stringify({"action":"updated", "sid":req.id, "tid":req['uuid'], "doc":doc})];
+            return [doc, JSON.stringify({"action":"updated", "sid":req.id, "tid":req.uuid, "doc":doc})];
 		}
     }
 
