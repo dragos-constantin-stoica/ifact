@@ -136,7 +136,7 @@ function preprocess(id) {
                 //rebiuld the view
                 //webix.ui(myApp.views[parseInt(id,10)-1](), $$("mainPage"), $$("page-"+id));
                 $$('mainPage').removeView('page-'+id);
-                $$('mainPage').addView(myApp.views[parseInt(id,10)-1](), -1);
+                $$('mainPage').addView(dashboard.ui(), -1);
                 loadData(id);
                 $$('page-' + id).show();
 
@@ -187,9 +187,9 @@ function loadData(id) {
             });
             break;
         case "2":
-            //Customers form
+            //Customers and contract form
             //data manipulation handled via proxy
-            $$("customersForm").bind("customersList");
+            $$("customersContractsList").filter("#supplier_id#", -1);
             break;
         case "3":
             //Contracts form
@@ -319,7 +319,7 @@ webix.proxy.CouchDB = {
                 JSON.stringify(update.data), [function(text, data, xhr) {
                     //response
                     //console.log(text);
-                    //console.log(data.json());
+                    console.log(data.json());
                     //console.log(xhr);
                     var msg = data.json();
                     if ('action' in msg) {
@@ -339,7 +339,7 @@ webix.proxy.CouchDB = {
                 JSON.stringify(update.data), [function(text, data, xhr) {
                     //response
                     //console.log(text);
-                    //console.log(data.json());
+                    console.log(data.json());
                     //console.log(xhr);
                     var msg = data.json();
                     if ('action' in msg) {
@@ -352,7 +352,9 @@ webix.proxy.CouchDB = {
                 }, callback]
             );
         }
-    },
+    }
+    /*
+    ,
 
     result: function(state, view, dp, text, data, loader) {
         //your logic of server-side response processing
@@ -366,6 +368,5 @@ webix.proxy.CouchDB = {
 
         //dp.processResult(state, data, details);
     }
-
-
+    */
 };

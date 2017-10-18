@@ -12,8 +12,8 @@ var myApp = {
     showUI: function(){
         if(!webix.isUndefined($$('mainLayout'))) $$('mainLayout').destructor();
         if(!webix.isUndefined($$('sidemenu'))) $$('sidemenu').destructor();
-        webix.ui(myApp.ui);
-        webix.ui(myApp.sidemenu);
+        webix.ui(webix.copy(myApp.ui));
+        webix.ui(webix.copy(myApp.sidemenu));
 
         if(! $$("menu").config.hidden) $$("menu").hide();
         $$('page-1').show();
@@ -58,7 +58,7 @@ var myApp = {
                 cells: [
                     supplier.ui,
                     customers.ui,
-                    contracts.ui,
+                    //contracts.ui,
                     invoice.ui,
                     payments.ui,
                     dashboard.ui()
@@ -72,7 +72,7 @@ var myApp = {
     views: [
         supplier.ui,
         customers.ui,
-        contracts.ui,
+        //contracts.ui,
         invoice.ui,
         payments.ui,
         dashboard.ui
@@ -96,7 +96,7 @@ var myApp = {
             data:[
                 {id: 1, value: "Supplier", icon: "anchor"},
                 {id: 2, value: "Clients", icon: "user-circle-o"},
-                {id: 3, value: "Contracts", icon: "briefcase"},
+                //{id: 3, value: "Contracts", icon: "briefcase"},
                 {id: 4, value: "Invoice", icon: "calculator"},
                 {id: 5, value: "Payments", icon: "bitcoin"},
                 {id: 6, value: "Dashboard", icon: "line-chart"}
