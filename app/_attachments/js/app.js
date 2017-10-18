@@ -95,7 +95,7 @@ var myApp = {
             template: "<span class='webix_icon fa-#icon#'></span> #value#",
             data:[
                 {id: 1, value: "Supplier", icon: "anchor"},
-                {id: 2, value: "Clients", icon: "user-circle-o"},
+                {id: 2, value: "Clients & Contracts", icon: "user-circle-o"},
                 //{id: 3, value: "Contracts", icon: "briefcase"},
                 {id: 4, value: "Invoice", icon: "calculator"},
                 {id: 5, value: "Payments", icon: "bitcoin"},
