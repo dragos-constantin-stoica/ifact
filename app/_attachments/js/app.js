@@ -1,54 +1,55 @@
 //Main layout of the application
 var myApp = {
-    
-    init : function(){
+
+    init: function() {
+        myApp.showUI();
+        /*
 		if(USERNAME.getUSERNAME()){
             myApp.showUI();
 		}else{
 			logic.login();
-		}
+        }
+        */
     },
-    
-    showUI: function(){
-        if(!webix.isUndefined($$('mainLayout'))) $$('mainLayout').destructor();
-        if(!webix.isUndefined($$('sidemenu'))) $$('sidemenu').destructor();
+
+    showUI: function() {
+        if (!webix.isUndefined($$('mainLayout'))) $$('mainLayout').destructor();
+        if (!webix.isUndefined($$('sidemenu'))) $$('sidemenu').destructor();
         webix.ui(webix.copy(myApp.ui));
         webix.ui(webix.copy(myApp.sidemenu));
 
-        if(! $$("menu").config.hidden) $$("menu").hide();
+        if (!$$("menu").config.hidden) $$("menu").hide();
         $$('page-1').show();
         loadData("1");
         $$('breadcrumb').setValue('iFact - Supplier');
 
     },
-    
+
     ui: {
         id: "mainLayout",
         view: "layout",
-        rows:[
-            {
-                view: "toolbar", 
-                id:"toolbar", 
-                elements:[
-                    {
-                        view: "icon", icon: "bars",
-                        click: function(){
-                            if( $$("menu").config.hidden){
+        rows: [{
+                view: "toolbar",
+                id: "toolbar",
+                elements: [{
+                        view: "icon",
+                        icon: "fas fa-bars",
+                        click: function() {
+                            if ($$("menu").config.hidden) {
                                 $$("menu").show();
-                            }
-                            else
+                            } else
                                 $$("menu").hide();
                         }
                     },
-                    { view: "label",id:"breadcrumb", label: "iFact"},
+                    { view: "label", id: "breadcrumb", label: "iFact" },
                     {},
-                    {   
-                        view:"button", 
-                        type:"iconButton", 
-                        icon:"sign-out", 
-                        label:"Logout", 
-                        autowidth:true, 
-                        click: "logic.logout" 
+                    {
+                        view: "button",
+                        type: "iconButton",
+                        icon: "fas fa-sign-out-alt",
+                        label: "Logout",
+                        autowidth: true,
+                        click: "logic.logout"
                     }
                 ]
             },
@@ -63,11 +64,11 @@ var myApp = {
                     payments.ui,
                     dashboard.ui()
                 ],
-                fitBiggest:true
+                fitBiggest: true
             }
         ]
     },
-    
+
 
     views: [
         supplier.ui,
@@ -83,45 +84,38 @@ var myApp = {
         id: "menu",
         width: 200,
         position: "left",
-        state:function(state){
+        state: function(state) {
             var toolbarHeight = $$("toolbar").$height;
             state.top = toolbarHeight;
             state.height -= toolbarHeight;
         },
-        body:{
-            view:"list",
-            borderless:true,
+        body: {
+            view: "list",
+            borderless: true,
             scroll: false,
-            template: "<span class='webix_icon fa-#icon#'></span> #value#",
-            data:[
-                {id: 1, value: "Supplier", icon: "anchor"},
-                {id: 2, value: "Clients & Contracts", icon: "user-circle-o"},
-                //{id: 3, value: "Contracts", icon: "briefcase"},
-                {id: 4, value: "Invoice", icon: "calculator"},
-                {id: 5, value: "Payments", icon: "bitcoin"},
-                {id: 6, value: "Dashboard", icon: "line-chart"}
+            template: "<span class='webix_icon #icon#'></span> #value#",
+            data: [
+                { id: 1, value: "Supplier", icon: "fas fa-anchor" },
+                { id: 2, value: "Clients & Contracts", icon: "fas fa-user-circle" },
+                //{id: 3, value: "Contracts", icon: "fas fa-briefcase"},
+                { id: 4, value: "Invoice", icon: "fas fa-calculator" },
+                { id: 5, value: "Payments", icon: "fab fa-bitcoin" },
+                { id: 6, value: "Dashboard", icon: "fas fa-chart-line" }
             ],
-            select:true,
-            type:{
+            select: true,
+            type: {
                 height: 40
             },
-            on:{
-                onItemClick: function(id, e, node){
+            on: {
+                onItemClick: function(id, e, node) {
                     var item = this.getItem(id);
-                    if(! $$("menu").config.hidden) $$("menu").hide();
+                    if (!$$("menu").config.hidden) $$("menu").hide();
                     preprocess(id);
                     $$('breadcrumb').setValue('iFact - ' + node.textContent);
                 }
             }
         }
     }
-    
-    
+
+
 };
-
-
-
-
-
-
-

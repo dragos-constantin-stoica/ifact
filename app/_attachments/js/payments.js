@@ -7,83 +7,87 @@ var payments = {
     addLine: function() {
         //get the window with the edit form
         webix.ui({
-            view:"window",
+            view: "window",
             id: "invoicepaymentwindow",
-            width:600,
-            position:"top",
-            head:"Adauga Linie Factura",
+            width: 600,
+            position: "top",
+            head: "Adauga Linie Factura",
             body: webix.copy(payments.paymentsLineForm)
         }).show();
 
         $$('paymentsLineForm').clear();
-        $$('paymentsLineForm').setValues({"id":"new"});
+        $$('paymentsLineForm').setValues({ "id": "new" });
     },
 
-    editLine: function(){
-        if (typeof $$("invoice_line_edit").getSelectedId(false, true) !== 'undefined' ){
+    editLine: function() {
+        if (typeof $$("invoice_line_edit").getSelectedId(false, true) !== 'undefined') {
             webix.ui({
-                view:"window",
+                view: "window",
                 id: "invoicepaymentwindow",
-                width:600,
-                position:"top",
-                head:"Modifica Linie Factura",
+                width: 600,
+                position: "top",
+                head: "Modifica Linie Factura",
                 body: webix.copy(payments.paymentsLineForm)
             }).show();
 
             $$('paymentsLineForm').clear();
             $$('paymentsLineForm').setValues($$('invoice_line_edit').getSelectedItem());
-        }else{
-            webix.message({type:"error", text:"Please select one row!"});
+        } else {
+            webix.message({ type: "error", text: "Please select one row!" });
         }
-       
+
     },
 
-    delLine: function(){
-        if (typeof $$("invoice_line_edit").getSelectedId(false, true) !== 'undefined'){
+    delLine: function() {
+        if (typeof $$("invoice_line_edit").getSelectedId(false, true) !== 'undefined') {
             $$("invoice_line_edit").remove($$("invoice_line_edit").getSelectedId(false, true));
             $$("invoice_line_edit").clearSelection();
-        }else{
-            webix.message({type:"error", text:"Please select one row!"});
+        } else {
+            webix.message({ type: "error", text: "Please select one row!" });
         }
     },
 
-    paymentsLineForm:{
+    paymentsLineForm: {
         view: "form",
         id: "paymentsLineForm",
         minWidth: 600,
         elementsConfig: { labelWidth: 180 },
-        elements:[
+        elements: [
             { view: "textarea", name: "details", label: "Detalii factura:", placeholder: "descrierea bunurilor si a serviciilor", height: 110 },
             { view: "text", name: "um", label: "UM:", placeholder: "unitatea de masura" },
             { view: "text", name: "qty", label: "Cantitatea:", placeholder: "cantiatea" },
             { view: "text", name: "up", label: "Pret unitar:", placeholder: "pret unitar" },
             { view: "textarea", name: "line_value", label: "Valoarea:", placeholder: "formula de calcul sau valoarea sumei totale", height: 110 },
-            { view:"button", label:"Save" , type:"form", click:function(){
-                if (!this.getParentView().validate()){
-                    webix.message({ type:"error", text:"Detaliile si suma sunt obligatorii!" });
-                }else{
-                    var result = $$('paymentsLineForm').getValues();
-                    if (result.id == "new"){
-                        delete result.id;
-                        result.line_value = eval(result.line_value);
-                        result.line_tva = (result.line_value * $$('editForm').getValues().TVA)/100.0;
-                        $$('invoice_line_edit').add(result);
-                        $$('invoice_line_edit').refresh();
-                    }else{
-                        result.line_value = eval(result.line_value);
-                        result.line_tva = (result.line_value * $$('editForm').getValues().TVA)/100.0;
-                        $$('invoice_line_edit').updateItem(result.id, result);
-                        $$('invoice_line_edit').refresh();
+            {
+                view: "button",
+                label: "Save",
+                type: "form",
+                click: function() {
+                    if (!this.getParentView().validate()) {
+                        webix.message({ type: "error", text: "Detaliile si suma sunt obligatorii!" });
+                    } else {
+                        var result = $$('paymentsLineForm').getValues();
+                        if (result.id == "new") {
+                            delete result.id;
+                            result.line_value = eval(result.line_value);
+                            result.line_tva = (result.line_value * $$('editForm').getValues().TVA) / 100.0;
+                            $$('invoice_line_edit').add(result);
+                            $$('invoice_line_edit').refresh();
+                        } else {
+                            result.line_value = eval(result.line_value);
+                            result.line_tva = (result.line_value * $$('editForm').getValues().TVA) / 100.0;
+                            $$('invoice_line_edit').updateItem(result.id, result);
+                            $$('invoice_line_edit').refresh();
+                        }
+                        $$("paymentsLineForm").hide();
+                        $$("invoice_line_edit").clearSelection();
                     }
-                    $$("paymentsLineForm").hide();	
-                    $$("invoice_line_edit").clearSelection();					
                 }
-             }
             }
         ],
-        rules:{
-            "details":webix.rules.isNotEmpty,
-            "line_value":webix.rules.isNotEmpty
+        rules: {
+            "details": webix.rules.isNotEmpty,
+            "line_value": webix.rules.isNotEmpty
         }
     },
 
@@ -95,8 +99,12 @@ var payments = {
             { view: 'text', name: 'SERIA', label: 'SN:', readonly: true },
             { view: 'text', name: 'NUMARUL', label: 'NR:', readonly: true },
             { view: 'datepicker', name: 'PAYMENT_DATE', label: 'Date:', stringResult: true, format: webix.Date.dateToStr("%d.%m.%Y") },
-            { view: 'combo', name: 'PAYMENT_DETAILS', label: 'Type:', value:1,
-              options:[{ id:1, value:"Virament bancar" }, {id:2, value:"Numerar"}]
+            {
+                view: 'combo',
+                name: 'PAYMENT_DETAILS',
+                label: 'Type:',
+                value: 1,
+                options: [{ id: 1, value: "Virament bancar" }, { id: 2, value: "Numerar" }]
             },
             { view: 'text', name: 'PAYMENT_SUM', label: 'Amount:', format: webix.i18n.numberFormat },
             {
@@ -104,10 +112,10 @@ var payments = {
                 label: 'NEW PAYMENT',
                 type: 'form',
                 click: function() {
-                    if(!$$('newPaymentForm').validate()) {
+                    if (!$$('newPaymentForm').validate()) {
                         webix.message({ type: "error", text: "Amount is mandatory and must be numeric!" });
                         return;
-                    }else{
+                    } else {
                         var newpayment = $$('newPaymentForm').getValues();
                         if (typeof newpayment.doctype === 'undefined') newpayment.doctype = 'PAYMENT';
                         if (typeof newpayment.NUMARUL === 'string') newpayment.NUMARUL = parseInt(newpayment.NUMARUL, 10);
@@ -119,8 +127,8 @@ var payments = {
                                 console.log(data);
                                 webix.message("Plata pentru factura" + newpayment.SERIA + " - " + newpayment.NUMARUL +
                                     " a fost salvata cu succes în baza de date!");
-                                $$('newPaymentForm').clear(); 
-                                loadData("5");                               
+                                $$('newPaymentForm').clear();
+                                loadData("5");
                             },
                             error: function(status) {
                                 webix.message({ type: "error", text: status });
@@ -145,10 +153,9 @@ var payments = {
                 scroll: 'y',
                 minWidth: 600,
                 elementsConfig: { labelWidth: 100 },
-                elements: [
-                    {
-                        cols:[
-                            { view: "text", name: "copies", label: "Nr. copii:", readonly:true },
+                elements: [{
+                        cols: [
+                            { view: "text", name: "copies", label: "Nr. copii:", readonly: true },
                             { view: "text", name: "serial_number", label: "Seria-Nr.:", placeholder: "get the current serial number", readonly: true },
                             {
                                 view: "combo",
@@ -163,11 +170,10 @@ var payments = {
                             }
                         ]
                     },
-                    { view: "text", name: "supplier", label: "Furnizor:", readonly:true },
-                    { view: "text", name: "customer_contract", label: "Beneficiar:", readonly:true },
+                    { view: "text", name: "supplier", label: "Furnizor:", readonly: true },
+                    { view: "text", name: "customer_contract", label: "Beneficiar:", readonly: true },
                     {
-                        cols:[
-                            {
+                        cols: [{
                                 view: "datepicker",
                                 stringResult: true,
                                 format: webix.Date.dateToStr("%d.%m.%Y"),
@@ -188,48 +194,48 @@ var payments = {
                         ]
                     },
                     {
-                        cols:[
+                        cols: [
                             { view: "text", name: "TVA", label: "TVA:", placeholder: "TVA in procente" },
                             { view: "text", name: "exchange_rate", label: "Curs BNR:", placeholder: "Cursul BNR pentru €$£->RON la data emiterii facturii" }
                         ]
-                    },                   
-                    
+                    },
+
                     {
                         view: "forminput",
                         autoheight: true,
                         labelWidth: 0,
                         body: {
-                            rows:[
+                            rows: [
                                 { view: "label", label: "Detalii factura:" },
                                 {
                                     view: "datatable",
                                     autoheight: true,
                                     autowidth: true,
-                                    resizeColumn:true,
-                                    resizeRow:true,
-                                    fixedRowHeight:false,  
-                                    rowLineHeight:25, 
-                                    rowHeight:25,
+                                    resizeColumn: true,
+                                    resizeRow: true,
+                                    fixedRowHeight: false,
+                                    rowLineHeight: 25,
+                                    rowHeight: 25,
                                     select: true,
                                     footer: true,
                                     tooltip: true,
                                     id: "invoice_line_edit",
                                     columns: [
-                                        { id: "details", header: "Detalii", width: 300, fillspace:true, footer:{text:"TOTAL", colspan:4} },
-                                        { id: "um", header: "UM",adjust:true, width: 50 },
-                                        { id: "qty", header: "Cant.", adjust:true, width: 50 },
-                                        { id: "up", header: "PU", adjust:true, width: 50 },
-                                        { id: "line_value", header: "Suma", adjust:true, width: 55, footer:{content:"summColumn"} },
-                                        { id: "line_tva", header: "TVA", adjust:true, width: 55, footer:{content:"summColumn"} }
+                                        { id: "details", header: "Detalii", width: 300, fillspace: true, footer: { text: "TOTAL", colspan: 4 } },
+                                        { id: "um", header: "UM", adjust: true, width: 50 },
+                                        { id: "qty", header: "Cant.", adjust: true, width: 50 },
+                                        { id: "up", header: "PU", adjust: true, width: 50 },
+                                        { id: "line_value", header: "Suma", adjust: true, width: 55, footer: { content: "summColumn" } },
+                                        { id: "line_tva", header: "TVA", adjust: true, width: 55, footer: { content: "summColumn" } }
                                     ],
-                                    on:{
-                                        "onresize":function(){ 
-                                            this.adjustRowHeight("details", true); 
-                                        },
-                                        "onAfterAdd":function(id, index){
+                                    on: {
+                                        "onresize": function() {
                                             this.adjustRowHeight("details", true);
                                         },
-                                        "onAfterUnSelect": function(data){
+                                        "onAfterAdd": function(id, index) {
+                                            this.adjustRowHeight("details", true);
+                                        },
+                                        "onAfterUnSelect": function(data) {
                                             this.adjustRowHeight("details", true);
                                         }
                                     }
@@ -244,7 +250,7 @@ var payments = {
                                 }
                             ]
                         }
-                    },                   
+                    },
                     {
                         margin: 10,
                         cols: [{
@@ -263,14 +269,14 @@ var payments = {
                                     payments.localData.DUE_DATE = editValues.due_date;
                                     payments.localData.TVA = (typeof editValues.TVA === 'string') ? parseFloat(editValues.TVA) : editValues.TVA;
                                     payments.localData.CURS_BNR.data = editValues.invoice_date;
-                                    payments.localData.CURS_BNR.eur_ron = (typeof editValues.exchange_rate === 'string') ? parseFloat(editValues.exchange_rate) : editValues.exchange_rate; 
+                                    payments.localData.CURS_BNR.eur_ron = (typeof editValues.exchange_rate === 'string') ? parseFloat(editValues.exchange_rate) : editValues.exchange_rate;
 
                                     payments.localData.INVOICE_LINE = [];
                                     payments.localData.INVOICE_SUM = 0;
                                     payments.localData.INVOICE_TVA_SUM = 0;
                                     payments.localData.INVOICE_TOTAL = 0;
 
-                                    $$("invoice_line_edit").data.each(function(obj){
+                                    $$("invoice_line_edit").data.each(function(obj) {
                                         payments.localData.INVOICE_LINE.push({
                                             details: obj.details,
                                             um: obj.um,
@@ -278,10 +284,10 @@ var payments = {
                                             up: obj.up,
                                             line_value: obj.line_value,
                                             line_tva: obj.line_tva
-                                        }); 
+                                        });
                                         payments.localData.INVOICE_SUM += obj.line_value;
                                         payments.localData.INVOICE_TVA_SUM += obj.line_tva;
-                                    });              
+                                    });
                                     payments.localData.INVOICE_TOTAL += (payments.localData.INVOICE_SUM + payments.localData.INVOICE_TVA_SUM);
 
                                     tmpTemplate = Handlebars.compile(templates[payments.localData.TEMPLATE - 1]);
@@ -320,14 +326,14 @@ var payments = {
                                     payments.localData.DUE_DATE = editValues.due_date;
                                     payments.localData.TVA = (typeof editValues.TVA === 'string') ? parseFloat(editValues.TVA) : editValues.TVA;
                                     payments.localData.CURS_BNR.data = editValues.invoice_date;
-                                    payments.localData.CURS_BNR.eur_ron = (typeof editValues.exchange_rate === 'string') ? parseFloat(editValues.exchange_rate) : editValues.exchange_rate; 
+                                    payments.localData.CURS_BNR.eur_ron = (typeof editValues.exchange_rate === 'string') ? parseFloat(editValues.exchange_rate) : editValues.exchange_rate;
 
                                     payments.localData.INVOICE_LINE = [];
                                     payments.localData.INVOICE_SUM = 0;
                                     payments.localData.INVOICE_TVA_SUM = 0;
                                     payments.localData.INVOICE_TOTAL = 0;
 
-                                    $$("invoice_line_edit").data.each(function(obj){
+                                    $$("invoice_line_edit").data.each(function(obj) {
                                         payments.localData.INVOICE_LINE.push({
                                             details: obj.details,
                                             um: obj.um,
@@ -335,10 +341,10 @@ var payments = {
                                             up: obj.up,
                                             line_value: obj.line_value,
                                             line_tva: obj.line_tva
-                                        }); 
+                                        });
                                         payments.localData.INVOICE_SUM += obj.line_value;
                                         payments.localData.INVOICE_TVA_SUM += obj.line_tva;
-                                    });              
+                                    });
                                     payments.localData.INVOICE_TOTAL += (payments.localData.INVOICE_SUM + payments.localData.INVOICE_TVA_SUM);
 
                                     tmpTemplate = Handlebars.compile(templates[payments.localData.TEMPLATE - 1]);
@@ -385,15 +391,15 @@ var payments = {
             $$('editForm').clear();
             $$('editForm').setValues({
                 _id: payments.localData._id,
-               copies: payments.localData.COPIES,
-               template: payments.localData.TEMPLATE,
-               serial_number: payments.localData.SERIA + " " + payments.localData.NUMARUL,
-               supplier: payments.localData.FURNIZOR.nume + " [" + payments.localData.FURNIZOR.valuta + "]",
-               customer_contract: payments.localData.BENEFICIAR.nume,
-               invoice_date: payments.localData.INVOICE_DATE,
-               due_date: payments.localData.DUE_DATE,
-               TVA: "" + payments.localData.TVA,
-               exchange_rate: payments.localData.CURS_BNR.eur_ron
+                copies: payments.localData.COPIES,
+                template: payments.localData.TEMPLATE,
+                serial_number: payments.localData.SERIA + " " + payments.localData.NUMARUL,
+                supplier: payments.localData.FURNIZOR.nume + " [" + payments.localData.FURNIZOR.valuta + "]",
+                customer_contract: payments.localData.BENEFICIAR.nume,
+                invoice_date: payments.localData.INVOICE_DATE,
+                due_date: payments.localData.DUE_DATE,
+                TVA: "" + payments.localData.TVA,
+                exchange_rate: payments.localData.CURS_BNR.eur_ron
             }, true);
             $$("invoice_line_edit").parse(data.json().INVOICE_LINE);
         }).fail(function(err) {
@@ -469,8 +475,7 @@ var payments = {
 
     ui: {
         id: "page-5",
-        cols: [
-            {
+        cols: [{
                 header: "New",
                 body: {
                     view: "activeList",
