@@ -7,11 +7,12 @@
 
     <link rel="icon" type="image/png" href="img/Icon.png" />
 
-    <link rel="stylesheet" href="https://cdn.webix.com/edge/webix.css" type="text/css" media="screen" charset="utf-8">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css?v=6.0.7" integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="https://cdn.materialdesignicons.com/2.7.94/css/materialdesignicons.css">
 
+    <!-- Use specific version of Webix since breaking changes were introduced in latest versions -->
+    <link rel="stylesheet" href="https://cdn.webix.com/5.1/webix.css" type="text/css" media="screen" charset="utf-8">
 
+    <!-- Webix framework -->
+    <script src="https://cdn.webix.com/5.1/webix.js" type="text/javascript" charset="utf-8"></script>
 
     <!-- CouchDB JavaScript libraries -->
     <script src="couchdb/json2.js"></script>
@@ -23,8 +24,7 @@
     <!-- PDFMake -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/pdfmake.min.js" integrity="sha256-cLwZ62pbCLbZELPJz9RGHsawij25HU1z7qYCaBK1ZnU=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/vfs_fonts.js" integrity="sha256-HM47olZz1oQ8keYmS4UQy/EypVZ8gpFenpuNeYQib+g=" crossorigin="anonymous"></script>
-    <!-- Webix framework -->
-    <script src="https://cdn.webix.com/edge/webix.js" type="text/javascript" charset="utf-8"></script>
+
     <!-- Handlebar framework -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.10/handlebars.min.js" integrity="sha256-0JaDbGZRXlzkFbV8Xi8ZhH/zZ6QQM0Y3dCkYZ7JYq34=" crossorigin="anonymous"></script>
     <!-- SheetJS framework -->
@@ -47,9 +47,9 @@
 <body>
     <script type="text/javascript" charset="utf-8">
         /*
-                                This is a Single Page Application
-                                it is designed for Desktop browsers
-                                */
+                                                        This is a Single Page Application
+                                                        it is designed for Desktop browsers
+                                                        */
         webix.i18n.parseFormat = "%d.%m.%Y";
         webix.i18n.setLocale();
         webix.ready(function() {

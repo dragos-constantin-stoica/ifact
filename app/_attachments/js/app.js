@@ -2,14 +2,14 @@
 var myApp = {
 
     init: function() {
-        myApp.showUI();
-        /*
-		if(USERNAME.getUSERNAME()){
+        //myApp.showUI();
+
+        if (USERNAME.getUSERNAME()) {
             myApp.showUI();
-		}else{
-			logic.login();
+        } else {
+            logic.login();
         }
-        */
+
     },
 
     showUI: function() {
@@ -33,7 +33,7 @@ var myApp = {
                 id: "toolbar",
                 elements: [{
                         view: "icon",
-                        icon: "fas fa-bars",
+                        icon: "bars",
                         click: function() {
                             if ($$("menu").config.hidden) {
                                 $$("menu").show();
@@ -46,7 +46,7 @@ var myApp = {
                     {
                         view: "button",
                         type: "iconButton",
-                        icon: "fas fa-sign-out-alt",
+                        icon: "sign-out",
                         label: "Logout",
                         autowidth: true,
                         click: "logic.logout"
@@ -93,14 +93,14 @@ var myApp = {
             view: "list",
             borderless: true,
             scroll: false,
-            template: "<span class='webix_icon #icon#'></span> #value#",
+            template: "<span class='webix_icon fa-#icon#'></span> #value#",
             data: [
-                { id: 1, value: "Supplier", icon: "fas fa-anchor" },
-                { id: 2, value: "Clients & Contracts", icon: "fas fa-user-circle" },
-                //{id: 3, value: "Contracts", icon: "fas fa-briefcase"},
-                { id: 4, value: "Invoice", icon: "fas fa-calculator" },
-                { id: 5, value: "Payments", icon: "fab fa-bitcoin" },
-                { id: 6, value: "Dashboard", icon: "fas fa-chart-line" }
+                { id: 1, value: "Supplier", icon: "anchor" },
+                { id: 2, value: "Clients & Contracts", icon: "user-circle" },
+                //{id: 3, value: "Contracts", icon: "briefcase"},
+                { id: 4, value: "Invoice", icon: "calculator" },
+                { id: 5, value: "Payments", icon: "bitcoin" },
+                { id: 6, value: "Dashboard", icon: "line-chart" }
             ],
             select: true,
             type: {
