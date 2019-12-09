@@ -56,7 +56,7 @@ Once you defined a customer then you may create **contracts**. The contract is a
 
 The next step is to deliver the services or goods you signed the contrat for and start invoicing!
 
-## Create an inovce
+## Create an invoice
 
 The next important step is to emit invoices for your services according to the contract. The application is based on **PDFMake** to produce the actual electronic inovice.
 
