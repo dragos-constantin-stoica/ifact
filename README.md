@@ -11,10 +11,13 @@
   </tr>
 </table>
 
+
+Please find blog article here [Webix blog](https://blog.webix.com/ifact-webix-based-invoicing-application/) including screenshots.
+
 # iFact
 
 **iFact** is an invoicing web application that I wrote in a spare moment between projects. This is a personal tool to help me create my invoices and with minimal invoices management, like: marking them payed, reporting overdued invoiced, see anual revenue, export to a spreadsheet via [SheetJS](http://sheetjs.com/).  
-The name comes as an acronym **i** - letter that was imposed by Apple&trade;&reg;&copy; and **Fact**ură - which means _invoice_ in Romanian ... and also sounds interesting if you pronounce it in a certain way, and this was done on purpose.
+The name comes as an acronym **i** - letter that was imposed by Apple&trade;&reg;&copy; and **Fact**ură - which means _invoice_ in Romanian ... and also sounds interesting if you pronounce it in a certain way in English ... and this was done on purpose.
 
 This is a **S**ingle **P**age **A**pplication web applicaion written with [Webix](https://webix.com/) framework, running as a couchapp directly
 from [Apache CouchDB](http://couchdb.apache.org/) server. For installation and development purposes, the application
