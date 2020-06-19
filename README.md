@@ -2,7 +2,7 @@
 <table border="0" width="100%">
   <tr>
     <td>
-    <img src="https://github.com/iqcouch/ifact/blob/master/Logo.png" alt="Logo"></img>
+    <img src="https://github.com/dragos-constantin-stoica/ifact/blob/offline/Logo.png" alt="Logo"></img>
     </td>
     <td>
     <p align="right"><small>"Invoicing made simple"</small></p>
@@ -11,43 +11,29 @@
   </tr>
 </table>
 
+This repository contains [PouchDB](https://pouchdb.com/) based code and is available for offline demo [iFact offline](). All changes that you made will be stored in local browser storage.
+
+You do not need an user name and a password to access the application.
+
 
 Please find blog article here [Webix blog](https://blog.webix.com/ifact-webix-based-invoicing-application/) including screenshots.
 
 # iFact
 
-**iFact** is an invoicing web application that I wrote in a spare moment between projects. This is a personal tool to help me create my invoices and with minimal invoices management, like: marking them payed, reporting overdued invoiced, see anual revenue, export to a spreadsheet via [SheetJS](http://sheetjs.com/).  
-The name comes as an acronym **i** - letter that was imposed by Apple&trade;&reg;&copy; and **Fact**ură - which means _invoice_ in Romanian ... and also sounds interesting if you pronounce it in a certain way in English ... and this was done on purpose.
+**iFact** is an invoicing web application that I wrote in some spare moments, between projects. This is a personal tool to help me create my invoices and with minimal invoice management, like: marking them payed, reporting overdued invoiced, see anual revenue, export to a spreadsheet via [SheetJS](http://sheetjs.com/).  
 
-This is a **S**ingle **P**age **A**pplication web applicaion written with [Webix](https://webix.com/) framework, running as a couchapp directly
-from [Apache CouchDB](http://couchdb.apache.org/) server. For installation and development purposes, the application
-may be synchronized back and forth from local folder to CouchDB with [AC:zap:DC](https://github.com/iqcouch/acdc) utility.
+This is a **S**ingle **P**age **A**pplication web applicaion written with [Webix](https://webix.com/) framework, running  directly from your browser. 
 The invoices are generated as PDF files via [PDFmake](http://pdfmake.org/) framework using [Handlebar](http://handlebarsjs.com/) framework for templating. All data is stored in JSON format.
 
 ## Install and Setup
 
 Pre-requisites:
 
-* CouchDB version 1.6.1 or later installed. Create `ifact` database and add one user as administrator, let's say user name: **manager** with password **bigboss**.
-* `git` tool
-* **AC**:zap:**DC** tool
+* Web browser
 
-Clone this repository to local machine.
-
-```bash
-git clone https://github.com/iqcouch/ifact.git
-```
-
-Copy the `acdc` executable to parent folder of `ifact` and push the application to your CouchDB instance:
-
-```bash
-./acdc push -db ifact -URL http://manager:bigboss@localhost:5984
-```
-
-The application should be availble at: http://localhost:5984/ifact/_design/app/index.html. Login as **manager**.
+The application should be availble at: http://. 
 
 Congratulations!  
-You have now created a new installation of **iFact** application. This instance has no data, yet.
 
 The home page is the from where you fill in your profile. You should provide identification information about your company. This information includes: company name, address, identification nubmers and fiscal data, also you can add several bank accounts. Normally you are supposed to fill in this page only once. Also fill in the series and the starting serial number for your invoices.
 
