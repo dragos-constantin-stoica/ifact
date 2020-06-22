@@ -12,7 +12,7 @@
 </table>
 
 
-Please find blog article here [Webix blog](https://blog.webix.com/ifact-webix-based-invoicing-application/) including screenshots.
+Screenshots can be found on this blog article: [Webix blog](https://blog.webix.com/ifact-webix-based-invoicing-application/).
 
 # iFact
 
